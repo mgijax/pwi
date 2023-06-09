@@ -3328,8 +3328,8 @@
                                 			"assayExtraWords": "",
 							"assayID": "",
 							"attachGene": "",
-							"attachColor": true,
-							"attachAssay": true,
+							"attachColor": false,
+							"attachAssay": false,
                                 			"attachExtraWords": false
 						}
 						vm.dlProcess[i].otherGene[idx] = item;
@@ -3461,7 +3461,6 @@
 			var previewNote = "";
 			var setLabel = "";
 			var numberOfColors = 1;
-			var checkColorNumber = false;
 
 			for(var i=0;i<Object.keys(vm.dlProcess).length; i++) {
 
@@ -3489,8 +3488,6 @@
 				
 				// reset default values
 				previewNote = "";
-				numberOfColors = 1;
-				checkColorNumber = false;
 				vm.dlProcess[i].attachGene1 = "";
 				vm.dlProcess[i].attachGene2 = "";
 				vm.dlProcess[i].attachExtraWords1 = false;
@@ -3498,10 +3495,18 @@
 				vm.dlProcess[i].attachAssay2 = true;
 				vm.dlProcess[i].attachExtraWords2 = false;
 				for(var j=0;j<vm.dlProcess[i].otherGene.length; j++) {
-					vm.dlProcess[i].otherGene[j].attachGene = "";
-					vm.dlProcess[i].otherGene[j].attachColor = true;
-					vm.dlProcess[i].otherGene[j].attachAssay = true;
-                                	vm.dlProcess[i].otherGene[j].attachExtraWords = false;
+					if (vm.dlProcess[i].otherGene[j].gene == "") {
+						vm.dlProcess[i].otherGene[j].attachGene = "";
+						vm.dlProcess[i].otherGene[j].attachColor = false;
+						vm.dlProcess[i].otherGene[j].attachAssay = false;
+                                		vm.dlProcess[i].otherGene[j].attachExtraWords = false;
+					}
+					else {
+						vm.dlProcess[i].otherGene[j].attachGene = "";
+						vm.dlProcess[i].otherGene[j].attachColor = true;
+						vm.dlProcess[i].otherGene[j].attachAssay = true;
+                                		vm.dlProcess[i].otherGene[j].attachExtraWords = false;
+					}
 				}
 
 				// set attachExtraWords = true
@@ -3527,7 +3532,7 @@
 				}
 
 				// set attachColor = true
-				setLabel = "Triple labeled: ";
+				//setLabel = "Triple labeled: ";
 				if (vm.dlProcess[i].colorTerm1 == vm.dlProcess[i].colorTerm2) {
 					vm.dlProcess[i].attachGene1 += " and " + vm.dlProcess[i].gene2;
 					if (vm.dlProcess[i].attachExtraWords2 == true) {
@@ -3535,7 +3540,7 @@
 					}
 					vm.dlProcess[i].attachColor2 = false;
 					vm.dlProcess[i].attachAssay2 = false;
-					setLabel = "Double labeled: ";
+					//setLabel = "Double labeled: ";
 				}
 				for(var j=0;j<vm.dlProcess[i].otherGene.length; j++) {
 					// if same colorTerm1 used in otherGene
@@ -3547,7 +3552,7 @@
 						vm.dlProcess[i].otherGene[j].attachColor = false;
 						vm.dlProcess[i].otherGene[j].attachAssay = false;
 						vm.dlProcess[i].otherGene[j].attachExtractedWords = false;
-						setLabel = "Double labeled: ";
+						//setLabel = "Double labeled: ";
 					}
 					// if same colorTerm2 used in otherGene
 					if (vm.dlProcess[i].colorTerm2 == vm.dlProcess[i].otherGene[j].colorTerm) {
@@ -3561,7 +3566,7 @@
 						vm.dlProcess[i].otherGene[j].attachColor = false;
 						vm.dlProcess[i].otherGene[j].attachAssay = false;
 						vm.dlProcess[i].otherGene[j].attachExtractedWords = false;
-						setLabel = "Double labeled: ";
+						//setLabel = "Double labeled: ";
 					}
 					// if same otherGene used in otherGene
 					for(var k=0;k<vm.dlProcess[i].otherGene.length; k++) {
@@ -3585,7 +3590,7 @@
 							vm.dlProcess[i].otherGene[k].attachColor = false;
 							vm.dlProcess[i].otherGene[k].attachAssay = false;
 							vm.dlProcess[i].otherGene[k].attachExtractedWords = false;
-							setLabel = "Double labeled: ";
+							//setLabel = "Double labeled: ";
 						}
 					}
 				}
@@ -3594,7 +3599,7 @@
 				// determine Double vs Triple vs Multi label
 				//
 				if (vm.dlProcess[i].numberOfGenes == 1) {
-					previewNote = "Double labeled: ";
+					//previewNote = "Double labeled: ";
 					previewNote += vm.dlProcess[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
 					if (vm.dlProcess[i].attachExtraWords1 == true) {
 						previewNote += vm.dlProcess[i].assayExtraWords1;
@@ -3605,18 +3610,16 @@
 						previewNote += vm.dlProcess[i].assayExtraWords2;
 					}
 					previewNote += " (assay \\Acc(" + vm.dlProcess[i].assayID2 + "||))";
-					numberOfColors += 1;
 				}
 
 				// D/Triple labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)); color3 - gene3 (assay \Acc(*||)).
 				else if (vm.dlProcess[i].numberOfGenes == 2) {
-					previewNote = setLabel;
+					//previewNote = setLabel;
 					previewNote += vm.dlProcess[i].colorTerm1;
 					previewNote += " - " + vm.apiDomain.markerSymbol + vm.dlProcess[i].attachGene1;
 					if (vm.dlProcess[i].attachExtraWords1 == true) {
 						previewNote += vm.dlProcess[i].assayExtraWords1;
 					}
-					numberOfColors += 1;
 
 					if (vm.dlProcess[i].attachColor2 == true) {
 						previewNote += "; " + vm.dlProcess[i].colorTerm2;
@@ -3624,7 +3627,6 @@
 						if (vm.dlProcess[i].attachExtraWords2 == true) {
 							previewNote += vm.dlProcess[i].assayExtraWords2;
 						}
-						numberOfColors += 1;
 					}
 
 					if (vm.dlProcess[i].attachAssay2 == true) {
@@ -3637,7 +3639,6 @@
 						if (vm.dlProcess[i].otherGene[0].attachExtraWords == true) {
 							previewNote += vm.dlProcess[i].otherGene[0].assayExtraWords;
 						}
-						numberOfColors += 1;
 					}
 					if (vm.dlProcess[i].otherGene[0].attachAssay == true) {
 						previewNote += " (assay \\Acc(" + vm.dlProcess[i].otherGene[0].assayID + "||))";
@@ -3647,13 +3648,12 @@
 				// E/Multi-labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)); color3 - gene3 (assay \Acc(*||)); etc. .
 				//
 				else if (vm.dlProcess[i].numberOfGenes > 2) {
-					previewNote = "Multi-labeled: ";
+					//previewNote = "Multi-labeled: ";
 					previewNote += vm.dlProcess[i].colorTerm1;
 					previewNote += " - " + vm.apiDomain.markerSymbol + vm.dlProcess[i].attachGene1;
 					if (vm.dlProcess[i].attachExtraWords1 == true) {
 						previewNote += vm.dlProcess[i].assayExtraWords1;
 					}
-					numberOfColors += 1;
 
 					if (vm.dlProcess[i].attachColor2 == true) {
 						previewNote += "; " + vm.dlProcess[i].colorTerm2;
@@ -3661,7 +3661,6 @@
 						if (vm.dlProcess[i].attachExtraWords2 == true) {
 							previewNote += vm.dlProcess[i].assayExtraWords2;
 						}
-						numberOfColors += 1;
 					}
 
 					if (vm.dlProcess[i].attachAssay2 == true) {
@@ -3676,7 +3675,6 @@
 							if (vm.dlProcess[i].otherGene[j].attachExtraWords == true) {
 								previewNote += vm.dlProcess[i].otherGene[j].assayExtraWords;
 							}
-							numberOfColors += 1;
 						}
 						if (vm.dlProcess[i].otherGene[j].attachAssay == true) {
 							previewNote += " (assay \\Acc(" + vm.dlProcess[i].otherGene[j].assayID + "||))";
@@ -3696,25 +3694,39 @@
 					) {
 						previewNote += "; " + vm.dlProcess[i].otherText[j].colorTerm + " - ";
 						previewNote += vm.dlProcess[i].otherText[j].gene;
-						numberOfColors += 1;
-						checkColorNumber = true;
 					}
-				}
-				if (vm.dlProcess[i].numberOfGenes == 0 || checkColorNumber == true) {
-					if (numberOfColors > 3) {
-						setLabel = "Multi-labeled: ";
-					}
-					else if (numberOfColors == 3) {
-						setLabel = "Triple labeled: ";
-						previewNote = previewNote.replace("Double labeled: ", "");
-					}
-					else {
-						setLabel = "Double labeled: ";
-					}
-					previewNote = setLabel + previewNote;
 				}
 				// end: otherText logic
 
+				//set numberOfColors
+				numberOfColors = 1;
+				if (vm.dlProcess[i].attachColor2 == true) {
+					numberOfColors += 1;
+				}
+				for(var j=0;j<vm.dlProcess[i].otherGene.length; j++) {
+					if (vm.dlProcess[i].otherGene[j].attachColor == true) {
+						numberOfColors += 1;
+					}
+				}
+				for(var j=0;j<vm.dlProcess[i].otherText.length; j++) {
+					if (vm.dlProcess[i].otherText[j].attachColor == true) {
+						numberOfColors += 1;
+					}
+				}
+
+				//set setLabel depending on numberOfColors
+				if (numberOfColors > 3) {
+					setLabel = "Multi-labeled: ";
+				}
+				else if (numberOfColors == 3) {
+					setLabel = "Triple labeled: ";
+				}
+				else {
+					setLabel = "Double labeled: ";
+				}
+				previewNote = setLabel + previewNote;
+
+				// finished!
 				if (previewNote.length > 0) {
 					previewNote += ".";
 				}
