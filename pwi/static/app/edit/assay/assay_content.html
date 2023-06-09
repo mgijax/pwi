@@ -754,7 +754,7 @@
                         </select>
                         </td>
 
-                        <td id="gene2">{{row.gene2}}</td>
+                        <td ng-if="row.gene2.length==0" style="min-width:50px;" id="gene2">{{row.gene2}}</td>
 
                         <td><select type=dropdown size="1" id="colorTerm2-{{$index}}" 
 			 	ng-options="choice.term as choice.term for choice in vm.colorLookup[2]"
@@ -815,6 +815,7 @@
                         	<button type="button" style="float:left;" tabindex="-1" id="dlclearButton" 
 					ng-class=""
                                 	ng-click="clearDL(false)" >Clear</button>
+                                <input type="text" class="form-control" style="width:0px;" tab-to="colorTerm1-0" ng-model="vm.selectedDLIndex" ></input>
                 	</div>
 			<div class="spacer"></div>
 			<div class="spacer"></div>
