@@ -3422,11 +3422,13 @@
                         for(var i=0;i<Object.keys(vm.dlProcess).length;i++) {
 				idx = vm.dlProcess[i].otherText.length;
 				
-				if (vm.dlProcess[i].otherGene.length == 0) {
-					sequenceNum = 3;
-				}
-				else if (idx == 0) {
-					sequenceNum = vm.dlProcess[i].otherGene[idx].sequenceNum + 1;
+				if (idx == 0) {
+					if (vm.dlProcess[i].otherGene.length == 0) {
+						sequenceNum = 3;
+					}
+					else {
+						sequenceNum = vm.dlProcess[i].otherGene[idx].sequenceNum + 1;
+					}
 				}
 				else {
 					sequenceNum = vm.dlProcess[i].otherText[idx-1].sequenceNum + 1;
