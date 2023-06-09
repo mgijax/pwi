@@ -3437,7 +3437,8 @@
 				item = {
 					"sequenceNum": sequenceNum,
 					"gene": "",
-					"colorTerm": ""
+					"colorTerm": "",
+					"attachColor": false
 				}
 				vm.dlProcess[i].otherText[idx] = item;
 			}
@@ -3469,23 +3470,6 @@
 					continue;
 				}
 
-				//
-				// rules for all cases:
-				// 1) extraWords : if assay type = 9 (reporter) or same gene
-				//
-				// 2) color
-				// color same as gene1
-				// Double labeled: color1 - gene1 and gene2; color3 - gene3 (assay \Acc(*||)).
-				// coloar same as other non-gene1
-				// Double labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)) and gene3 (assay \Acc(*||)).
-				//
-				
-				//
-				// Double labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)).
-				// Double labeled: color1 - gene1 extraword; color2 - gene2 (assay \Acc(*||)).
-				// Double labeled: color1 - geneX extraword; color2 - geneX extraword (assay \Acc(*||)).
-				// 
-				
 				// reset default values
 				previewNote = "";
 				vm.dlProcess[i].attachGene1 = "";
@@ -3532,7 +3516,7 @@
 				}
 
 				// set attachColor = true
-				//setLabel = "Triple labeled: ";
+				// same colors are grouped together
 				if (vm.dlProcess[i].colorTerm1 == vm.dlProcess[i].colorTerm2) {
 					vm.dlProcess[i].attachGene1 += " and " + vm.dlProcess[i].gene2;
 					if (vm.dlProcess[i].attachExtraWords2 == true) {
@@ -3540,7 +3524,6 @@
 					}
 					vm.dlProcess[i].attachColor2 = false;
 					vm.dlProcess[i].attachAssay2 = false;
-					//setLabel = "Double labeled: ";
 				}
 				for(var j=0;j<vm.dlProcess[i].otherGene.length; j++) {
 					// if same colorTerm1 used in otherGene
@@ -3552,7 +3535,6 @@
 						vm.dlProcess[i].otherGene[j].attachColor = false;
 						vm.dlProcess[i].otherGene[j].attachAssay = false;
 						vm.dlProcess[i].otherGene[j].attachExtractedWords = false;
-						//setLabel = "Double labeled: ";
 					}
 					// if same colorTerm2 used in otherGene
 					if (vm.dlProcess[i].colorTerm2 == vm.dlProcess[i].otherGene[j].colorTerm) {
@@ -3566,7 +3548,6 @@
 						vm.dlProcess[i].otherGene[j].attachColor = false;
 						vm.dlProcess[i].otherGene[j].attachAssay = false;
 						vm.dlProcess[i].otherGene[j].attachExtractedWords = false;
-						//setLabel = "Double labeled: ";
 					}
 					// if same otherGene used in otherGene
 					for(var k=0;k<vm.dlProcess[i].otherGene.length; k++) {
@@ -3590,16 +3571,12 @@
 							vm.dlProcess[i].otherGene[k].attachColor = false;
 							vm.dlProcess[i].otherGene[k].attachAssay = false;
 							vm.dlProcess[i].otherGene[k].attachExtractedWords = false;
-							//setLabel = "Double labeled: ";
 						}
 					}
 				}
 
-				//
-				// determine Double vs Triple vs Multi label
-				//
+				// numberOfGenes == 1
 				if (vm.dlProcess[i].numberOfGenes == 1) {
-					//previewNote = "Double labeled: ";
 					previewNote += vm.dlProcess[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
 					if (vm.dlProcess[i].attachExtraWords1 == true) {
 						previewNote += vm.dlProcess[i].assayExtraWords1;
@@ -3612,9 +3589,8 @@
 					previewNote += " (assay \\Acc(" + vm.dlProcess[i].assayID2 + "||))";
 				}
 
-				// D/Triple labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)); color3 - gene3 (assay \Acc(*||)).
+				// numberOfGenes == 2
 				else if (vm.dlProcess[i].numberOfGenes == 2) {
-					//previewNote = setLabel;
 					previewNote += vm.dlProcess[i].colorTerm1;
 					previewNote += " - " + vm.apiDomain.markerSymbol + vm.dlProcess[i].attachGene1;
 					if (vm.dlProcess[i].attachExtraWords1 == true) {
@@ -3645,8 +3621,7 @@
 					}
 				}
 
-				// E/Multi-labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)); color3 - gene3 (assay \Acc(*||)); etc. .
-				//
+				// numberOfGenes > 2
 				else if (vm.dlProcess[i].numberOfGenes > 2) {
 					//previewNote = "Multi-labeled: ";
 					previewNote += vm.dlProcess[i].colorTerm1;
@@ -3682,7 +3657,7 @@
 					}
 				}
 
-				// start: otherText logic
+				// otherText logic
 				if (vm.dlProcess[i].numberOfGenes == 0) {
 					previewNote += vm.dlProcess[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
 				}
@@ -3694,11 +3669,11 @@
 					) {
 						previewNote += "; " + vm.dlProcess[i].otherText[j].colorTerm + " - ";
 						previewNote += vm.dlProcess[i].otherText[j].gene;
+						vm.dlProcess[i].otherText[j].attachColor = true;
 					}
 				}
-				// end: otherText logic
 
-				//set numberOfColors
+				// determine numberOfColors by checking attachColor = true
 				numberOfColors = 1;
 				if (vm.dlProcess[i].attachColor2 == true) {
 					numberOfColors += 1;
@@ -3714,7 +3689,7 @@
 					}
 				}
 
-				//set setLabel depending on numberOfColors
+				// set setLabel based on numberOfColors
 				if (numberOfColors > 3) {
 					setLabel = "Multi-labeled: ";
 				}
