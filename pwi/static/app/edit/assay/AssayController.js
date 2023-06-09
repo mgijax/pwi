@@ -3395,6 +3395,14 @@
                                         		vm.dlProcess[i].otherGene[j].colorTerm = vm.dlProcess[index].otherGene[j].colorTerm;
 						}
 					}
+					for(var j=0;j<vm.dlProcess[i].otherText.length; j++) {
+						if (
+							vm.dlProcess[i].otherText[j].sequenceNum == colorIndex
+							&& vm.dlProcess[i].otherText[j].gene != ""
+						) {
+                                        		vm.dlProcess[i].otherText[j].colorTerm = vm.dlProcess[index].otherText[j].colorTerm;
+						}
+					}
 				}
                         }
                 }
@@ -3427,7 +3435,7 @@
 						sequenceNum = 3;
 					}
 					else {
-						sequenceNum = vm.dlProcess[i].otherGene[idx].sequenceNum + 1;
+						sequenceNum = vm.dlProcess[i].otherGene[vm.dlProcess[i].otherGene.length-1].sequenceNum + 1;
 					}
 				}
 				else {
