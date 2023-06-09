@@ -3422,7 +3422,10 @@
                         for(var i=0;i<Object.keys(vm.dlProcess).length;i++) {
 				idx = vm.dlProcess[i].otherText.length;
 				
-				if (idx == 0) {
+				if (vm.dlProcess[i].otherGene.length == 0) {
+					sequenceNum = 3;
+				}
+				else if (idx == 0) {
 					sequenceNum = vm.dlProcess[i].otherGene[idx].sequenceNum + 1;
 				}
 				else {
@@ -3455,6 +3458,7 @@
 
 			var previewNote = "";
 			var setLabel = "";
+			var numberOfColors = 0;
 
 			for(var i=0;i<Object.keys(vm.dlProcess).length; i++) {
 
@@ -3481,6 +3485,8 @@
 				// 
 				
 				// reset default values
+				previewNote = "";
+				numberOfColors = 0;
 				vm.dlProcess[i].attachGene1 = "";
 				vm.dlProcess[i].attachGene2 = "";
 				vm.dlProcess[i].attachExtraWords1 = false;
@@ -3580,43 +3586,41 @@
 					}
 				}
 
-				// start with fresh previewNote
-				previewNote = "";
-
 				//
 				// determine Double vs Triple vs Multi label
 				//
-				if (vm.dlProcess[i].numberOfGenes ==0) {
-					previewNote = "Double labeled: ";
-				}
-				else if (vm.dlProcess[i].numberOfGenes == 1) {
+				if (vm.dlProcess[i].numberOfGenes == 1) {
 					previewNote = "Double labeled: ";
 					previewNote += vm.dlProcess[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
 					if (vm.dlProcess[i].attachExtraWords1 == true) {
 						previewNote += vm.dlProcess[i].assayExtraWords1;
 					}
-					previewNote += "; " + vm.dlProcess[i].colorTerm2 + " - " + vm.dlProcess[i].gene2;
+					previewNote += "; " + vm.dlProcess[i].colorTerm2;
+					previewNote += " - " + vm.dlProcess[i].gene2;
 					if (vm.dlProcess[i].attachExtraWords2 == true) {
 						previewNote += vm.dlProcess[i].assayExtraWords2;
 					}
 					previewNote += " (assay \\Acc(" + vm.dlProcess[i].assayID2 + "||))";
+					numberOfColors += 1;
 				}
 
 				// D/Triple labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)); color3 - gene3 (assay \Acc(*||)).
 				else if (vm.dlProcess[i].numberOfGenes == 2) {
-
 					previewNote = setLabel;
-
-					previewNote += vm.dlProcess[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol + vm.dlProcess[i].attachGene1;
+					previewNote += vm.dlProcess[i].colorTerm1;
+					previewNote += " - " + vm.apiDomain.markerSymbol + vm.dlProcess[i].attachGene1;
 					if (vm.dlProcess[i].attachExtraWords1 == true) {
 						previewNote += vm.dlProcess[i].assayExtraWords1;
 					}
+					numberOfColors += 1;
 
 					if (vm.dlProcess[i].attachColor2 == true) {
-						previewNote += "; " + vm.dlProcess[i].colorTerm2 + " - " + vm.dlProcess[i].gene2 + vm.dlProcess[i].attachGene2;
+						previewNote += "; " + vm.dlProcess[i].colorTerm2;
+						previewNote += " - " + vm.dlProcess[i].gene2 + vm.dlProcess[i].attachGene2;
 						if (vm.dlProcess[i].attachExtraWords2 == true) {
 							previewNote += vm.dlProcess[i].assayExtraWords2;
 						}
+						numberOfColors += 1;
 					}
 
 					if (vm.dlProcess[i].attachAssay2 == true) {
@@ -3624,10 +3628,12 @@
 					}
 
 					if (vm.dlProcess[i].otherGene[0].attachColor == true) {
-						previewNote += "; " + vm.dlProcess[i].otherGene[0].colorTerm + " - " + vm.dlProcess[i].otherGene[0].gene;
+						previewNote += "; " + vm.dlProcess[i].otherGene[0].colorTerm;
+						previewNote += " - " + vm.dlProcess[i].otherGene[0].gene;
 						if (vm.dlProcess[i].otherGene[0].attachExtraWords == true) {
 							previewNote += vm.dlProcess[i].otherGene[0].assayExtraWords;
 						}
+						numberOfColors += 1;
 					}
 					if (vm.dlProcess[i].otherGene[0].attachAssay == true) {
 						previewNote += " (assay \\Acc(" + vm.dlProcess[i].otherGene[0].assayID + "||))";
@@ -3638,17 +3644,20 @@
 				//
 				else if (vm.dlProcess[i].numberOfGenes > 2) {
 					previewNote = "Multi-labeled: ";
-
-					previewNote += vm.dlProcess[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol + vm.dlProcess[i].attachGene1;
+					previewNote += vm.dlProcess[i].colorTerm1;
+					previewNote += " - " + vm.apiDomain.markerSymbol + vm.dlProcess[i].attachGene1;
 					if (vm.dlProcess[i].attachExtraWords1 == true) {
 						previewNote += vm.dlProcess[i].assayExtraWords1;
 					}
+					numberOfColors += 1;
 
 					if (vm.dlProcess[i].attachColor2 == true) {
-						previewNote += "; " + vm.dlProcess[i].colorTerm2 + " - " + vm.dlProcess[i].gene2 + vm.dlProcess[i].attachGene2;
+						previewNote += "; " + vm.dlProcess[i].colorTerm2;
+						previewNote += " - " + vm.dlProcess[i].gene2 + vm.dlProcess[i].attachGene2;
 						if (vm.dlProcess[i].attachExtraWords2 == true) {
 							previewNote += vm.dlProcess[i].assayExtraWords2;
 						}
+						numberOfColors += 1;
 					}
 
 					if (vm.dlProcess[i].attachAssay2 == true) {
@@ -3658,10 +3667,12 @@
 					for(var j=0;j<vm.dlProcess[i].otherGene.length; j++) {
 						if (vm.dlProcess[i].otherGene[j].attachColor == true) {
 							previewNote += "; " + vm.dlProcess[i].otherGene[j].colorTerm;
-							previewNote += " - " + vm.dlProcess[i].otherGene[j].gene + vm.dlProcess[i].otherGene[j].attachGene;
+							previewNote += " - " + vm.dlProcess[i].otherGene[j].gene;
+							previewNote += vm.dlProcess[i].otherGene[j].attachGene;
 							if (vm.dlProcess[i].otherGene[j].attachExtraWords == true) {
 								previewNote += vm.dlProcess[i].otherGene[j].assayExtraWords;
 							}
+							numberOfColors += 1;
 						}
 						if (vm.dlProcess[i].otherGene[j].attachAssay == true) {
 							previewNote += " (assay \\Acc(" + vm.dlProcess[i].otherGene[j].assayID + "||))";
@@ -3669,22 +3680,40 @@
 					}
 				}
 
-				// otherText
+				// start: otherText logic
+				if (vm.dlProcess[i].numberOfGenes == 0) {
+					previewNote += vm.dlProcess[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
+				}
 				for(var j=0;j<vm.dlProcess[i].otherText.length; j++) {
 					if (
 						vm.dlProcess[i].otherText[j].gene != ""
 						&& vm.dlProcess[i].otherText[j].colorTerm != ""
 						&& vm.dlProcess[i].otherText[j].colorTerm != null
 					) {
-						previewNote += " " + vm.dlProcess[i].otherText[j].colorTerm + " - ";
-						previewNote += vm.dlProcess[i].otherText[j].gene + ";";
+						previewNote += "; " + vm.dlProcess[i].otherText[j].colorTerm + " - ";
+						previewNote += vm.dlProcess[i].otherText[j].gene;
+						numberOfColors += 1;
 					}
 				}
+				if (vm.dlProcess[i].numberOfGenes == 0) {
+					if (numberOfColors > 3) {
+						setLabel = "Multi-labeled: ";
+					}
+					else if (numberOfColors == 3) {
+						setLabel = "Triple labeled: ";
+					}
+					else {
+						setLabel = "Double labeled: ";
+					}
+					 previewNote = setLabel + previewNote;
+				}
+				// end: otherText logic
 
 				if (previewNote.length > 0) {
 					previewNote += ".";
 				}
-				previewNote = previewNote.replace(";.", ".");
+				//previewNote = previewNote.replace("  ", " ");
+				//previewNote = previewNote.replace(";.", ".");
 				vm.dlProcess[i].previewNote = previewNote;
 			}
 
