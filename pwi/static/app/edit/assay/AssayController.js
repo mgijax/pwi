@@ -3230,8 +3230,8 @@
 						"attachGene1": "",
 						"attachGene2": "",
 						"attachExtraWords1": false,
-						"attachColor2": true,
-						"attachAssay2": true,
+						"attachColor2": false,
+						"attachAssay2": false,
 						"attachExtraWords2": false,
 				                "otherGene": [],
 						"otherText": []
