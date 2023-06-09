@@ -3231,7 +3231,7 @@
 						"attachGene2": "",
 						"attachExtraWords1": false,
 						"attachColor2": false,
-						"attachAssay2": false,
+						"attachAssay2": true,
 						"attachExtraWords2": false,
 				                "otherGene": [],
 						"otherText": []
