@@ -3475,21 +3475,23 @@
 				vm.dlProcess[i].attachGene1 = "";
 				vm.dlProcess[i].attachGene2 = "";
 				vm.dlProcess[i].attachExtraWords1 = false;
-				vm.dlProcess[i].attachColor2 = true;
 				vm.dlProcess[i].attachAssay2 = true;
 				vm.dlProcess[i].attachExtraWords2 = false;
+				if ( vm.dlProcess[i].gene2 == "") {
+					vm.dlProcess[i].attachColor2 = false;
+				}
+				else {
+					vm.dlProcess[i].attachColor2 = true;
+				}
 				for(var j=0;j<vm.dlProcess[i].otherGene.length; j++) {
+					vm.dlProcess[i].otherGene[j].attachGene = "";
+					vm.dlProcess[i].otherGene[j].attachAssay = true;
+                                	vm.dlProcess[i].otherGene[j].attachExtraWords = false;
 					if (vm.dlProcess[i].otherGene[j].gene == "") {
-						vm.dlProcess[i].otherGene[j].attachGene = "";
 						vm.dlProcess[i].otherGene[j].attachColor = false;
-						vm.dlProcess[i].otherGene[j].attachAssay = false;
-                                		vm.dlProcess[i].otherGene[j].attachExtraWords = false;
 					}
 					else {
-						vm.dlProcess[i].otherGene[j].attachGene = "";
 						vm.dlProcess[i].otherGene[j].attachColor = true;
-						vm.dlProcess[i].otherGene[j].attachAssay = true;
-                                		vm.dlProcess[i].otherGene[j].attachExtraWords = false;
 					}
 				}
 
