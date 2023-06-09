@@ -3685,6 +3685,7 @@
 				// start: otherText logic
 				if (vm.dlProcess[i].numberOfGenes == 0) {
 					previewNote += vm.dlProcess[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
+					numberOfColors += 1;
 				}
 				for(var j=0;j<vm.dlProcess[i].otherText.length; j++) {
 					if (
