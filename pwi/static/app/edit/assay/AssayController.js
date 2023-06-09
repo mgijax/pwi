@@ -3710,7 +3710,7 @@
 					else {
 						setLabel = "Double labeled: ";
 					}
-					 previewNote = setLabel + previewNote;
+					previewNote = setLabel + previewNote;
 				}
 				// end: otherText logic
 
