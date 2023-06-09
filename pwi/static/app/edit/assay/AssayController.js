@@ -3460,7 +3460,8 @@
 
 			var previewNote = "";
 			var setLabel = "";
-			var numberOfColors = 0;
+			var numberOfColors = 1;
+			var checkColorNumber = false;
 
 			for(var i=0;i<Object.keys(vm.dlProcess).length; i++) {
 
@@ -3488,7 +3489,8 @@
 				
 				// reset default values
 				previewNote = "";
-				numberOfColors = 0;
+				numberOfColors = 1;
+				checkColorNumber = false;
 				vm.dlProcess[i].attachGene1 = "";
 				vm.dlProcess[i].attachGene2 = "";
 				vm.dlProcess[i].attachExtraWords1 = false;
@@ -3685,7 +3687,6 @@
 				// start: otherText logic
 				if (vm.dlProcess[i].numberOfGenes == 0) {
 					previewNote += vm.dlProcess[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
-					numberOfColors += 1;
 				}
 				for(var j=0;j<vm.dlProcess[i].otherText.length; j++) {
 					if (
@@ -3696,9 +3697,10 @@
 						previewNote += "; " + vm.dlProcess[i].otherText[j].colorTerm + " - ";
 						previewNote += vm.dlProcess[i].otherText[j].gene;
 						numberOfColors += 1;
+						checkColorNumber = true;
 					}
 				}
-				if (vm.dlProcess[i].numberOfGenes == 0) {
+				if (vm.dlProcess[i].numberOfGenes == 0 || checkColorNumber == true) {
 					if (numberOfColors > 3) {
 						setLabel = "Multi-labeled: ";
 					}
