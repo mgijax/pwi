@@ -683,19 +683,6 @@
                                 </div>
                         </th>
 
-			<th>Gene2</th>
-
-                	<th title="color2">
-                                <div>
-                                <div>
-				color2
-                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('colorTerm2',2)"
-                        	style="width:15px; height: 15px; cursor: pointer;"
-                                </img>
-                                </div>
-                                </div>
-                        </th>
-
 			<th ng-repeat-start="headerrow in vm.dlHeader">{{headerrow.name}}</th>
 
 			<th ng-repeat-end>
@@ -755,21 +742,7 @@
                         </select>
                         </td>
 
-                    <!-- gene2 + color2 -->
-                        <td ng-if="row.gene2.length>0" style="" id="gene2">{{row.gene2}}</td>
-                        <td ng-if="row.gene2.length==0" style="min-width:50px;" id="gene2">{{row.gene2}}</td>
-
-                        <td><select type=dropdown size="1" id="colorTerm2-{{$index}}" 
-			 	ng-options="choice.term as choice.term for choice in vm.colorLookup[2]"
-                                ng-model="row.colorTerm2"
-				ng-change="changeDLRow($index)"
-                                ng-keydown="setDLNextRow($event, $parent.$index)"
-				>
-				<option value=""></option>
-                        </select>
-                        </td>
-
-                    <!-- gene3 + color3, and beyond -->
+                    <!-- gene2 + color2, and beyond -->
             		<td id="gene-{{$index}}" ng-repeat-start="gresult in row.otherGene">{{gresult.gene}}</td>
 			<td ng-repeat-end>
 				<select type=dropdown size="1" id="colorTerm-{{$index}}"
