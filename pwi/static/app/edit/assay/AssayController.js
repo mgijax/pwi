@@ -3343,6 +3343,7 @@
 				for(var i=1;i<=maxNumberOfOtherGenes; i++) {
 					var otherHeader = {
 						"name": "Gene" + (i + 2),
+						"copyColor": "colorTerm",
 						"color": i + 2
 					}
 					vm.dlHeader[i] = otherHeader;
@@ -3395,6 +3396,8 @@
                                         		vm.dlProcess[i].otherGene[j].colorTerm = vm.dlProcess[index].otherGene[j].colorTerm;
 						}
 					}
+				}
+                                else if (id == 'colorTermText') {
 					for(var j=0;j<vm.dlProcess[i].otherText.length; j++) {
 						if (vm.dlProcess[i].otherText[j].sequenceNum == colorIndex) {
                                         		vm.dlProcess[i].otherText[j].colorTerm = vm.dlProcess[index].otherText[j].colorTerm;
@@ -3452,6 +3455,7 @@
 			idx = Object.keys(vm.dlHeader).length;
 			item = {
 				"name": "Text" + sequenceNum,
+				"copyColor": "colorTermText",
 				"color": sequenceNum
 			}
 			vm.dlHeader[idx+1] = item;

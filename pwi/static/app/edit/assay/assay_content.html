@@ -702,7 +702,7 @@
                                 <div>
                                 <div>
 				color{{headerrow.color}}
-                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('colorTerm', headerrow.color)"
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow(headerrow.copyColor, headerrow.color)"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                                 </div>
@@ -816,7 +816,6 @@
                         	<button type="button" style="float:left;" tabindex="-1" id="dlclearButton" 
 					ng-class=""
                                 	ng-click="clearDL(false)" >Clear</button>
-                                <input type="text" class="form-control" style="width:0px;" tab-to="colorTerm1-0" ng-model="vm.selectedDLIndex" ></input>
                 	</div>
 			<div class="spacer"></div>
 			<div class="spacer"></div>
