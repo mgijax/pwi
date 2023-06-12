@@ -87,6 +87,7 @@
 		vm.dlAssay = {};
 		vm.dlHeader = {};
 		vm.selectedDLIndex = 0;
+		vm.allowProcessDL = true;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -3499,6 +3500,7 @@
 			var previewNote = "";
 			var setLabel = "";
 			var numberOfColors = 1;
+			vm.allowProcessDL = true;
 
 			for(var i=0;i<Object.keys(vm.dlProcess).length; i++) {
 
@@ -3662,11 +3664,21 @@
 				// determine numberOfColors by checking attachColor = true
 				numberOfColors = 1;
 				for(var j=0;j<vm.dlProcess[i].otherGene.length; j++) {
+					if (vm.dlProcess[i].otherGene[j].gene != "" && vm.dlProcess[i].otherGene[j].colorTerm == "") {
+						alert("No Color Selected For Gene")
+						vm.allowProcessDL = false;
+						return;
+					}
 					if (vm.dlProcess[i].otherGene[j].attachColor == true) {
 						numberOfColors += 1;
 					}
 				}
 				for(var j=0;j<vm.dlProcess[i].otherText.length; j++) {
+					if (vm.dlProcess[i].otherText[j].gene != "" && vm.dlProcess[i].otherText[j].colorTerm == "") {
+						vm.allowProcessDL = false;
+						return;
+						alert("No Color Selected For Text")
+					}
 					if (vm.dlProcess[i].otherText[j].attachColor == true) {
 						numberOfColors += 1;
 					}
@@ -3702,6 +3714,10 @@
 
 			// call preview
 			previewDL(true);
+
+			if (vm.allowProcessDL == false) {
+				return;
+			}
 
 			// append each vm.dlProcess.previewNote to the appropriate vm.apiDomain.specimens row
 			// set vm.apiDomain.specimens[].processStatus = "u"
