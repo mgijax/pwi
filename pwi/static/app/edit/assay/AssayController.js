@@ -3675,9 +3675,9 @@
 				}
 				for(var j=0;j<vm.dlProcess[i].otherText.length; j++) {
 					if (vm.dlProcess[i].otherText[j].gene != "" && vm.dlProcess[i].otherText[j].colorTerm == "") {
+						alert("No Color Selected For Text")
 						vm.allowProcessDL = false;
 						return;
-						alert("No Color Selected For Text")
 					}
 					if (vm.dlProcess[i].otherText[j].attachColor == true) {
 						numberOfColors += 1;
