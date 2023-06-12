@@ -744,6 +744,7 @@
 
                         <td>{{row.specimenLabel}}</td>
 
+                    <!-- main gene color -->
                         <td style="width:5px;">
                         <select type=dropdown size="1" id="colorTerm1-{{$index}}" 
 			 	ng-options="choice.term as choice.term for choice in vm.colorLookup[1]"
@@ -754,6 +755,7 @@
                         </select>
                         </td>
 
+                    <!-- gene2 + color2 -->
                         <td ng-if="row.gene2.length>0" style="" id="gene2">{{row.gene2}}</td>
                         <td ng-if="row.gene2.length==0" style="min-width:50px;" id="gene2">{{row.gene2}}</td>
 
@@ -761,21 +763,25 @@
 			 	ng-options="choice.term as choice.term for choice in vm.colorLookup[2]"
                                 ng-model="row.colorTerm2"
 				ng-change="changeDLRow($index)"
+                                ng-keydown="setDLNextRow($event, $parent.$index)"
 				>
 				<option value=""></option>
                         </select>
                         </td>
 
+                    <!-- gene3 + color3, and beyond -->
             		<td id="gene-{{$index}}" ng-repeat-start="gresult in row.otherGene">{{gresult.gene}}</td>
 			<td ng-repeat-end>
 				<select type=dropdown size="1" id="colorTerm-{{$index}}"
 					ng-options="choice.term as choice.term for choice in vm.colorLookup[{{gresult.sequenceNum}}]"
                         		ng-model="gresult.colorTerm"
+                                        ng-keydown="setDLNextRow($event, $parent.$index)"
 					>
 					<option value=""></option>
                         	</select>
                         </td>
 
+                    <!-- genetext + color, repeating -->
             		<td style="min-width:85px;" ng-repeat-start="tresult in row.otherText">
 			<textarea class="form-control" type="text" id="genetext-{{$index}}" 
 				ng-model="tresult.gene"
@@ -787,11 +793,13 @@
 				<select type=dropdown size="1" id="colorTerm-{{$index}}"
 					ng-options="choice.term as choice.term for choice in vm.colorLookup[{{tresult.sequenceNum}}]"
                         		ng-model="tresult.colorTerm"
+                                        ng-keydown="setDLNextRow($event, $parent.$index)"
 					>
 					<option value=""></option>
                         	</select>
                         </td>
 
+                    <!-- preview note -->
 			<td style="width:1000px;">
 			<textarea class="form-control" type="text" id="previewNote-{{$index}}" tabindex="-1"
 				ng-model="row.previewNote"

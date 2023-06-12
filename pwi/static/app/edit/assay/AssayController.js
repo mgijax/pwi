@@ -972,19 +972,19 @@
                 // set next row for specimen
 		function setSpecimenNextRow(event, index) {
 			console.log("setSpecimenNextRow: " + index);
-                        setNextRow(event, index, vm.apiDomain.specimens.length, vm.selectedSpecimenIndex, "specimenLabel-");
+                        setNextRow(event, index, vm.apiDomain.specimens.length, vm.selectedSpecimenIndex, "specimenLabel-", 0);
                 }
 
                 // set next row for specimen results
 		function setSpecimenResultNextRow(event, index) {
 			console.log("setSpecimenResultNextRow: " + index);
-                        setNextRow(event, index, vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults.length, vm.selectedSpecimenResultIndex, "sstructure-");
+                        setNextRow(event, index, vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults.length, vm.selectedSpecimenResultIndex, "sstructure-", 0);
                 }
 
                 // set next row for gel lane
 		function setGelLaneNextRow(event, index) {
 			console.log("setGelLaneNextRow: " + index);
-                        setNextRow(event, index, vm.apiDomain.gelLanes.length, vm.selectedGelLaneIndex, "laneLabel-");
+                        setNextRow(event, index, vm.apiDomain.gelLanes.length, vm.selectedGelLaneIndex, "laneLabel-", 0);
                 }
 
                 // set next row for gel band
@@ -992,18 +992,26 @@
 			console.log("setGelBandNextRow: " + gellaneindex + "," + gelbandindex);
 			console.log("setGelBandNextRow: " + vm.apiDomain.gelLanes.length + "," + vm.apiDomain.gelRows.length);
                         if (gellaneindex == vm.apiDomain.gelLanes.length-1 && gelbandindex == vm.apiDomain.gelRows.length) {
-                                setNextRow(event, gelbandindex, vm.apiDomain.gelRows.length, 0, "size-");
+                                setNextRow(event, gelbandindex, vm.apiDomain.gelRows.length, 0, "size-", 0);
                         }
                 }
 
                 // set next row for double label
 		function setDLNextRow(event, index) {
 			console.log("setDLNextRow: " + index + "," + vm.selectedDLIndex);
-                        setNextRow(event, index, Object.keys(vm.dlProcess).length, vm.selectedDLIndex, "colorTerm1-");
+                        setNextRow(event, index, Object.keys(vm.dlProcess).length, vm.selectedDLIndex, "colorTerm1-", 1);
                 }
 
                 // set next row
-		function setNextRow(event, index, tblDomainLength, tblIndex, tblLabel) {
+                // Args:
+                // event - the keydown event
+                // index - row index
+                // tblDomainLength - number of items in domain obj
+                // tblIndex - which row to focus on
+                // tblLabel - id root string to match on
+                // skipLastN - usually 0. Set to n to skip the last n columns while tabbing
+                // 
+		function setNextRow(event, index, tblDomainLength, tblIndex, tblLabel, skipLastN) {
 			console.log("setNextRow: " + index + ", " + tblDomainLength + ", " + tblIndex);
 			//console.log(event);
 
@@ -1016,14 +1024,26 @@
                                 return;
                         }
 
-                        if (tblLabel == "size-") {
+                        // The user has tabbed out of a field.
+                        // If this is not the last field in the row, do nothing
+                        const coords = getCellCoordinates(event.target)
+                        console.log(coords)
+
+                        // Only tabbling out of the last (tabbable) field on a line does anything
+                        if (coords.colNum !== coords.nCols - 1 - skipLastN) return
+
+                        if (tblLabel === "size-") {
+                                // not sure what this is about...
 			        tblIndex = 0;
                         }
-                        else if (tblDomainLength - 1 == index) {
+                        //else if (tblDomainLength - 1 == index) {
+                        else if (coords.rowNum === coords.nRows - 1) {
+                                // if it's the last row, jump back to top of table
 			        tblIndex = 0;
                         }
                         else {
-			        tblIndex = tblIndex + 1;
+                                // otherwise, next row
+			        tblIndex = coords.rowNum
                         }
 
                         var firstLabel = tblLabel + tblIndex;
@@ -1044,6 +1064,25 @@
                         //do nothing
                         //else if (tblLabel == "size-") {
                         //}
+                }
+
+                // Returns the table cell coordinates of the given element along with the total
+                // table size. Uses the standard properties tr.rowIndex and td.cellIndex. 
+                // WARNING: this only works for simple tables - no tables containing tables, no
+                // merging of cells with rowSpan or colSpan. Just plain old nxm tables containing
+                // data in every cell. Coordinates are 0-based, and header rows are included.
+                //
+                function getCellCoordinates (element) {
+                    const td = element.closest('td')
+                    if (!td) return null
+                    const tr = element.closest('tr')
+                    if (!tr) return null
+                    const rowNum = tr.rowIndex
+                    const colNum = td.cellIndex
+                    const nCols = tr.children.length
+                    const table = tr.closest('table')
+                    const nRows = table.getElementsByTagName('tr').length
+                    return {rowNum,colNum,nRows,nCols}
                 }
 
 		/////////////////////////////////////////////////////////////////////
