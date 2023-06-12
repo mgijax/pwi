@@ -3425,6 +3425,11 @@
 						}
 					}
 				}
+                                else if (id == 'gene') {
+					for(var j=0;j<vm.dlProcess[i].otherText.length; j++) {
+                                        	vm.dlProcess[i].otherText[j].gene = vm.dlProcess[index].otherText[j].gene;
+					}
+				}
                         }
                 }
 
@@ -3517,19 +3522,19 @@
 				}
 
 				// set attachExtraWords = true
-				// assayType = 9 (reporter) OR same gene
 				for(var j=0;j<vm.dlProcess[i].otherGene.length; j++) {
+					// if assayType = 9 (reporter)
 					if (vm.dlProcess[i].otherGene[j].assayType == "9") {
 						vm.dlProcess[i].otherGene[j].attachExtraWords = true;
 					}
+					// if same name as gene1
 					if (vm.apiDomain.markerSymbol == vm.dlProcess[i].otherGene[j].gene) {
 						vm.dlProcess[i].attachExtraWords1 = true;
 						vm.dlProcess[i].otherGene[j].attachExtraWords = true;
 					}
 				}
 
-				// set attachColor = true
-				// same colors are grouped together
+				// set attachColor, attachAssay, attachExtraWords
 				for(var j=0;j<vm.dlProcess[i].otherGene.length; j++) {
 					// if same colorTerm1 used in otherGene
 					if (vm.dlProcess[i].colorTerm1 == vm.dlProcess[i].otherGene[j].colorTerm) {
@@ -3615,7 +3620,6 @@
 
 				// numberOfGenes > 2
 				else if (vm.dlProcess[i].numberOfGenes > 2) {
-					//previewNote = "Multi-labeled: ";
 					previewNote += vm.dlProcess[i].colorTerm1;
 					previewNote += " - " + vm.apiDomain.markerSymbol + vm.dlProcess[i].attachGene1;
 					if (vm.dlProcess[i].attachExtraWords1 == true) {
