@@ -683,7 +683,19 @@
                                 </div>
                         </th>
 
-			<th ng-repeat-start="headerrow in vm.dlHeader">{{headerrow.name}}</th>
+			<th ng-repeat-start="headerrow in vm.dlHeader">
+                                <div>
+				<div ng-if="headerrow.showCopyColumn==false"</div>
+				{{headerrow.name}}
+				</div>
+				<div ng-if="headerrow.showCopyColumn==true"</div>
+				{{headerrow.name}}
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('gene',1)"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                                </div>
+                                </div>
+			</td>
 
 			<th ng-repeat-end>
                                 <div>

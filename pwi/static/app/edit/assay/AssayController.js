@@ -3368,7 +3368,8 @@
 					var otherHeader = {
 						"name": "Gene" + (i + 1),
 						"copyColor": "colorTerm",
-						"color": i + 1
+						"color": i + 1,
+						"showCopyColumn": false
 					}
 					vm.dlHeader[i] = otherHeader;
 				}
@@ -3482,7 +3483,8 @@
 			item = {
 				"name": "Text" + sequenceNum,
 				"copyColor": "colorTermText",
-				"color": sequenceNum
+				"color": sequenceNum,
+				"showCopyColumn": true
 			}
 			vm.dlHeader[idx+1] = item;
 
