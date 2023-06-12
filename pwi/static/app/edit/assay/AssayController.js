@@ -3584,7 +3584,7 @@
 					}
 					previewNote += "; " + vm.dlProcess[i].otherGene[0].colorTerm;
 					previewNote += " - " + vm.dlProcess[i].otherGene[0].gene;
-					if (vm.dlProcess[i].attachExtraWords2 == true) {
+					if (vm.dlProcess[i].otherGene[0].attachExtraWords == true) {
 						previewNote += vm.dlProcess[i].otherGene[0].assayExtraWords;
 					}
 					previewNote += " (assay \\Acc(" + vm.dlProcess[i].otherGene[0].assayID + "||))";
