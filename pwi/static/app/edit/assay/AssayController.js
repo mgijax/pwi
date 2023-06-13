@@ -3530,13 +3530,18 @@
 				vm.dlProcess[i].attachExtraWords1 = false;
 				for(var j=0;j<vm.dlProcess[i].otherGene.length; j++) {
 					vm.dlProcess[i].otherGene[j].attachGene = "";
-					vm.dlProcess[i].otherGene[j].attachAssay = true;
                                 	vm.dlProcess[i].otherGene[j].attachExtraWords = false;
 					if (vm.dlProcess[i].otherGene[j].gene == "") {
 						vm.dlProcess[i].otherGene[j].attachColor = false;
 					}
 					else {
 						vm.dlProcess[i].otherGene[j].attachColor = true;
+					}
+					if (vm.dlProcess[i].otherGene[j].assayID == "") {
+						vm.dlProcess[i].otherGene[j].attachAssay = false;
+					}
+					else {
+						vm.dlProcess[i].otherGene[j].attachAssay = true;
 					}
 				}
 
@@ -3617,7 +3622,7 @@
 								previewNote += vm.dlProcess[i].otherGene[j].assayExtraWords;
 							}
 						}
-						if (vm.dlProcess[i].otherGene[j].attachAssay == true && vm.dlProcess[i].otherGene[j].assayID != "") {
+						if (vm.dlProcess[i].otherGene[j].attachAssay == true) {
 							previewNote += " (assay \\Acc(" + vm.dlProcess[i].otherGene[j].assayID + "||))";
 						}
 					}
