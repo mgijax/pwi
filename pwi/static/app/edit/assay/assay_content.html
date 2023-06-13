@@ -761,6 +761,7 @@
 					ng-options="choice.term as choice.term for choice in vm.colorLookup[{{gresult.sequenceNum}}]"
                         		ng-model="gresult.colorTerm"
                                         ng-keydown="setDLNextRow($event, $parent.$index)"
+					ng-change="changeDLRow($parent.$index)"
 					>
 					<option value=""></option>
                         	</select>
@@ -779,6 +780,7 @@
 					ng-options="choice.term as choice.term for choice in vm.colorLookup[{{tresult.sequenceNum}}]"
                         		ng-model="tresult.colorTerm"
                                         ng-keydown="setDLNextRow($event, $parent.$index)"
+					ng-change="changeDLRow($parent.$index)"
 					>
 					<option value=""></option>
                         	</select>
