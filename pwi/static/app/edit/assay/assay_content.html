@@ -776,7 +776,7 @@
 			</td>
 
 			<td ng-repeat-end>
-				<select type=dropdown size="1" id="colorTerm-{{$index}}"
+				<select type=dropdown size="1" id="colorTerm-{{$parent.$index}}"
 					ng-options="choice.term as choice.term for choice in vm.colorLookup[{{tresult.sequenceNum}}]"
                         		ng-model="tresult.colorTerm"
                                         ng-keydown="setDLNextRow($event, $parent.$index)"
