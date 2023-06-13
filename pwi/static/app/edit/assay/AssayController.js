@@ -3429,7 +3429,9 @@
 				}
                                 else if (id == 'gene') {
 					for(var j=0;j<vm.dlProcess[i].otherText.length; j++) {
-                                        	vm.dlProcess[i].otherText[j].gene = vm.dlProcess[index].otherText[j].gene;
+						if (vm.dlProcess[i].otherText[j].sequenceNum == colorIndex) {
+                                        		vm.dlProcess[i].otherText[j].gene = vm.dlProcess[index].otherText[j].gene;
+						}
 					}
 				}
                         }

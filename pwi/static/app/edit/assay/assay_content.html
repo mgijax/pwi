@@ -690,7 +690,7 @@
 				</div>
 				<div ng-if="headerrow.showCopyColumn==true"</div>
 				{{headerrow.name}}
-                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('gene',1)"
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('gene', headerrow.color)"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                                 </div>
@@ -757,7 +757,7 @@
                     <!-- gene2 + color2, and beyond -->
             		<td id="gene-{{$index}}" ng-repeat-start="gresult in row.otherGene">{{gresult.gene}}</td>
 			<td ng-repeat-end>
-				<select type=dropdown size="1" id="colorTerm-{{$index}}"
+				<select type=dropdown size="1" id="colorTerm-{{$parent.$index}}"
 					ng-options="choice.term as choice.term for choice in vm.colorLookup[{{gresult.sequenceNum}}]"
                         		ng-model="gresult.colorTerm"
                                         ng-keydown="setDLNextRow($event, $parent.$index)"
@@ -768,7 +768,7 @@
 
                     <!-- genetext + color, repeating -->
             		<td style="min-width:85px;" ng-repeat-start="tresult in row.otherText">
-			<textarea class="form-control" type="text" id="genetext-{{$index}}" 
+			<textarea class="form-control" type="text" id="genetext-{{$parent.$index}}" 
 				ng-model="tresult.gene"
 				ng-change="changeDLRow($parent.$index)"
 				></textarea>
