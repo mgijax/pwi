@@ -770,7 +770,7 @@
             		<td style="min-width:85px;" ng-repeat-start="tresult in row.otherText">
 			<textarea class="form-control" type="text" id="genetext-{{$index}}" 
 				ng-model="tresult.gene"
-				ng-change="changeDLRow($index)"
+				ng-change="changeDLRow($parent.$index)"
 				></textarea>
 			</td>
 
