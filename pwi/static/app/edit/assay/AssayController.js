@@ -3526,6 +3526,9 @@
 				}
 
 				// set attachExtraWords = true
+				if (vm.dlProcess[i].assayType1 == "9") {
+					vm.dlProcess[i].attachExtraWords1 = true;
+				}
 				for(var j=0;j<vm.dlProcess[i].otherGene.length; j++) {
 					// if assayType = 9 (reporter)
 					if (vm.dlProcess[i].otherGene[j].assayType == "9") {
