@@ -3499,7 +3499,7 @@
 		//  each Specimen/Gene/Color set has 4 decisions we need to make:
 		//  . attachGene : do we attach and additional Gene? example: "and Gene?"
 		//  . attachAssay : do we attach Assay ID to Gene? example: "(assay \\Acc(MGI:xxx))"
-		//  . attachExtraWords : do we attach extra note related to assay type to Gene? exmaple: "protein"
+		//  . attachExtraWords : do we attach extra note related to assay type to Gene? example: "protein"
 		//  . attachColor : do we attach Color to Gene? example: " (green) Gene"
 		//
 		//  1. reset all of the true/false defaults (attachGene, attachAssay, attachExtraWords, attachColor)
