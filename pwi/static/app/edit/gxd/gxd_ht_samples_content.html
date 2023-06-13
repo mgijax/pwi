@@ -155,7 +155,7 @@
                                                                         <!-- genotype column -->
 									<td ng-show="vm.checked_columns['genotype']">
 										<input size=14 type=text
-											ng-model="row.sample_domain._genotype_key"
+											ng-model="row.sample_domain.genotype_object.mgiid"
 											ng-change="setSampleStatus(row.row_num-1)"
 											ng-blur="updateGenotype(row.row_num, $index, displayedCollection)"
 										/>

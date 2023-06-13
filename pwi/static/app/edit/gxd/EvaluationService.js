@@ -5,6 +5,7 @@
 		.factory('GxdExperimentSearchAPI', GxdExperimentSearchAPIResource)
 		.factory('GxdExperimentSummarySearchAPI', GxdExperimentSummarySearchAPIResource)
 		.factory('GxdExperimentTotalCountAPI', GxdExperimentTotalCountAPIResource)
+		.factory('GxdGenotypeGetAPI', GxdGenotypeGetAPIResource)
 		.factory('GxdGenotypeSearchAPI', GxdGenotypeSearchAPIResource)
 		.factory('GxdExperimentSampleAPI', GxdExperimentSampleAPIResource)
 		.factory('GxdHTSampleOrganismSearchAPI', GxdHTSampleOrganismSearchAPIResource)
@@ -52,9 +53,15 @@
 		});
 	}	
 
-	function GxdGenotypeSearchAPIResource($resource) {
-		return $resource('/pwi/api/gxdgenotype/search', {}, {
-			'search': { method: 'POST' }
+	function GxdGenotypeGetAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'genotype/:key', {}, {
+			'': { method: 'JSONP' } 
+		});
+	}
+
+	function GxdGenotypeSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'genotype/search', {}, {
+			'search': { method: 'POST', isArray: true } 
 		});
 	}
 

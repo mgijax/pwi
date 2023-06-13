@@ -44,6 +44,7 @@
 		GxdExperimentSearchAPI,
 		GxdExperimentSummarySearchAPI,
 		GxdExperimentSampleAPI,
+		GxdGenotypeGetAPI,
 		GxdGenotypeSearchAPI,
 		VocTermSearchAPI,
 		ValidateTermAPI,
@@ -134,7 +135,7 @@
 					for(var i in samples) {
 						vm.selected.samples[i] = {};
 						if(samples[i].genotype_object) {
-							samples[i]._genotype_key = samples[i].genotype_object.mgiid;
+							// samples[i]._genotype_key = samples[i].genotype_object.mgiid;
                                                         if (samples[i].genotype_object.isConditional) {
                                                             samples[i].genotype_object.combination1_cache += 'Conditional mutant.'
                                                         }
@@ -320,6 +321,11 @@
 
 		$scope.updateGenotype = function(row_num, display_index, displayed_array) {
 			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
+                        
+                        if (!working_domain.genotype_object.mgiid) {
+                            working_domain.genotype_object.mgiid = 'MGI:2166310'
+                            working_domain._genotype_key = -1
+                        }
 
 			if(!working_domain._genotype_key) {
 				for(var i = display_index; i >= 0; i--) {
@@ -330,11 +336,29 @@
 				}
 			}	
 
-			GxdGenotypeSearchAPI.get({ 'mgiid' : working_domain._genotype_key}, function(data) {
-				working_domain._genotype_key = data.items[0].mgiid;
-				working_domain.genotype_object = data.items[0];
-			}, function(err) {
+                        GxdGenotypeSearchAPI.search({ accID: working_domain.genotype_object.mgiid}, function(data) {
+                            console.log("Genotype:", data)
+                            if (data.length === 1){
+                                working_domain._genotype_key = data[0].genotypeKey
+                            } else {
+                                alert("Invalid genotype ID: " + working_domain.genotype_object.mgiid)
+                            }
+                            GxdGenotypeGetAPI.get({key:working_domain._genotype_key}, function(data) {
+				// working_domain._genotype_key = data.items[0].mgiid;
+                                const combo1 = data.alleleDetailNote ? data.alleleDetailNote.noteChunk : ''
+				working_domain.genotype_object = {
+                                    _genotype_key: data.genotypeKey,
+                                    _strain_key: data.strainKey,
+                                    isConditional: data.isConditional,
+                                    mgiid: data.accID,
+                                    combination1_cache : combo1,
+                                    geneticbackground: data.strain
+                                }
+                            }, function(err) {
 			});
+                        }, function (err) {
+                        });
+
 		}
 
 		$scope.updateAgeRange = function(row_num, display_index, displayed_array) {
