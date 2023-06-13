@@ -3447,7 +3447,7 @@
 			loadDLAssayDomain();
 		}		
 
-		/// add text & color
+		// add text & color
 		function addTextColorDL() {
 			console.log("addTextColorDL()");
 
@@ -3493,7 +3493,16 @@
 			vm.colorLookup[sequenceNum] = vm.colorLookup1;
 		}
 
-		/// preview the new notes
+		//
+		// preview the new notes
+		//  
+		//  1. reset all of the true/false defaults (attachGene, attachAssay, attachExtraWords, attachColor)
+		//  2. for each Gene, etc., set true/false (attachGene, attachAssay, attachExtraWords, attachColor)
+		//  3. if number of genes >= 1, then iterate thru each Gene again, checking true/false to build the Preview Note
+		//  4. per Specimen row, count the number of distinct colors
+		//  5. based on number of distinct colors, set "labeled" term to "Multi-", "Triple" or "Double"
+		//  6. if Gene requires a Color, but Color was not selected, print Alert
+		//
 		function previewDL(skipIt) {
 			console.log("previewDL(" + skipIt + ")");
 
@@ -3526,6 +3535,7 @@
 				}
 
 				// set attachExtraWords = true
+				// if assayType = 9 (reporter)
 				if (vm.dlProcess[i].assayType1 == "9") {
 					vm.dlProcess[i].attachExtraWords1 = true;
 				}
