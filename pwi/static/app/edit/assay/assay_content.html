@@ -266,6 +266,18 @@
                                 </div>
                                 </div>
                         </th>
+                	<th title="Specimen Check Box">
+                                <div>
+                                <div>
+				DL
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/checkboxIcon.jpg" ng-click="copyColumnSpecimenRow('spcheckbox')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                                </div>
+                                </div>
+                        </th>
                 	<th title="Specimen Label">
                                 <div>
                                 <div>
@@ -482,15 +494,22 @@
                         <span>
                         <input style="" class="form-control" type="number" min="1" max="999" tabindex="-1" id="spsequenceNum-{{$index}}"
                                 ng-model="row.sequenceNum"
-                                ng-change="changeSpecimenRow($index, false)"
+                                ng-change="changeSpecimenRow($index, false, true, true)"
                                 >
                         </span>
+                        </td>
+
+                        <td>
+                        <input style="" class="form-control" type="checkbox" tabindex="-1" id="spcheckbox-{{$index}}"
+                                ng-model="row.spcheckbox"
+                                ng-change="changeSpecimenRow($index, false, false, false)"
+                                >
                         </td>
 
 			<td>
 			<textarea class="form-control" type="text" id="specimenLabel-{{$index}}" style="resize:horizontal; width:125px;"
 				ng-model="row.specimenLabel"
-				ng-change="changeSpecimenRow($index, false)"
+				ng-change="changeSpecimenRow($index, false, true, true)"
 				ng-keydown="validateSpecimen($event, row, $index, 'specimenLabel')"
                                 ng-style="colSizes[0]" 
                                 ng-mousedown="startColResize($event, 0)"
@@ -500,7 +519,7 @@
 			<td>
 			<textarea class="form-control" type="text" id="sgenotypeAccID-{{$index}}" style="resize:horizontal; width:105px;"
 				ng-model="row.genotypeAccID"
-				ng-change="changeSpecimenRow($index, false)"
+				ng-change="changeSpecimenRow($index, false, true, true)"
 				ng-keydown="validateGenotype(row, $index, 'sgenotypeAccID-')"
                                 ng-style="colSizes[1]" 
                                 ng-mousedown="startColResize($event, 1)"
@@ -511,7 +530,7 @@
                         <select type=dropdown size="1" id="sage-{{$index}}" 
 				ng-options="choice.term as choice.abbreviation for choice in vm.ageLookup"
                         	ng-model="row.agePrefix"
-				ng-change="changeSpecimenRow($index, false)"
+				ng-change="changeSpecimenRow($index, false, true, true)"
 				ng-keydown="validateSpecimen($event, row, $index, 'agePrefix')"
 				>
 				<option value=""></option>
@@ -521,7 +540,7 @@
 			<td>
 			<textarea class="form-control" type="text" id="sageStage-{{$index}}" style="resize:horizontal; width:60px;"
 				ng-model="row.ageStage"
-				ng-change="changeSpecimenRow($index, false)"
+				ng-change="changeSpecimenRow($index, false, true, true)"
 				ng-keydown="validateSpecimen($event, row, $index, 'ageStage')"
                                 ng-style="colSizes[2]" 
                                 ng-mousedown="startColResize($event, 2)"
@@ -531,7 +550,7 @@
 			<td>
 			<textarea class="form-control" type="text" id="sageNote-{{$index}}" style="width:100px;"
 				ng-model="row.ageNote"
-				ng-change="changeSpecimenRow($index, false)"
+				ng-change="changeSpecimenRow($index, false, true, true)"
                                 ng-style="colSizes[3]" 
                                 ng-mousedown="startColResize($event, 3)"
 				></textarea>
@@ -541,7 +560,7 @@
                         <select type=dropdown size="1" id="sgender-{{$index}}" 
 				ng-options="choice.term as choice.term for choice in vm.genderLookup"
                         	ng-model="row.sex"
-				ng-change="changeSpecimenRow($index, false)"
+				ng-change="changeSpecimenRow($index, false, true, true)"
 				ng-keydown="validateSpecimen($event, row, $index, 'sex')"
 				>
 				<option value=""></option>
@@ -552,7 +571,7 @@
                         <select type=dropdown size="1" id="fixation-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.fixationLookup"
                         	ng-model="row.fixationKey"
-				ng-change="changeSpecimenRow($index, false)"
+				ng-change="changeSpecimenRow($index, false, true, true)"
 				ng-keydown="validateSpecimen($event, row, $index, 'fixationKey')"
 				>
 				<option value=""></option>
@@ -563,7 +582,7 @@
                         <select type=dropdown size="1" id="embedding-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.embeddingLookup"
                         	ng-model="row.embeddingKey"
-				ng-change="changeSpecimenRow($index, false)"
+				ng-change="changeSpecimenRow($index, false, true, true)"
 				ng-keydown="validateSpecimen($event, row, $index, 'embeddingKey')"
 				>
 				<option value=""></option>
@@ -574,7 +593,7 @@
                         <select type=dropdown size="1" id="hybridization-{{$index}}" 
 				ng-options="choice.term as choice.abbreviation for choice in vm.hybridizationLookup"
                         	ng-model="row.hybridization"
-				ng-change="changeSpecimenRow($index, false)"
+				ng-change="changeSpecimenRow($index, false, true, true)"
 				ng-keydown="validateSpecimen($event, row, $index, 'hybridization')"
 				>
 				<option value=""></option>
@@ -584,14 +603,14 @@
 			<td style="width:25px;">
 			<input class="form-control" type="text" id="sresults-{{$index}}" tabindex="-1"
 				ng-model="row.sresultsCount"
-				ng-change="changeSpecimenRow($index, false)"
+				ng-change="changeSpecimenRow($index, false, true, true)"
 				>
 			</td>
 
 			<td>
 			<textarea class="form-control" id="specimenNote-{{$index}}" style="width:100px;"
 				ng-model="row.specimenNote"
-				ng-change="changeSpecimenRow($index, false)"
+				ng-change="changeSpecimenRow($index, false, true, true)"
 				ng-keydown="setSpecimenNextRow($event, $index)"
                                 ng-style="colSizes[4]" 
                                 ng-mousedown="startColResize($event, 4)"
@@ -610,6 +629,9 @@
 		<!-- end row -->
 
 		<div class="row">
+                        <button type="button" style="float:left;" tabindex="-1" id="doubleLabelButton" 
+                                ng-class="{activeDoubleLabel:vm.activeDoubleLabel == true}"
+                                ng-click="setActiveDL()" >Double Label</button>
                         <button type="button" style="float:left;" tabindex="-1" id="addSpecimenButton" 
 				ng-class=""
                                 ng-click="addSpecimenRow()" >Add Row</button>
@@ -631,6 +653,172 @@
                 </div>
 
                 </div>
+
+                <!-- Double Label tab content -->
+                <div class="row topMargin">
+                <div class="col-sm-12" style="">
+
+			<div ng-if="vm.activeDoubleLabel==true" class="col-sm-14" style="">
+			<div class="row topMargin">
+			<div class="col-sm-12" style="">
+
+			<div class="row">
+        		<div class="col-sm-12" style="">
+                	<div id="doubleLabelTableWrapper" tabindex="-1">
+                	<table class="table table-bordered scrollable-menu" id="doubleLabelTable">
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+			<th style="width:150px;">Specimen</th>
+
+                	<th title="specimen color">
+                                <div>
+                                <div>
+				specimen color
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('colorTerm1',1)"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                                </div>
+                                </div>
+                        </th>
+
+			<th ng-repeat-start="headerrow in vm.dlHeader">
+                                <div>
+				<div ng-if="headerrow.showCopyColumn==false"</div>
+				{{headerrow.name}}
+				</div>
+				<div ng-if="headerrow.showCopyColumn==true"</div>
+				{{headerrow.name}}
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('gene',1)"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                                </div>
+                                </div>
+			</td>
+
+			<th ng-repeat-end>
+                                <div>
+                                <div>
+				color{{headerrow.color}}
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow(headerrow.copyColor, headerrow.color)"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                                </div>
+                                </div>
+			</th>
+
+                	<th style="width:1000px;">
+                                <div>
+                                <div>
+				double label note
+                                </div>
+                                <div>
+                        	<button type="button" style="float:left;" id="dladdTextColorButton" 
+					ng-class=""
+                                	ng-click="addTextColorDL()" >Add Text & Color</button>
+                        	<button type="button" style="float:left;" id="dlpreviewButton" 
+					ng-class=""
+                                	ng-click="previewDL(false)" >Preview</button>
+                        	<button type="button" style="float:left;" id="dlprocessButton" 
+					ng-class=""
+                                	ng-click="processDL()" >Process</button>
+                                </div>
+                                </div>
+                        </th>
+
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in vm.dlProcess track by $index"
+				ng-click="selectDlRow($index)"
+                                ng-class="{selectedRow:$index==vm.selectedDlIndex}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                        <td>{{row.specimenLabel}}</td>
+
+                    <!-- main gene color -->
+                        <td style="width:5px;">
+                        <select type=dropdown size="1" id="colorTerm1-{{$index}}" 
+			 	ng-options="choice.term as choice.term for choice in vm.colorLookup[1]"
+                                ng-model="row.colorTerm1"
+				ng-change="changeDLRow($index)"
+				>
+				<option value=""></option>
+                        </select>
+                        </td>
+
+                    <!-- gene2 + color2, and beyond -->
+            		<td id="gene-{{$index}}" ng-repeat-start="gresult in row.otherGene">{{gresult.gene}}</td>
+			<td ng-repeat-end>
+				<select type=dropdown size="1" id="colorTerm-{{$index}}"
+					ng-options="choice.term as choice.term for choice in vm.colorLookup[{{gresult.sequenceNum}}]"
+                        		ng-model="gresult.colorTerm"
+                                        ng-keydown="setDLNextRow($event, $parent.$index)"
+					>
+					<option value=""></option>
+                        	</select>
+                        </td>
+
+                    <!-- genetext + color, repeating -->
+            		<td style="min-width:85px;" ng-repeat-start="tresult in row.otherText">
+			<textarea class="form-control" type="text" id="genetext-{{$index}}" 
+				ng-model="tresult.gene"
+				ng-change="changeDLRow($index)"
+				></textarea>
+			</td>
+
+			<td ng-repeat-end>
+				<select type=dropdown size="1" id="colorTerm-{{$index}}"
+					ng-options="choice.term as choice.term for choice in vm.colorLookup[{{tresult.sequenceNum}}]"
+                        		ng-model="tresult.colorTerm"
+                                        ng-keydown="setDLNextRow($event, $parent.$index)"
+					>
+					<option value=""></option>
+                        	</select>
+                        </td>
+
+                    <!-- preview note -->
+			<td style="width:1000px;">
+			<textarea class="form-control" type="text" id="previewNote-{{$index}}" tabindex="-1"
+				ng-model="row.previewNote"
+				ng-change="changeDLRow($index)"
+				ng-keydown="setDLNextRow($event, $index)"
+                                ng-style="colSizes[15]" 
+                                ng-mousedown="startColResize($event, 15)"
+				></textarea>
+			</td>
+
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-12 -->
+			</div>
+			<!-- end row -->
+
+			<div class="row">
+                        	<button type="button" style="float:left;" tabindex="-1" id="dlclearButton" 
+					ng-class=""
+                                	ng-click="clearDL(false)" >Clear</button>
+                	</div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			</div>
+			</div>
+			</div>
+		</div>
+		</div>
+                <!-- Double Label end tab content -->
+
                 <!-- ng-show="vm.apiDomain.isInSitu==true" -->
 
                 <div ng-show="vm.apiDomain.isGel==true">
@@ -1116,12 +1304,23 @@
                         </div>
 
                 	<div id="sresultTableWrapper" tabindex="-1" >
-                	<table class="table table-bordered scrollable-menu" id="sresultTable" >
+                	<table class="table table-bordered scrollable-menu collapse2" id="sresultTable" >
 			<!-- table header -->
                 	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
-			<th style="width:4em;">#</th>
+			<th title="rsequenceNum">
+                                <div>
+                                <div>
+                                #
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                                </div>
+                                </div>
+                        </th>
                 	<th style="width:35px;">EMAPA</th>
                 	<th style="width:30px;">CL</th>
                 	<th style="width:50px;">Strength</th>

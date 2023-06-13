@@ -31,6 +31,7 @@
                         AddToGenotypeClipboardAPI,
                         CellTypeInSituBySetUserAPI,
                         ReplaceGenotypeAPI,
+			AssayGetDLByKeyAPI,
 			// global APIs
                         ValidateMarkerAPI,
                         ValidateJnumAPI,
@@ -56,6 +57,7 @@
 		vm.hideApiDomain = true;       // JSON package
 		vm.hideVmData = true;          // JSON package + other vm objects
                 vm.hideErrorContents = true;	// display error message
+		vm.hideDLAssayDomain = true;	// JSON package gfor vm.dlAssay
 
 		// results list and data
 		vm.total_count = 0;
@@ -80,9 +82,13 @@
                 // set to true whenever a "change" is made (see any *change* function)
                 vm.saveReminder = false;
 
-                // save the active element
-                //vm.saveActiveId = document.activeElement.id;
-
+		// double label domains
+		vm.dlProcess = {};
+		vm.dlAssay = {};
+		vm.dlHeader = {};
+		vm.selectedDLIndex = 0;
+		vm.allowProcessDL = true;
+		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
 		/////////////////////////////////////////////////////////////////////		
@@ -115,6 +121,7 @@
 			resetData();
                         refreshTotalCount();
                         clearReplaceGenotype(false, '');
+			clearDL(true);
 			loadGenotype();
                         loadImagePane();
                         loadEmapa();
@@ -633,6 +640,7 @@
 			vm.hideErrorContents = true;
                         vm.hideAssayNote = true;
                         vm.activeReplaceGenotype = false;
+			vm.activeDoubleLabel = false;
 		}
 
                 // set to Specimen or to Results
@@ -649,7 +657,7 @@
                                 id.includes("resultNote")
                                 )
                         {
-                                changeSpecimenRow(vm.selectedSpecimenIndex, true);
+                                changeSpecimenRow(vm.selectedSpecimenIndex, true, true, true);
                         }
                         else {
 		                changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true);
@@ -809,6 +817,9 @@
                         
                         vm.celltypeLookup = {}
                         // see loadObject
+			
+			vm.colorLookup1 = {};
+                        VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.colorLookup1 = data.items[0].terms});;
                 }
 
 		// load a selected object from results
@@ -838,6 +849,7 @@
                                 addAntibodyPrep();
                                 addProbePrep();
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
+				vm.activeDoubleLabel = false;
 
                                 //if (vm.apiDomain.assayKey == saveAssayKey) {
                                 //}
@@ -961,19 +973,19 @@
                 // set next row for specimen
 		function setSpecimenNextRow(event, index) {
 			console.log("setSpecimenNextRow: " + index);
-                        setNextRow(event, index, vm.apiDomain.specimens.length, vm.selectedSpecimenIndex, "specimenLabel-");
+                        setNextRow(event, index, vm.apiDomain.specimens.length, vm.selectedSpecimenIndex, "specimenLabel-", 0);
                 }
 
                 // set next row for specimen results
 		function setSpecimenResultNextRow(event, index) {
 			console.log("setSpecimenResultNextRow: " + index);
-                        setNextRow(event, index, vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults.length, vm.selectedSpecimenResultIndex, "sstructure-");
+                        setNextRow(event, index, vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults.length, vm.selectedSpecimenResultIndex, "sstructure-", 0);
                 }
 
                 // set next row for gel lane
 		function setGelLaneNextRow(event, index) {
 			console.log("setGelLaneNextRow: " + index);
-                        setNextRow(event, index, vm.apiDomain.gelLanes.length, vm.selectedGelLaneIndex, "laneLabel-");
+                        setNextRow(event, index, vm.apiDomain.gelLanes.length, vm.selectedGelLaneIndex, "laneLabel-", 0);
                 }
 
                 // set next row for gel band
@@ -981,12 +993,26 @@
 			console.log("setGelBandNextRow: " + gellaneindex + "," + gelbandindex);
 			console.log("setGelBandNextRow: " + vm.apiDomain.gelLanes.length + "," + vm.apiDomain.gelRows.length);
                         if (gellaneindex == vm.apiDomain.gelLanes.length-1 && gelbandindex == vm.apiDomain.gelRows.length) {
-                                setNextRow(event, gelbandindex, vm.apiDomain.gelRows.length, 0, "size-");
+                                setNextRow(event, gelbandindex, vm.apiDomain.gelRows.length, 0, "size-", 0);
                         }
                 }
 
+                // set next row for double label
+		function setDLNextRow(event, index) {
+			console.log("setDLNextRow: " + index + "," + vm.selectedDLIndex);
+                        setNextRow(event, index, Object.keys(vm.dlProcess).length, vm.selectedDLIndex, "colorTerm1-", 1);
+                }
+
                 // set next row
-		function setNextRow(event, index, tblDomainLength, tblIndex, tblLabel) {
+                // Args:
+                // event - the keydown event
+                // index - row index
+                // tblDomainLength - number of items in domain obj
+                // tblIndex - which row to focus on
+                // tblLabel - id root string to match on
+                // skipLastN - usually 0. Set to n to skip the last n columns while tabbing
+                // 
+		function setNextRow(event, index, tblDomainLength, tblIndex, tblLabel, skipLastN) {
 			console.log("setNextRow: " + index + ", " + tblDomainLength + ", " + tblIndex);
 			//console.log(event);
 
@@ -999,14 +1025,26 @@
                                 return;
                         }
 
-                        if (tblLabel == "size-") {
+                        // The user has tabbed out of a field.
+                        // If this is not the last field in the row, do nothing
+                        const coords = getCellCoordinates(event.target)
+                        console.log(coords)
+
+                        // Only tabbling out of the last (tabbable) field on a line does anything
+                        if (coords.colNum !== coords.nCols - 1 - skipLastN) return
+
+                        if (tblLabel === "size-") {
+                                // not sure what this is about...
 			        tblIndex = 0;
                         }
-                        else if (tblDomainLength - 1 == index) {
+                        //else if (tblDomainLength - 1 == index) {
+                        else if (coords.rowNum === coords.nRows - 1) {
+                                // if it's the last row, jump back to top of table
 			        tblIndex = 0;
                         }
                         else {
-			        tblIndex = tblIndex + 1;
+                                // otherwise, next row
+			        tblIndex = coords.rowNum
                         }
 
                         var firstLabel = tblLabel + tblIndex;
@@ -1027,6 +1065,25 @@
                         //do nothing
                         //else if (tblLabel == "size-") {
                         //}
+                }
+
+                // Returns the table cell coordinates of the given element along with the total
+                // table size. Uses the standard properties tr.rowIndex and td.cellIndex. 
+                // WARNING: this only works for simple tables - no tables containing tables, no
+                // merging of cells with rowSpan or colSpan. Just plain old nxm tables containing
+                // data in every cell. Coordinates are 0-based, and header rows are included.
+                //
+                function getCellCoordinates (element) {
+                    const td = element.closest('td')
+                    if (!td) return null
+                    const tr = element.closest('tr')
+                    if (!tr) return null
+                    const rowNum = tr.rowIndex
+                    const colNum = td.cellIndex
+                    const nCols = tr.children.length
+                    const table = tr.closest('table')
+                    const nRows = table.getElementsByTagName('tr').length
+                    return {rowNum,colNum,nRows,nCols}
                 }
 
 		/////////////////////////////////////////////////////////////////////
@@ -1130,6 +1187,7 @@
                         const t = th.closest('table[id]')
                         var i = th.cellIndex + 1
                         t.classList.toggle('collapse' + i)
+                        console.log("collapseColumnHandler:" + i);
                 }
 
 
@@ -1489,7 +1547,7 @@
 		}
 
 		// if current row has changed
-		function changeSpecimenRow(index, setResultFocus) {
+		function changeSpecimenRow(index, setResultFocus, setProcessStatus, setSavedReminder) {
 			console.log("changeSpecimenRow: " + index);
 
 			vm.selectedSpecimenIndex = index;
@@ -1500,14 +1558,16 @@
 
                         //document.getElementById("ageNote-" + index).scrollTop(0);
 
-                        vm.saveReminder = true;
+			if (setSavedReminder == true) {
+                        	vm.saveReminder = true;
+			}
 
 			if (vm.apiDomain.specimens[index] == null) {
 				vm.selectedSpecimenIndex = 0;
 				return;
 			}
 
-			if (vm.apiDomain.specimens[index].processStatus == "x") {
+			if (setProcessStatus == true && vm.apiDomain.specimens[index].processStatus == "x") {
 				vm.apiDomain.specimens[index].processStatus = "u";
 			}
                 }
@@ -1525,6 +1585,8 @@
 			var item = {
 				"processStatus": "c",
                                 "specimenKey": "",
+                                "sequenceNum": i + 1,
+				"spcheckbox": false,
                                 "assayKey": vm.apiDomain.assayKey,
                                 "embeddingKey": "",
                                 "embeddingMethod": "",
@@ -1533,7 +1595,6 @@
                                 "genotypeKey": "",
                                 "genotypeAccID": "",
                                 "genotypeBackground": "",
-                                "sequenceNum": i + 1,
                                 "specimenLabel": "",
                                 "sex": "",
                                 "agePrefix": "",
@@ -1560,7 +1621,9 @@
 
 			var item = {
 				"processStatus": "c",
+                                "specimenKey": "",
                                 "sequenceNum": 1,
+				"spcheckbox": false,
                                 "assayKey": vm.apiDomain.assayKey,
                                 "embeddingKey": "",
                                 "embeddingMethod": "",
@@ -1592,7 +1655,6 @@
                         // reset sequenceNum
                         for(var i=0;i<vm.apiDomain.specimens.length;i++) {
                                 vm.apiDomain.specimens[i].sequenceNum = i + 1;
-
                                 if (vm.apiDomain.specimens[i].processStatus == "x") {
                                         vm.apiDomain.specimens[i].processStatus = "u";
                                 }
@@ -1615,8 +1677,13 @@
 
                         for(var i=0;i<vm.apiDomain.specimens.length;i++) {
 
-                                if (id == 'specimenLabel') {
-
+                                if (id == 'spcheckbox') {
+					if (vm.apiDomain.specimens[i].specimenKey == null || vm.apiDomain.specimens[i].specimenKey == "") {
+						break;
+					}
+                                        vm.apiDomain.specimens[i].spcheckbox = true;
+                                }
+                                else if (id == 'specimenLabel') {
                                         vm.apiDomain.specimens[i].specimenLabel = vm.apiDomain.specimens[index].specimenLabel;
                                 }
                                 else if (id == 'genotypeAccID') {
@@ -1709,7 +1776,7 @@
                                 selectSpecimenRow(vm.selectedSpecimenIndex + 1);
                         }
                         document.getElementById("specimenLabel-" + vm.selectedSpecimenIndex).focus({preventScroll:true});
-                        //changeSpecimenRow(vm.selectedSpecimenIndex, true)
+                        //changeSpecimenRow(vm.selectedSpecimenIndex, true, true, true)
                         scrollToObject("specimenTableWrapper", "#specimenTable");
                 }
 
@@ -1724,7 +1791,7 @@
                                 selectSpecimenRow(vm.selectedSpecimenIndex - 1);
                         }
                         document.getElementById("specimenLabel-" + vm.selectedSpecimenIndex).focus({preventScroll:true});
-                        //changeSpecimenRow(vm.selectedSpecimenIndex, true)
+                        //changeSpecimenRow(vm.selectedSpecimenIndex, true, true, true)
                         scrollToObject("specimenTableWrapper", "#specimenTable");
                 }
 
@@ -2565,7 +2632,7 @@
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote + " " + note;
                         }
 
-                        changeSpecimenRow(vm.selectedSpecimenIndex, false);
+                        changeSpecimenRow(vm.selectedSpecimenIndex, false, true, true);
 		}
 		
 		// attach double note tag to specimen note
@@ -2584,7 +2651,7 @@
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote + " " + note;
                         }
 
-                        changeSpecimenRow(vm.selectedSpecimenIndex, false);
+                        changeSpecimenRow(vm.selectedSpecimenIndex, false, true, true);
 		}
 		
 		/////////////////////////////////////////////////////////////////////
@@ -3131,6 +3198,554 @@
 			});
 		}
 
+                //
+                // end replace genotype
+                //
+		
+                //
+                // double label
+                //
+                
+                // set activeDoubleLabel
+		function setActiveDL() {
+			console.log("setActiveDL()");
+
+			// if true, then return
+			if (vm.activeDoubleLabel) {
+				vm.activeDoubleLabel = !vm.activeDoubleLabel;
+				return;
+			}
+
+			if (vm.apiDomain.jnumid == null || vm.apiDomain.jnumid == "") {
+				alert("No J: selected")
+				return;
+			}
+
+			// load the vm.dlProcess where specimen check box = true
+			// fills in the specimen info and rest of default dlProcess
+			loadDLProcessDomain();
+			if (Object.keys(vm.dlProcess).length == 0) {
+				alert("No Specimen selected")
+				return;
+			}
+
+			loadDLAssayDomain();
+
+			// ok to activate double label page
+			vm.activeDoubleLabel = !vm.activeDoubleLabel;
+                        setTimeout(function() {
+				document.getElementById("colorTerm1-0").focus();
+                        }, (300));
+		}
+
+		// load the vm.dlProcess where specimen check box = true
+		// fills in the specimen info and rest of default dlProcess
+		function loadDLProcessDomain() {
+			console.log("loadDLProcessDomain()");
+
+			vm.dlProcess = {};
+			var l = 0;
+			for(var i=0;i<vm.apiDomain.specimens.length; i++) {
+
+				// continue if no specimenKey
+				if (vm.apiDomain.specimens[i].specimenKey == "") {
+					continue;
+				}
+
+				// if check box == true, then append to dlProcess
+				if (vm.apiDomain.specimens[i].spcheckbox == true) {
+					var item = {
+                                		"specimenKey": vm.apiDomain.specimens[i].specimenKey,
+                                		"specimenLabel": vm.apiDomain.specimens[i].specimenLabel,
+						"numberOfGenes": 0,
+						"colorTerm1": "",
+						"assayType1": "",
+						"assayExtraWords1": "",
+						"previewNote": "",
+						"attachGene1": "",
+						"attachExtraWords1": false,
+				                "otherGene": [],
+						"otherText": []
+					 }
+					 vm.dlProcess[l] = item;
+					 l = l + 1;
+				}
+			}
+		}
+
+		// load the vm.dlAssay
+		function loadDLAssayDomain() {
+			console.log("loadDLAssayDomain()");
+
+			vm.dlAssay = {};
+
+			AssayGetDLByKeyAPI.search(vm.apiDomain.assayKey, function(data) {
+				vm.dlAssay = data;
+				var sKey1 = "";
+				var maxNumberOfOtherGenes = 0;
+				var ttokens, etokens, atokens, mtokens;
+
+				for(var i=0;i<vm.dlAssay.length; i++) {
+					sKey1 = vm.dlAssay[i].specimenKey;
+					for(var j=0;j<Object.keys(vm.dlProcess).length; j++) {
+						var sKey2 = vm.dlProcess[j].specimenKey;
+						if (sKey1 == sKey2) {
+
+							// gene1 (gene from vm.apiDomain)
+							vm.dlProcess[j].assayType1 = vm.dlAssay[i].assayTypeKey1;
+							vm.dlProcess[j].assayExtraWords1 = vm.dlAssay[i].assayExtraWords1;
+							ttokens = vm.dlAssay[i].assayTypes.split("|");
+							etokens = vm.dlAssay[i].assayExtraWords.split("|");
+							atokens = vm.dlAssay[i].assayIDs.split("|");
+							mtokens = vm.dlAssay[i].markers.split("|");
+							vm.dlProcess[j].numberOfGenes = atokens.length;
+
+							// other genes
+							for(var k=0;k<atokens.length; k++) {
+								var item = {
+									"sequenceNum": k + 2,
+									"gene": mtokens[k],
+									"geneText": "",
+									"colorTerm": "",
+									"assayType": ttokens[k],
+                                					"assayExtraWords": etokens[k],
+									"assayID": atokens[k],
+									"attachGene": "",
+									"attachColor": true,
+									"attachAssay": true,
+                                					"attachExtraWords": false
+								}
+								vm.dlProcess[j].otherGene[k] = item;
+							}
+
+							break;
+						}
+					}
+				}
+
+				// maximum # of other genes
+				for(var i=0;i<Object.keys(vm.dlProcess).length; i++) {
+					if (maxNumberOfOtherGenes < vm.dlProcess[i].otherGene.length) {
+						maxNumberOfOtherGenes = vm.dlProcess[i].otherGene.length;
+					}
+				}
+
+				// add extra otherGene, if needed
+				for(var i=0;i<Object.keys(vm.dlProcess).length; i++) {
+					if (maxNumberOfOtherGenes == vm.dlProcess[i].otherGene.length) {
+						continue;
+					}
+					var idx = vm.dlProcess[i].otherGene.length;
+					var toAdd = idx;
+					var sequenceNum;
+					if (idx == 0) {
+						sequenceNum = 2;
+					}
+					else {
+						sequenceNum = vm.dlProcess[i].otherGene[idx-1].sequenceNum + 1;
+					}
+					for(var j=1;j<=maxNumberOfOtherGenes - toAdd; j++) {
+						var item = {
+							"sequenceNum": sequenceNum,
+							"gene": "",
+							"colorTerm": "",
+							"assayType": "",
+                                			"assayExtraWords": "",
+							"assayID": "",
+							"attachGene": "",
+							"attachColor": false,
+							"attachAssay": false,
+                                			"attachExtraWords": false
+						}
+						vm.dlProcess[i].otherGene[idx] = item;
+						idx = idx + 1
+						sequenceNum = sequenceNum + 1;
+					}
+				}
+
+				// other header rows
+				vm.dlHeader = {};
+				for(var i=1;i<=maxNumberOfOtherGenes; i++) {
+					var otherHeader = {
+						"name": "Gene" + (i + 1),
+						"copyColor": "colorTerm",
+						"color": i + 1,
+						"showCopyColumn": false
+					}
+					vm.dlHeader[i] = otherHeader;
+				}
+
+				// other assays/color
+				vm.colorLookup = [];
+				for(var i=1;i<=maxNumberOfOtherGenes+1; i++) {
+					vm.colorLookup[i] = vm.colorLookup1;
+				}
+
+		        }, function(err) {
+			        pageScope.handleError(vm, "API ERROR: AssaySearchAPI.search");
+		        });
+
+		}
+
+		// if current row has changed
+		function changeDLRow(index) {
+			console.log("changeDLRow: " + index);
+
+			vm.selectedDLIndex = index;
+
+			if (vm.dlProcess[index] == null) {
+				vm.selectedDLIndex = 0;
+				return;
+			}
+                }
+
+                // copy column of existing row up to top of table
+		function copyColumnDLRow(id, colorIndex) {
+			console.log("copyColumnDLRow = " + id + '-' + colorIndex);
+
+                        var index = vm.selectedDLIndex;
+
+                        for(var i=0;i<Object.keys(vm.dlProcess).length;i++) {
+
+                                if (id == 'colorTerm1') {
+                                        vm.dlProcess[i].colorTerm1 = vm.dlProcess[index].colorTerm1;
+                                }
+                                else if (id == 'colorTerm') {
+					for(var j=0;j<vm.dlProcess[i].otherGene.length; j++) {
+						if (
+							vm.dlProcess[i].otherGene[j].sequenceNum == colorIndex
+							&& vm.dlProcess[i].otherGene[j].gene != ""
+						) {
+                                        		vm.dlProcess[i].otherGene[j].colorTerm = vm.dlProcess[index].otherGene[j].colorTerm;
+						}
+					}
+				}
+                                else if (id == 'colorTermText') {
+					for(var j=0;j<vm.dlProcess[i].otherText.length; j++) {
+						if (vm.dlProcess[i].otherText[j].sequenceNum == colorIndex) {
+                                        		vm.dlProcess[i].otherText[j].colorTerm = vm.dlProcess[index].otherText[j].colorTerm;
+						}
+					}
+				}
+                                else if (id == 'gene') {
+					for(var j=0;j<vm.dlProcess[i].otherText.length; j++) {
+                                        	vm.dlProcess[i].otherText[j].gene = vm.dlProcess[index].otherText[j].gene;
+					}
+				}
+                        }
+                }
+
+        	// clear double label
+		function clearDL(clearActive) {		
+			console.log("clearDL():" + clearActive);
+
+			if (clearActive) {
+				vm.activeDoubleLabel = false;
+				return;
+			}
+			loadDLProcessDomain();
+			loadDLAssayDomain();
+		}		
+
+		// add text & color
+		function addTextColorDL() {
+			console.log("addTextColorDL()");
+
+			var idx;
+			var item;
+			var sequenceNum;
+
+                        for(var i=0;i<Object.keys(vm.dlProcess).length;i++) {
+				idx = vm.dlProcess[i].otherText.length;
+				
+				if (idx == 0) {
+					if (vm.dlProcess[i].otherGene.length == 0) {
+						sequenceNum = 3;
+					}
+					else {
+						sequenceNum = vm.dlProcess[i].otherGene[vm.dlProcess[i].otherGene.length-1].sequenceNum + 1;
+					}
+				}
+				else {
+					sequenceNum = vm.dlProcess[i].otherText[idx-1].sequenceNum + 1;
+				}
+
+				item = {
+					"sequenceNum": sequenceNum,
+					"gene": "",
+					"colorTerm": "",
+					"attachColor": false
+				}
+				vm.dlProcess[i].otherText[idx] = item;
+			}
+
+			/// add header row
+			idx = Object.keys(vm.dlHeader).length;
+			item = {
+				"name": "Text" + sequenceNum,
+				"copyColor": "colorTermText",
+				"color": sequenceNum,
+				"showCopyColumn": true
+			}
+			vm.dlHeader[idx+1] = item;
+
+			// add color
+			vm.colorLookup[sequenceNum] = vm.colorLookup1;
+		}
+
+		//
+		// preview the new notes
+		//  
+		//  each Specimen/Gene/Color set has 4 decisions we need to make:
+		//  . attachGene : do we attach an additional Gene? example: "and Gene?"
+		//  . attachAssay : do we attach Assay ID to Gene? example: "(assay \\Acc(MGI:xxx))"
+		//  . attachExtraWords : do we attach extra words related to assay type to Gene? example: "protein"
+		//  . attachColor : do we attach Color to Gene? example: " (green) Gene"
+		//
+		//  1. reset all of the true/false defaults (attachGene, attachAssay, attachExtraWords, attachColor)
+		//  2. for each Specimen row/Gene, set to true or false
+		//  3. if number of genes >= 1, then iterate thru each Gene again, checking true/false to build the Preview Note
+		//  4. for each Specimen row, count the number of distinct colors
+		//  5. based on number of distinct colors, set "labeled" term to "Multi-", "Triple" or "Double"
+		//  6. if Gene requires a Color, but Color was not selected, print Alert
+		//
+		function previewDL(skipIt) {
+			console.log("previewDL(" + skipIt + ")");
+
+			var previewNote = "";
+			var setLabel = "";
+			var numberOfColors = 1;
+			vm.allowProcessDL = true;
+
+			for(var i=0;i<Object.keys(vm.dlProcess).length; i++) {
+
+				// skip if previewNote already exists/is not empty
+				if (skipIt == true && vm.dlProcess[i].previewNote != "") {
+					continue;
+				}
+
+				// reset default values
+				previewNote = "";
+				vm.dlProcess[i].attachGene1 = "";
+				vm.dlProcess[i].attachExtraWords1 = false;
+				for(var j=0;j<vm.dlProcess[i].otherGene.length; j++) {
+					vm.dlProcess[i].otherGene[j].attachGene = "";
+                                	vm.dlProcess[i].otherGene[j].attachExtraWords = false;
+					if (vm.dlProcess[i].otherGene[j].gene == "") {
+						vm.dlProcess[i].otherGene[j].attachColor = false;
+					}
+					else {
+						vm.dlProcess[i].otherGene[j].attachColor = true;
+					}
+					if (vm.dlProcess[i].otherGene[j].assayID == "") {
+						vm.dlProcess[i].otherGene[j].attachAssay = false;
+					}
+					else {
+						vm.dlProcess[i].otherGene[j].attachAssay = true;
+					}
+				}
+
+				// set attachExtraWords = true
+				// if assayType = 9 (reporter)
+				if (vm.dlProcess[i].assayType1 == "9") {
+					vm.dlProcess[i].attachExtraWords1 = true;
+				}
+				for(var j=0;j<vm.dlProcess[i].otherGene.length; j++) {
+					// if assayType = 9 (reporter)
+					if (vm.dlProcess[i].otherGene[j].assayType == "9") {
+						vm.dlProcess[i].otherGene[j].attachExtraWords = true;
+					}
+					// if same name as gene1
+					if (vm.apiDomain.markerSymbol == vm.dlProcess[i].otherGene[j].gene) {
+						vm.dlProcess[i].attachExtraWords1 = true;
+						vm.dlProcess[i].otherGene[j].attachExtraWords = true;
+					}
+				}
+
+				// set attachColor, attachAssay, attachExtraWords
+				for(var j=0;j<vm.dlProcess[i].otherGene.length; j++) {
+					// if same colorTerm1 used in otherGene
+					if (vm.dlProcess[i].colorTerm1 == vm.dlProcess[i].otherGene[j].colorTerm) {
+						vm.dlProcess[i].attachGene1 += " and " + vm.dlProcess[i].otherGene[j].gene;
+						if (vm.dlProcess[i].otherGene[j].attachExtraWords == true) {
+							vm.dlProcess[i].attachGene1 += vm.dlProcess[i].otherGene[j].assayExtraWords;
+						}
+						vm.dlProcess[i].otherGene[j].attachColor = false;
+						vm.dlProcess[i].otherGene[j].attachAssay = false;
+						vm.dlProcess[i].otherGene[j].attachExtraWords = false;
+					}
+					// if same otherGene used in otherGene
+					for(var k=0;k<vm.dlProcess[i].otherGene.length; k++) {
+						if (vm.dlProcess[i].otherGene[j].sequenceNum == vm.dlProcess[i].otherGene[k].sequenceNum) {
+							continue;
+						}
+						if (vm.dlProcess[i].otherGene[j].colorTerm == "" || vm.dlProcess[i].otherGene[k].colorTerm == "") {
+							continue;
+						}
+						if (vm.dlProcess[i].otherGene[j].attachColor == false || vm.dlProcess[i].otherGene[k].attachColor == false) {
+							continue;
+						}
+						if (vm.dlProcess[i].otherGene[j].colorTerm == vm.dlProcess[i].otherGene[k].colorTerm) {
+							vm.dlProcess[i].otherGene[j].attachGene += " (assay \\Acc(" + vm.dlProcess[i].otherGene[j].assayID + "||))";
+							vm.dlProcess[i].otherGene[j].attachGene += " and " + vm.dlProcess[i].otherGene[k].gene;
+							if (vm.dlProcess[i].otherGene[k].attachExtraWords == true) {
+								vm.dlProcess[i].otherGene[j].attachGene += vm.dlProcess[i].otherGene[k].assayExtraWords;
+							}
+							vm.dlProcess[i].otherGene[j].attachGene += " (assay \\Acc(" + vm.dlProcess[i].otherGene[k].assayID + "||))";
+							vm.dlProcess[i].otherGene[j].attachAssay = false;
+							vm.dlProcess[i].otherGene[k].attachColor = false;
+							vm.dlProcess[i].otherGene[k].attachAssay = false;
+							vm.dlProcess[i].otherGene[k].attachExtraWords = false;
+						}
+					}
+				}
+
+				if (vm.dlProcess[i].numberOfGenes >= 1) {
+
+					// for gene1
+					// attach color + marker symbol
+					previewNote += vm.dlProcess[i].colorTerm1;
+					previewNote += " - " + vm.apiDomain.markerSymbol + vm.dlProcess[i].attachGene1;
+
+					// attach extra words
+					if (vm.dlProcess[i].attachExtraWords1 == true) {
+						previewNote += vm.dlProcess[i].assayExtraWords1;
+					}
+
+					// for other genes
+					for(var j=0;j<vm.dlProcess[i].otherGene.length; j++) {
+						if (vm.dlProcess[i].otherGene[j].attachColor == true) {
+							previewNote += "; " + vm.dlProcess[i].otherGene[j].colorTerm;
+							previewNote += " - " + vm.dlProcess[i].otherGene[j].gene;
+							previewNote += vm.dlProcess[i].otherGene[j].attachGene;
+							if (vm.dlProcess[i].otherGene[j].attachExtraWords == true) {
+								previewNote += vm.dlProcess[i].otherGene[j].assayExtraWords;
+							}
+						}
+						if (vm.dlProcess[i].otherGene[j].attachAssay == true) {
+							previewNote += " (assay \\Acc(" + vm.dlProcess[i].otherGene[j].assayID + "||))";
+						}
+					}
+				}
+
+				// otherText logic
+				if (vm.dlProcess[i].numberOfGenes == 0) {
+					previewNote += vm.dlProcess[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
+				}
+				for(var j=0;j<vm.dlProcess[i].otherText.length; j++) {
+					if (
+						vm.dlProcess[i].otherText[j].gene != ""
+						&& vm.dlProcess[i].otherText[j].colorTerm != ""
+						&& vm.dlProcess[i].otherText[j].colorTerm != null
+					) {
+						previewNote += "; " + vm.dlProcess[i].otherText[j].colorTerm + " - ";
+						previewNote += vm.dlProcess[i].otherText[j].gene;
+						vm.dlProcess[i].otherText[j].attachColor = true;
+					}
+				}
+
+				// determine numberOfColors by checking attachColor = true
+				numberOfColors = 1;
+				for(var j=0;j<vm.dlProcess[i].otherGene.length; j++) {
+					if (
+						vm.dlProcess[i].otherGene[j].gene != "" && 
+						(vm.dlProcess[i].otherGene[j].colorTerm == "" || vm.dlProcess[i].otherGene[j].colorTerm == null)
+					) {
+						alert("No Color Selected For Gene")
+						vm.allowProcessDL = false;
+						return;
+					}
+					if (vm.dlProcess[i].otherGene[j].attachColor == true) {
+						numberOfColors += 1;
+					}
+				}
+				for(var j=0;j<vm.dlProcess[i].otherText.length; j++) {
+					if (
+						vm.dlProcess[i].otherText[j].gene != "" && 
+						(vm.dlProcess[i].otherText[j].colorTerm == "" || vm.dlProcess[i].otherText[j].colorTerm == null)
+					) {
+						alert("No Color Selected For Text")
+						vm.allowProcessDL = false;
+						return;
+					}
+					if (vm.dlProcess[i].otherText[j].attachColor == true) {
+						numberOfColors += 1;
+					}
+				}
+
+				// set setLabel based on numberOfColors
+				if (numberOfColors > 3) {
+					setLabel = "Multi-labeled: ";
+				}
+				else if (numberOfColors == 3) {
+					setLabel = "Triple labeled: ";
+				}
+				else {
+					setLabel = "Double labeled: ";
+				}
+				previewNote = setLabel + previewNote;
+
+				// finished!
+				if (previewNote.length > 0) {
+					previewNote += ".";
+				}
+				vm.dlProcess[i].previewNote = previewNote;
+			}
+
+                        setTimeout(function() {
+				document.getElementById("colorTerm1-0").focus();
+                        }, (300));
+		}
+
+		// process the new notes
+		function processDL() {
+			console.log("processDL()");
+
+			// call preview
+			previewDL(true);
+
+			if (vm.allowProcessDL == false) {
+				return;
+			}
+
+			// append each vm.dlProcess.previewNote to the appropriate vm.apiDomain.specimens row
+			// set vm.apiDomain.specimens[].processStatus = "u"
+			
+			var sKey1 = "";
+			for(var i=0;i<vm.apiDomain.specimens.length; i++) {
+				sKey1 = vm.apiDomain.specimens[i].specimenKey;
+				for(var j=0;j<Object.keys(vm.dlProcess).length; j++) {
+
+					// skip if previewNote is empty/null
+					if (vm.dlProcess[j].previewNote == "") {
+						continue;
+					}
+
+					var sKey2 = vm.dlProcess[j].specimenKey;
+					if (sKey1 == sKey2) {
+						if (vm.apiDomain.specimens[i].specimenNote == null) {
+							vm.apiDomain.specimens[i].specimenNote = vm.dlProcess[j].previewNote;
+						}
+						else {
+							vm.apiDomain.specimens[i].specimenNote += " " + vm.dlProcess[j].previewNote;
+						}
+						vm.apiDomain.specimens[i].processStatus = "u";
+						break;
+					}
+				}
+			}
+
+			// call Modify()
+			modify();
+			
+			// turn off double label tab
+			vm.activeDoubleLabel = !vm.activeDoubleLabel;
+		}
+
+                //
+                // end double label
+                //
+		
                 // copy data from previous row
 		function validateSpecimen(event, row, index, id) {
 			console.log("validateSpecimen = " + id + '-' + index + ':' + event.keyCode);
@@ -3300,7 +3915,7 @@
 
 		                vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey = vm.genotypeLookup[index].objectKey;
 		                vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeAccID = vm.genotypeLookup[index].label;
-                                changeSpecimenRow(vm.selectedSpecimenIndex, false);
+                                changeSpecimenRow(vm.selectedSpecimenIndex, false, true, true);
                                 setGenotypeUsed();
                                 setTimeout(function() {
                                         var id = "sgenotypeAccID-" + vm.selectedSpecimenIndex;
@@ -4492,6 +5107,16 @@
                 $scope.processReplaceGenotype = processReplaceGenotype;
                 $scope.validateReplaceGeno1 = validateReplaceGeno1;
                 $scope.validateReplaceGeno2 = validateReplaceGeno2;
+
+                // Double-Label
+                $scope.changeDLRow = changeDLRow;
+                $scope.clearDL = clearDL;
+                $scope.copyColumnDLRow = copyColumnDLRow;
+                $scope.setActiveDL = setActiveDL;
+                $scope.addTextColorDL = addTextColorDL;
+                $scope.previewDL = previewDL;
+                $scope.processDL = processDL;
+                $scope.setDLNextRow = setDLNextRow;
 
                 // Validate
                 $scope.validateMarker = validateMarker;

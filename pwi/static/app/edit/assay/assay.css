@@ -194,7 +194,7 @@ table.collapse13 td:nth-child(13)
     display : flex;
 }
 
-#specimenTable th, #sresultTable th, #genotypeTable th, #imagePaneTable th, #emapaTable th, #gelLaneTable th, #celltypeTable th
+#specimenTable th, #sresultTable th, #genotypeTable th, #imagePaneTable th, #emapaTable th, #gelLaneTable th, #celltypeTable th, #doubleLabelTable th
 {
 	position: sticky;
 	top: -3px;
@@ -206,17 +206,17 @@ table.collapse13 td:nth-child(13)
 {
         white-space: nowrap
 }
-#specimenTable td, #sresultTable td, #genotypeTable td, #imagePaneTable td, #emapaTable td, #gelLaneTable td, #celltypeTable td
+#specimenTable td, #sresultTable td, #genotypeTable td, #imagePaneTable td, #emapaTable td, #gelLaneTable td, #celltypeTable td, #doubleLabelTable td
 {
         padding: 3px;
         font-size: .8em;
 }
-#specimenTable, #gelLaneTable, #gelBandTable, #sresultTable {
+#specimenTable, #gelLaneTable, #gelBandTable, #sresultTable, #doubleLabelTable {
      table-layout: fixed;
      width: auto;
      max-width: max-content;
 }
-#specimenTable th, #gelLaneTable th, #gelBandTable th, #sresultTable th {
+#specimenTable th, #gelLaneTable th, #gelBandTable th, #sresultTable th, #doubleLabelTable th {
      max-width: 0px;
      overflow: hidden;
 }
@@ -359,9 +359,24 @@ table.collapse13 td:nth-child(13)
         text-align: center;
 }
 
+#doubleLabelTableWrapper
+{
+	overflow-x: scroll;
+	overflow-y: scroll;
+        max-height: 300px;
+        min-width: 300px;
+        border-style: solid;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-color: #ddd;
+}
+
 .hasNoteButton {background-color: lime;}
 .oddRow {background-color: #ddd;}
 .selectedRow {background-color: rgb(252,251,186);}
 .deleteRow {background-color: orange;}
 .deleteGelRow {background-color: orange;}
 .changeRow {background-color: violet !important;}
+
