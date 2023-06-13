@@ -3626,7 +3626,10 @@
 				// determine numberOfColors by checking attachColor = true
 				numberOfColors = 1;
 				for(var j=0;j<vm.dlProcess[i].otherGene.length; j++) {
-					if (vm.dlProcess[i].otherGene[j].gene != "" && vm.dlProcess[i].otherGene[j].colorTerm == "") {
+					if (
+						vm.dlProcess[i].otherGene[j].gene != "" && 
+						(vm.dlProcess[i].otherGene[j].colorTerm == "" || vm.dlProcess[i].otherGene[j].colorTerm == null)
+					) {
 						alert("No Color Selected For Gene")
 						vm.allowProcessDL = false;
 						return;
@@ -3636,7 +3639,10 @@
 					}
 				}
 				for(var j=0;j<vm.dlProcess[i].otherText.length; j++) {
-					if (vm.dlProcess[i].otherText[j].gene != "" && vm.dlProcess[i].otherText[j].colorTerm == "") {
+					if (
+						vm.dlProcess[i].otherText[j].gene != "" && 
+						(vm.dlProcess[i].otherText[j].colorTerm == "" || vm.dlProcess[i].otherText[j].colorTerm == null)
+					) {
 						alert("No Color Selected For Text")
 						vm.allowProcessDL = false;
 						return;
