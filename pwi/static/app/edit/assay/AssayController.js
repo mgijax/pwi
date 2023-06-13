@@ -3617,7 +3617,7 @@
 								previewNote += vm.dlProcess[i].otherGene[j].assayExtraWords;
 							}
 						}
-						if (vm.dlProcess[i].otherGene[j].attachAssay == true) {
+						if (vm.dlProcess[i].otherGene[j].attachAssay == true && vm.dlProcess[i].otherGene[j].assayID != "") {
 							previewNote += " (assay \\Acc(" + vm.dlProcess[i].otherGene[j].assayID + "||))";
 						}
 					}
