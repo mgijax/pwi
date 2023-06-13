@@ -3460,7 +3460,7 @@
 				
 				if (idx == 0) {
 					if (vm.dlProcess[i].otherGene.length == 0) {
-						sequenceNum = 3;
+						sequenceNum = 1;
 					}
 					else {
 						sequenceNum = vm.dlProcess[i].otherGene[vm.dlProcess[i].otherGene.length-1].sequenceNum + 1;
