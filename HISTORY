@@ -3,11 +3,15 @@
 # and try again
 #
 
+TAG: pwi-6-0-22-58
 TAG: pwi-6-0-22-57
 DATE: 06/13/2023
 STAFF: lec, jer
 wts2-1178/fl2c/gxd assay/tool template
 wts2-1206/fl2-403/HT index module: multiple issues
+wts2-1197/fl2-406/Increase Specimen Note column width for Imagepane Summary
+wts2-1204/fl2-407/Accession ID Search Box is case-specific
+wts2-1205/fl2-408/tiny tweak to EMAPA help text
 
 TAG: pwi-6-0-22-56
 DATE: 05/25/2023
