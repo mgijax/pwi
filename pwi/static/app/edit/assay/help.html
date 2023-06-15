@@ -25,7 +25,7 @@ There are reported issues using these short-cuts with Mac/Firefox.
 <h4>Color-coded Labels</h4>
 <ul>
         <li>Thistle = search only</li>
-        <li>Green = search & edit</li>
+        <li>Green = search &amp; edit</li>
         <li>Blue = read only</li>
         <li>Yellow = current row</li>
 </ul>
@@ -60,7 +60,7 @@ They may be searched individually or in combination. To include data in the assa
                         <li>less than or equal to: &lt;= mm/dd/yyyy</li>
                         <li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
                 </ul>
-        </li>
+        
 </ul> 
 
 <h3>Page organization</h3>
@@ -74,10 +74,18 @@ The page is divided into
                 </ul>   
         <li>Specimen Table/Gel Lanes Table – specimen/lane label, genotype, age, sex, lane or specimen note</li>
                 <ul>
-                        <li>Fix, embedding, hybridization for in situ assays</li>
-                        <li>Structure, sample amount, RNA type for blot assays</li>
-                </ul>   
-        <li>Results Table or Gel Rows & Bands Table</li>
+                        <li>in situ-type assays have fix, embedding, hybridization, and the DL checkbox </li>
+                        <li>blot assays include structure, sample amount, RNA type</li>
+                </ul> 
+		<li>Action button row - see below for descriptions</li>
+				<ul>
+                        <li>Double Label - only in situ-type assays</li>
+                        <li>Add Assay Structures to EMAPA Clipboard</li>
+						<li>Add Assay Cells to Cell Type Clipboard - only in situ-type assays</li>
+						<li>Add Assay Genotype to Genotype Clipboard</li>
+						<li>Replace Genotype</li>
+                </ul> 
+        <li>Results Table or Gel Rows &amp; Bands Table</li>
                 <ul>
                         <li>Structure(s), cell type(s), strength, pattern, image panes, results note for in situ assays</li>
                         <li>Size, units, Row note, Band strength, Band notes for blot assays</li>
@@ -90,7 +98,7 @@ The page is divided into
         <li>Immunohistochemistry</li>
         <li>Reporter</li>
                 <ul>
-                        <li>Knock in (GXD & Cre)</li>
+                        <li>Knock in (GXD &amp; Cre)</li>
                         <li>Transgenic (Cre)</li>
                         <li>Recombinase (Cre)</li>
                 </ul>   
@@ -130,11 +138,11 @@ Curators can change an in situ type assay to another in situ type assay. Same fo
                 </ul>
         <li>Slim Vocab for assays in the search return</li>
                 <table>
-                        <tr>
+                        <tbody><tr>
                                 <th>Abbreviation</th>
-                                <th>Assay type</>
-                                <th>Number</>
-                        <tr>
+                                <th>Assay type
+                                </th><th>Number
+                        </th></tr><tr>
                                 <td>Immuno</td>
                                 <td>Immunohistochemistry</td>
                                 <td>6</td>
@@ -184,7 +192,7 @@ Curators can change an in situ type assay to another in situ type assay. Same fo
                                 <td>Western blot</td>
                                 <td>8</td>
                         </tr>
-                </table>
+                </tbody></table>
 </ul>
 
 <h4>Duplicate Prep</h4>
@@ -194,12 +202,12 @@ Curators can change an in situ type assay to another in situ type assay. Same fo
         <li>created by user/date</li>
         <li>The following data from the previous assay</li>
                 <ul>
-                        <li>J# & citation</li>
+                        <li>J# &amp; citation</li>
                         <li>Assay notes</li>
                         <li>Assay type</li>
                         <li>Marker</li>
                         <li>Probe prep of the previous assay (e.g. probe/antibody ID, name, labeled with etc.)</li>
-                        <li>Specimen/Results or Gel Lanes/Rows & Bands tables are blank</li>
+                        <li>Specimen/Results or Gel Lanes/Rows &amp; Bands tables are blank</li>
                 </ul>
 </ul>
 
@@ -208,14 +216,14 @@ Curators can change an in situ type assay to another in situ type assay. Same fo
         <li>Placement right justified in Assay Type/Marker row next to the Duplicate 'All' button.</li>
         <li>Same as duplicate prep plus...</li>
         <li>Entire Specimen or Gel Lanes table (all rows and notes)</li>
-        <li>Results or Gel Rows & Bands table is blank</li>
+        <li>Results or Gel Rows &amp; Bands table is blank</li>
 </ul>
 
 <h4>Duplicate All</h4>
 <ul>
         <li>Placement right justified in Assay Type/Marker row next to the Duplicate 'Partial' button.</li>
         <li>Same as duplicate partial plus...</li>
-        <li>Entire Results or Gel Rows & Bands table including all structures, images, and notes in all rows (if present; not required for duplication).</li>
+        <li>Entire Results or Gel Rows &amp; Bands table including all structures, images, and notes in all rows (if present; not required for duplication).</li>
 </ul>
 
 <h4>Minimum width fields</h4>
@@ -251,6 +259,9 @@ When user adjusts the width of browser window, a minimum width of this field/col
         <li>Control Lane Label (blots)</li>
 </ul>
 
+<h4>Re-ordering Rows</h4>
+<p>The # column lets the curator set the row # in case they need to be re-ordered. Often due to clustering the initial entry to use tab-through copy for genotypes or ages, etc.</p>
+
 <h4>Error messages</h4>
 <ul>
         <li>Delete: You will be given a popup verifying that you want to do this.</li>
@@ -258,7 +269,6 @@ When user adjusts the width of browser window, a minimum width of this field/col
         <li>Required Field : Probe Prep (where applicable)</li>
         <li>Required Field : Antibody Prep (where applicable)</li>
         <li>Delete table rows that haven't been saved: Postgres errors.</li>
-        <li>Alert - for Strength = anything other than Absent and Pattern = Not Applicable</li>
         <li>Postgres error for Gel Row size with no unit</li>
         <li>Message: There is unsaved data in the current Assay</li>
         <li>Postgres error for Gel Lane with no Control value.</li>
@@ -271,12 +281,12 @@ When user adjusts the width of browser window, a minimum width of this field/col
 <h4>Column Resizing</h4>
 <ul>
                 <li>Specimen table: Specimen Label/Genotype/Age Range : horizontal only</li>
-                <li>Specimen table: Age Note/Specimen Note: horizontal & vertical</li>
+                <li>Specimen table: Age Note/Specimen Note: horizontal &amp; vertical</li>
                 <li>Results table: Image Pane : horizontal only</li>
-                <li>Results table: Note : horizontal & vertical</li>
+                <li>Results table: Note : horizontal &amp; vertical</li>
                 <li>Lane table: Lane label/Genotype/Sample Amt/Age Range : horizontal only</li>
-                <li>Lane table: Age Note/Lane Note: horizontal & vertical</li>
-                <li>Gel Rows & Bands table: Row Note/Band Note: horizontal & vertical</li>
+                <li>Lane table: Age Note/Lane Note: horizontal &amp; vertical</li>
+                <li>Gel Rows &amp; Bands table: Row Note/Band Note: horizontal &amp; vertical</li>
                 <li>Use text corner drag to set to column width desired.</li>
                 <li>Resizing does not apply to menu/pulldown columns.</li>
                 <li>Resizing works on any row in the table.</li>
@@ -288,7 +298,7 @@ When user adjusts the width of browser window, a minimum width of this field/col
 <h4>Hidden Columns</h4>
 <ul>An icon in the header (circle with an H) supports hide/show the column
                 <li>When the column is hidden, it will not completely disappear. The first 2 letters of the header and the icon will be visible.</li>
-                <li>Defaults will be entered & age notes buttons work on the hidden columns.</li>
+                <li>Defaults will be entered &amp; age notes buttons work on the hidden columns.</li>
                 <li>Hovering over the header shows a popup of what column it is.</li>
                 <li>If you have columns hidden, yellow button above the table will 'Show All Columns'</li>
                 <li>Pulldown columns will be hideable, but not resizeable.</li>
@@ -337,8 +347,9 @@ When user adjusts the width of browser window, a minimum width of this field/col
 <h4>Image Clipboard</h4>
 <ul>
         <li>Placement - On left side of Results table.</li>
-        <li>Show ~6 rows before scroll</li>
-        <li>Size of the clipboard can be made shorter, thinner & wider.</li>
+        <li>Show 6 rows before scroll (in situ-type assays)</li>
+		<li>Show 3 rows before scroll (blot-type assays)</li>
+        <li>Size of the clipboard can be made shorter or longer, thinner & wider</li>
         <li>Select/Add to Results</li>
         <li>De-Select removes the image pane</li>
         <li>Blot type assays - only 1 image pane allowed; In situ type assays - multiple image panes allowed on a single result row.</li>
@@ -400,10 +411,13 @@ When user adjusts the width of browser window, a minimum width of this field/col
 </ul>
 
 <p>
-The 'Add assay struct to EMAPA clipboard' button under the Specimen Table populates the EMAPA clipboard in the EMAPA module with all structures associated with all specimens or blot lanes in the current assay.
+The 'Add assay struct to EMAPA clipboard' button under the Specimen/Gel Lanes Table populates the EMAPA clipboard in the EMAPA module with all structures associated with all specimens or blot lanes in the current assay.
 </p>
 <p>
 The 'Add Assay Cells to Cell Type Clipboard’ button under the Specimen Table populates the CL clipboard in the CL module with all cell types associated with all specimens in the current assay.  Note: the CL module clipboard does not have a refresh button, so use Sort to see the newly added cell types.
+</p>
+<p>
+The 'Add Assay Genotype to Genotype Clipboard' button under the Specimen/Gel Lanes Table populates the Genotype clipboard in the Genotype module with all genotypes associated with all specimens or blot lanes in the current assay.
 </p>
 
 <h3>In situ assay-specific details</h3>
@@ -425,19 +439,54 @@ Although the display of some vocabulary terms can be modified/abbreviations chan
 Default number of rows in the specimen table overall should be 24. (before you have to click to add more rows) Number to show before a scroll bar = 7. After ADD or Modify, the table should contain 10 additional blank rows.
 </p>
 
-<h4>Specimen Notes</h4>
-<p>
-When a specimen has multiple labels, GXD adds hyperlinks in this field to make it easier for the users to access the other assays. There are two buttons (Add Double Label; Add Acc/MGI) to facilitate this; replace the * in the note with the MGI id of the assay you want to create the link to.
-</p>
+<h4>Double Label Tool</h4>
+<p>When a specimen has been double labeled, we add a note that indicates the colors of each gene or other element with links to the other assay for the user. The Double Label Tool is a one-way editing tool to allow curators to build complex notes with gene symbols, ID's and label colors.</p>
+<ul><b>Note templates in the DL tool</b>
+		
+        <li>Double labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)).</li>
+		<li>Double labeled: color1 - gene1 extraword; color2 - gene2 (assay \Acc(*||))</li>
+        <li>Double labeled: color1 - geneX extraword; color2 - geneX extraword (assay \Acc(*||))</li>
+		<li>Triple label all coding sets. Triple labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)); color3 - gene3 (assay \Acc(*||)).</li>
+        <li>Multi-labeled. Multi-labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)); color3 - gene3 (assay \Acc(*||)); color4 - gene4 (assay \Acc(*||)).</li>
+		<li>Double labeled: color1 - gene1 and gene2; color3 - gene3 (assay \Acc(*||)).</li>
+        <li>Double labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)) and gene3 (assay \Acc(*||)).</li>
+		<li>Multi-labeled with Coding and text+color sets. Multi-labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)); color3 - gene3 (assay \Acc(*||)); color4 - text4.</li>
+		<li>Double labeled: color1 - gene1; color2 - text2</li>
+</ul>
+		
+<ul><b>Basic Directions</b>
+        <li>Use the DL checkbox in the specimen table to select rows (required)</li>
+        <li>Open the Double Label tool using the button</li>
+        <li>Add the colors for the specimen (first color column)</li>
+        <li>Add the colors for the other genes</li>
+		<li>Click the Text+color to add those 2 columns for any label or stain that doesn't have an assay ID</li>
+        <li>Click preview button at the top of the table to see it in the preview text field.</li>
+        <li>Click Process to add the note to the specimen note, and it will also modify the assay.</li>
+</ul>		
+<p>The tool knows what genes to display (and their assay ID's) based on the image panes attached to the specimens. If the gene displayed is incorrect, check the image pane summary.</p>
+
+<ul>Other functions in the DL tool       
+		<li>Clear - sets table to blank; refreshes the table based on changes to checkboxes</li>
+        <li>Copy column - in color picklist and text headers  </li>
+		<li>Preview - click once to show the note prior to processing. Press again to 'refresh' the note based on rules/templates. Will overwrite any changes made in 'preview'.</li>
+        <li>double label note field (aka 'preview note') is editable; changes will be saved to specimen note upon processing.</li>
+		<li>Process adds note to specimen field, modifies assay, and closes the table.</li>
+		<li>Entries in the DL tool are not objects in the database - reopening the tool will not re-open the existing specimen note.
+</ul>
+
+<p>There are two buttons (Add Double Label; Add Acc/MGI) that can also be used as blanks in the specimen table directly; replace the * in the note with the MGI id of the assay you want to create the link to the other assay.</p>
 
 <h4>Results table</h4>
-<p>
-Default number of rows in the results table overall should be 8. (before you have to click to add more rows) Number to show before a scroll bar = 14. After ADD or Modify, the table should contain 8 additional blank rows.
-</p>
-<ul>Next, Current, Prev buttons
+<ul>
+		<li>Default number of rows in the results table overall should be 4. (before you have to click to add more rows) Number to show before a scroll bar = 14. After ADD or Modify, the table should contain 4 additional blank rows.</li>
+		<li># column - curator can change the order of the rows in the results table. Field is not part of tabbing. Column is hidden by default - open column using circled H in header.</li>
+		<li>CL column is not part of tabbing</li>
+		<li>Next, Current, Prev buttons</li>
+			<ul>
                 <li>When adding results, use the 'Next' button above the table to advance to the next Specimen without having to click into the Specimen table.</li>
                 <li>Use 'Prev' to go back one specimen. </li>
                 <li>Use 'Current' to move cursor focus to the current Specimen in the Specimen table.</li>
+			</ul>	
 </ul>
 
 <h3>Blot assays - specific details</h3>
@@ -473,8 +522,8 @@ Default number of rows in the lanes table should be 20. (before you have to clic
 
 <h4>Gel Rows and Bands table</h4>
 <ul>
-                <li>Gel Rows & Bands shows all Bands for the Lanes in the assay (no scroll).</li>
-                <li>Multiple Gel Rows in the Gel Rows & Bands Table automatically sort descending by size on Modify.</li>
+                <li>Gel Rows &amp; Bands shows all Bands for the Lanes in the assay (no scroll).</li>
+                <li>Multiple Gel Rows in the Gel Rows &amp; Bands Table automatically sort descending by size on Modify.</li>
                                 <li>When adding additional Gel Rows:</li>
                                         <ul>
                                                 <li>When you add a Gel Row 2 or more, the size, unit, and all strengths fields are blank (even for Control !=No lanes).</li>
@@ -506,4 +555,4 @@ In all assay modules. This finds all specimens/gel rows using a particular genot
 <li><a href="http://mgiprodwiki.jax.org/mediawiki/index.php/GXD#tab=Documentation">GXD documentation</a></li>
 </ul>
 
- </div> <!-- helpSectionWrapper -->
+</div> <!-- helpSectionWrapper -->
