@@ -690,7 +690,7 @@
 					row.markerKey = data[0].markerKey; 
 					row.markerSymbol = data[0].markerSymbol;
 					row.markerChromosome = data[0].chromosome;
-					row.markerAccID = data[0].accID;
+					row.markerAccID = data[0].markerAccID;
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateAlleleAPI.search");
