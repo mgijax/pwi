@@ -36,6 +36,7 @@
 
                 vm.loading = false;
 		vm.total_count = 0;
+                vm.page_size = 1000
 
 		// api/json input/output
 		vm.apiDomain = {};
@@ -51,7 +52,7 @@
                             this.service = MarkerGetByRefAPI
                             this.serviceArg = {accid}
                             // load the first page
-                            $scope.pageAction(1, 1000)
+                            $scope.pageAction(1, vm.page_size)
                         } else {
                             throw "No argument. Please specify accid."
                         }

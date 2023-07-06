@@ -35,6 +35,7 @@
 
                 vm.loading = false;
 		vm.total_count = 0;
+                vm.page_size = 250
 
 		// api/json input/output
 		vm.apiDomain = {};
@@ -50,7 +51,7 @@
                             this.service = GenotypeGetByRefAPI
                             this.serviceArg = {accid}
                             // load the first page
-                            $scope.pageAction(1, 250)
+                            $scope.pageAction(1, vm.page_size)
                         } else {
                             throw "No argument. Please specify jnum."
                         }

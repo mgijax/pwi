@@ -16,7 +16,7 @@
 
 <paginator
    ng-show="!vm.loading"
-   page-size="250"
+   page-size="vm.page_size"
    total-rows="vm.total_count"
    on-update="pageAction(pageFirstRow, pageNRows)"
    />
@@ -41,6 +41,13 @@
     	</tr>
     </table>
 </div>
+
+<paginator
+   ng-show="!vm.loading"
+   page-size="vm.page_size"
+   total-rows="vm.total_count"
+   on-update="pageAction(pageFirstRow, pageNRows)"
+   />
 
 <show-model vm="vm" />
 <ng-include src="PAGE_HELP_URL" />

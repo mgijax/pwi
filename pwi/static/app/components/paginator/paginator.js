@@ -1,7 +1,20 @@
 (function () {
     'use strict';
     function PaginatorController($scope, $element, $attrs) {
+
       const ctrl = this
+
+      let pageScope = $scope
+      while (!pageScope.paginators) pageScope = pageScope.$parent
+      pageScope.paginators.push(this)
+
+      /* In order to support multiple paginator controls on a page (i.e., at the top and bottom of the results table),
+       * they must either (1) all share the same underlying model data or (2) have their own model data but act in sync.
+       * I went with (2). The page scope (see PageController) has a global list of all paginators on the page.
+       * Each one adds itself when it is created. Actions list nextPage(), lastPage(), etc, are applied to all.
+       */
+      ctrl.allPaginators = pageScope.paginators
+      
       // ------------------------
       // The following are properties passed into the component
       // ctrl.pageSize = 250 -- default page size is 250
@@ -34,25 +47,48 @@
           if (!quietly) ctrl.onUpdate({ pageFirstRow: ctrl.pageFirstRow, pageNRows: ctrl.pageSize })
       }
 
-      ctrl.firstPage = function () {
-          ctrl.pageNum = 0
-          recalc()
+      //
+      ctrl.applyToAll = function (name) {
+          // apply the function. Only the first pagniator instance (index === 0) actually
+          // announces the change to the controller.
+          ctrl.allPaginators.forEach((p,i) => p[name](i === 0))
       }
-      ctrl. lastPage = function () {
-          ctrl.pageNum = ctrl.nPages - 1
-          recalc()
+
+      ctrl.firstPage = function () {
+          ctrl.applyToAll('_firstPage')
+      }
+      ctrl.lastPage = function () {
+          ctrl.applyToAll('_lastPage')
       }
       ctrl. nextPage = function () {
-          ctrl.pageNum = Math.min(ctrl.nPages - 1, ctrl.pageNum + 1)
-          recalc()
+          ctrl.applyToAll('_nextPage')
       }
       ctrl.prevPage = function () {
+          ctrl.applyToAll('_prevPage')
+      }
+      ctrl.gotoPage = function (n) {
+          ctrl.allPaginators.forEach((p,i) => p._gotoPage(n, i === 0))
+      }
+
+      ctrl._firstPage = function (quietly) {
+          ctrl.pageNum = 0
+          recalc(quietly)
+      }
+      ctrl._lastPage = function (quietly) {
+          ctrl.pageNum = ctrl.nPages - 1
+          recalc(quietly)
+      }
+      ctrl._nextPage = function (quietly) {
+          ctrl.pageNum = Math.min(ctrl.nPages - 1, ctrl.pageNum + 1)
+          recalc(quietly)
+      }
+      ctrl._prevPage = function (quietly) {
           ctrl.pageNum = Math.max(0, ctrl.pageNum - 1)
           recalc()
       }
-      ctrl.gotoPage = function (n) {
+      ctrl._gotoPage = function (n, quietly) {
           ctrl.pageNum = Math.min(ctrl.nPages - 1, Math.max(0, n))
-          recalc()
+          recalc(quietly)
       }
     }
     angular.module('pwi').component('paginator', {

@@ -88,7 +88,7 @@
                             this.serviceArg = {}
                             this.serviceArg[o.apiArg] = args[o.idArg]
                             // load the first page
-                            $scope.pageAction(1, 250)
+                            $scope.pageAction(1, vm.page_size)
                             return
                         }
                     }

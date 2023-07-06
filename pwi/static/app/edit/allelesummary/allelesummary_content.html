@@ -22,12 +22,12 @@
 
 <paginator
    ng-show="!vm.loading"
-   page-size="1000"
+   page-size="vm.page_size"
    total-rows="vm.total_count"
    on-update="pageAction(pageFirstRow, pageNRows)"
    />
 
-<div ng-if="vmd.alleles && vmd.alleles.length > 0">
+<div ng-if="!vm.loading && vmd.alleles && vmd.alleles.length > 0">
     <table class="dataTable">
       <tr>
       <th>Symbol</th>
@@ -62,5 +62,11 @@
     </table>
 </div>
 
+<paginator
+   ng-show="!vm.loading"
+   page-size="vm.page_size"
+   total-rows="vm.total_count"
+   on-update="pageAction(pageFirstRow, pageNRows)"
+   />
 <show-model vm="vm" />
 <ng-include src="PAGE_HELP_URL" />

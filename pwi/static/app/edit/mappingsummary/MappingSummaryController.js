@@ -37,6 +37,7 @@
 
                 vm.loading = false;
 		vm.total_count = 0
+                vm.page_size = 250
 
 		// api/json input/output
 		vm.apiDomain = {};
@@ -69,7 +70,7 @@
 			    this.serviceArg = {}
 			    this.serviceArg[o.apiArg] = args[o.idArg]
                             // load the first page
-                            $scope.pageAction(1, 250)
+                            $scope.pageAction(1, vm.page_size)
                             return
                         }
                     }
