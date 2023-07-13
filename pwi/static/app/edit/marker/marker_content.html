@@ -359,8 +359,6 @@
 				ng-click="setActiveTab(5)" >MGI IDs</button>
 			<button type="button" id="tssTabButton" ng-class="{activeTab:vm.activeTab == 6}"
 				ng-click="setActiveTab(6)" >TSS</button>
-			<button type="button" id="aliasTabButton" ng-class="{activeTab:vm.activeTab == 7}"
-				ng-click="setActiveTab(7)" >STS markers</button>
 			<button type="button" id="qtlInterTabButton" ng-class="{activeTab:vm.activeTab == 8}"
 				ng-click="setActiveTab(8)" >Interacting QTL</button>
 			<button type="button" id="qtlCandTabButton" ng-class="{activeTab:vm.activeTab == 9}"
@@ -665,26 +663,6 @@
 				ng-click=""
 				ng-class-odd="'oddResultRow'">
 			<td>{{row.symbol}}</td>
-			</tr>
-			</tbody>
-			</table>
-			</div>
-			</div>
-			</div>
-
-			<!-- Aliases tab -->
-			<div ng-if="vm.activeTab==7" class="col-sm-12" style="">
-			<div class="row topMargin">
-			<div class="col-sm-6" style="">
-			<table class="table table-bordered scrollable-menu" id="aliasesTable" style="">
-    			<tbody>
-			<tr>
-			<th>STS markers</th>
-			</tr>
-			<tr ng-repeat="alias in vm.apiDomain.aliases" 
-				ng-click=""
-				ng-class-odd="'oddResultRow'">
-			<td> {{alias.symbol}} </td>
 			</tr>
 			</tbody>
 			</table>

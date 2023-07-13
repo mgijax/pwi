@@ -131,7 +131,6 @@ textarea {max-width:100%;}
     background-color: rgb(195,246,190);
 }
 
-#aliasesTable th, 
 #tssTable th, 
 #qtlCandidateTable th, 
 #qtlInteractionTable th, 
@@ -144,7 +143,6 @@ textarea {max-width:100%;}
 
 #historyTable td, 
 #synonymTable td, 
-#aliasesTable td, 
 #refsTable td, 
 #featureTypeTable td, 
 #tssTable td, 
