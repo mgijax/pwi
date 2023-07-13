@@ -74,6 +74,7 @@
 			loadVocabs();
 			addAllelePairRow();
 			addAllelePairRow();
+			addNotes();
 			addImagePaneRow();
 			addDataSetRow();
 			loadClipboard();
