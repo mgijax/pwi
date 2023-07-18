@@ -322,6 +322,9 @@
 		$scope.updateGenotype = function(row_num, display_index, displayed_array) {
 			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
                         
+                        if (!working_domain.genotype_object) {
+                            working_domain.genotype_object = {}
+                        }
                         if (!working_domain.genotype_object.mgiid) {
                             working_domain.genotype_object.mgiid = 'MGI:2166310'
                             working_domain._genotype_key = -1
@@ -342,6 +345,7 @@
                                 working_domain._genotype_key = data[0].genotypeKey
                             } else {
                                 alert("Invalid genotype ID: " + working_domain.genotype_object.mgiid)
+                                working_domain._genotype_key = -1
                             }
                             GxdGenotypeGetAPI.get({key:working_domain._genotype_key}, function(data) {
 				// working_domain._genotype_key = data.items[0].mgiid;
