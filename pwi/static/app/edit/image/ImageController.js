@@ -689,6 +689,11 @@
 			console.log("setPaneCount()");
 
                         vm.paneCount = 0;
+
+			if (vm.apiDomain.imagePanes != [] && vm.apiDomain.imagePanes != null) {
+                                return;
+                        }
+
 			for(var i=0;i<vm.apiDomain.imagePanes.length; i++) {
                                 if (vm.apiDomain.imagePanes[i].processStatus == "x") {
                                         vm.paneCount += 1;
