@@ -621,11 +621,20 @@
 			vm.apiDomain.externalLinkNote.noteTypeKey = "1039";
 			vm.apiDomain.externalLinkNote.noteChunk = "";
 
-                        // reset NOtes & Image Panes
+                        if (deselectType == 1 && vm.apiDomain.imagePanes != null) {
+			        for(var i=0;i<vm.apiDomain.imagePanes.length; i++) {
+                                        if (vm.apiDomain.imagePanes[i].processStatus == "x") {
+                                                vm.apiDomain.imagePanes[i].processStatus = "c";
+                                        }
+                                }
+                        }
+
+                        // reset Notes & Image Panes
                         if (deselectType == 2) {
 			        resetNotes()
 			        resetImagePanes()
                         }
+
 			vm.queryMode = true;
 		}
 
@@ -690,7 +699,7 @@
 
                         vm.paneCount = 0;
 
-			if (vm.apiDomain.imagePanes != [] && vm.apiDomain.imagePanes != null) {
+			if (vm.apiDomain.imagePanes != null) {
                                 return;
                         }
 
@@ -724,7 +733,7 @@
 
 			vm.queryMode = false;
 
-			if (vm.apiDomain.imagePanes != [] && vm.apiDomain.imagePanes != null) {
+			if (vm.apiDomain.imagePanes != null) {
 			        if (vm.apiDomain.imagePanes.length > 0 
 				        && vm.apiDomain.imagePanes[0].paneLabel != null) {
 				        addPaneLabel();
