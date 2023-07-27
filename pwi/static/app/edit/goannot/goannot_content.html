@@ -164,9 +164,23 @@
 
 			<td style="width:250px;">
 			<input class="form-control" type="text" id="inferredFrom-{{$index}}"
-				ng-model="row.inferredFrom" 
-				ng-blur="validateInferredFrom(row, $index, 'modifiedBy-')"
-				></input>
+			        ng-model="row.inferredFrom" 
+			        ng-blur="validateInferredFrom(row, $index, 'modifiedBy-')"
+                        ></input>
+                        <div ng-if="row.modifiedBy=='RGD'">
+                                <span style="position: relative; bottom: -1;">
+                                RGD<img style="position:absolute;" id="rgdButton-{{$index}}" class="externalLink"
+                                src="/pwi/static/images/link_out.png" width=20 height=20
+                                ng-click="rgdLink($index)" >
+                                </span>
+                        </div>
+                        <div ng-if="row.modifiedBy=='UniProtKB'">
+                                <span style="position: relative; bottom: -1;">
+                                QuickGO<img style="position:absolute;" id="uniprotButton-{{$index}}" class="externalLink"
+                                src="/pwi/static/images/link_out.png" width=20 height=20
+                                ng-click="uniprotLink($index)" >
+                                </span>
+                        </div>
 			</td>
 
 			<td style="width:80px;">

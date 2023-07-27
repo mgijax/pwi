@@ -690,6 +690,24 @@
                         window.open(mgireportUrl, '_blank');
                 }
 
+		// linkout to rgd
+		function rgdLink(index) {
+			console.log("rgdLink");
+                        FindElement.byId("inferredFrom-" + index).then(function(element){
+                                var rgdUrl = pageScope.url_for('ext.RGD', element.value) + '#geneOntologyAnnotationsCurator';
+                                window.open(rgdUrl, '_blank');
+                        });
+                }
+
+		// linkout to uniprot
+		function uniprotLink(index) {
+			console.log("uniprotLink");
+                        FindElement.byId("inferredFrom-" + index).then(function(element){
+                                var uniprotUrl = pageScope.url_for('ext.UniProt', element.value);
+                                window.open(uniprotUrl, '_blank');
+                        });
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		// annotations 
 		/////////////////////////////////////////////////////////////////////		
@@ -931,6 +949,8 @@
 		$scope.setCompletionDate = setCompletionDate;
 		$scope.getReferenceReport = getReferenceReport;
 		$scope.mgireportLink = mgireportLink;
+		$scope.rgdLink = rgdLink;
+		$scope.uniprotLink = uniprotLink;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
