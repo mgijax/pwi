@@ -719,7 +719,7 @@
 
 			vm.queryMode = false;
 
-			if (vm.apiDomain.imagePanes != []) {
+			if (vm.apiDomain.imagePanes != [] && vm.apiDomain.imagePanes != null) {
 			        if (vm.apiDomain.imagePanes.length > 0 
 				        && vm.apiDomain.imagePanes[0].paneLabel != null) {
 				        addPaneLabel();
