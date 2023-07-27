@@ -150,7 +150,7 @@
 			var newObject = angular.copy(vm.apiDomain);
                         vm.apiDomain = newObject;
 			vm.selectedIndex = -1;
-			resetDataDeselect();
+			resetDataDeselect(1);
 			setFocusFigureLabel();
 		}
 	
@@ -209,7 +209,7 @@
 				else {
 					// after add/create, search/by J: is run & results returned
 					// then deselect so form is ready for next add
-					resetDataDeselect();
+					resetDataDeselect(2);
 					search(true);
 					loadNotes();
 					refreshTotalCount();
@@ -586,24 +586,8 @@
 		}
 
 		// resets page data deselect
-		function resetDataDeselect() {
-			console.log("resetDataDeselect()");
-
-			//do not reset
-			//vm.apiDomain.imageClassKey = "";	
-			//vm.apiDomain.refsKey = "";	
-			//vm.apiDomain.jnumid = "";	
-			//vm.apiDomain.short_citation = "";
-			
-			// copyright may be null
-		    	if (vm.apiDomain.copyrightNote == null) {
-				vm.apiDomain.copyrightNote = {};
-				vm.apiDomain.copyrightNote.noteKey = "";
-				vm.apiDomain.copyrightNote.noteChunk = "";	
-			}
-			else {
-				vm.apiDomain.copyrightNote.noteKey = "";
-			}
+		function resetDataDeselect(deselectType) {
+			console.log("resetDataDeselect(): " + deselectType);
 
 			vm.apiDomain.imageKey = "";	
 			vm.apiDomain.imageTypeKey = "";	
@@ -624,8 +608,24 @@
 			vm.apiDomain.creation_date = "";
 			vm.apiDomain.modification_date = "";
 
-			resetNotes()
-			resetImagePanes()
+			// copyright may be null
+		    	if (vm.apiDomain.copyrightNote == null) {
+				vm.apiDomain.copyrightNote = {};
+			        vm.apiDomain.copyrightNote.noteTypeKey = "1023";
+			        vm.apiDomain.copyrightNote.noteChunk = "";	
+			}
+
+			vm.apiDomain.captionNote.noteKey = "";
+			vm.apiDomain.copyrightNote.noteKey = "";
+			vm.apiDomain.externalLinkNote.noteKey = "";
+			vm.apiDomain.externalLinkNote.noteTypeKey = "1039";
+			vm.apiDomain.externalLinkNote.noteChunk = "";
+
+                        // reset NOtes & Image Panes
+                        if (deselectType == 2) {
+			        resetNotes()
+			        resetImagePanes()
+                        }
 			vm.queryMode = true;
 		}
 
@@ -719,10 +719,12 @@
 
 			vm.queryMode = false;
 
-			if (vm.apiDomain.imagePanes.length > 0 
-				&& vm.apiDomain.imagePanes[0].paneLabel != null) {
-				addPaneLabel();
-			}
+			if (vm.apiDomain.imagePanes != []) {
+			        if (vm.apiDomain.imagePanes.length > 0 
+				        && vm.apiDomain.imagePanes[0].paneLabel != null) {
+				        addPaneLabel();
+			        }
+                        }
 
 			if (vm.apiDomain.captionNote == null) {
 				vm.apiDomain.captionNote = {};	
