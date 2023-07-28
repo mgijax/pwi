@@ -240,15 +240,35 @@
 				return;
 			}
 
+                        // set pairStateKey defaults
 			// check required
 			for(var i=0;i<vm.apiDomain.allelePairs.length; i++) {
 				if (vm.apiDomain.allelePairs[i].processStatus == "c") {
-					if ((vm.apiDomain.allelePairs[i].markerKey != "")
-					 && (
-					    (vm.apiDomain.allelePairs[i].pairStateKey == "")
-					    || (vm.apiDomain.allelePairs[i].pairStateKey == "")
-					    )
-					 ) {
+					if (
+                                                vm.apiDomain.allelePairs[i].markerKey != ""
+                                                && vm.apiDomain.allelePairs[i].alleleKey1 != ""
+                                                && vm.apiDomain.allelePairs[i].alleleKey2 != ""
+                                                && vm.apiDomain.allelePairs[i].alleleKey1 == vm.apiDomain.allelePairs[i].alleleKey2
+					) {
+						vm.apiDomain.allelePairs[i].pairStateKey = "847138";
+                                                vm.apiDomain.allelePairs[i].pairState = "Homozygous";
+					}
+					if (
+                                                vm.apiDomain.allelePairs[i].markerKey != ""
+                                                && vm.apiDomain.allelePairs[i].alleleKey1 != ""
+                                                && vm.apiDomain.allelePairs[i].alleleKey2 != ""
+                                                && vm.apiDomain.allelePairs[i].alleleKey1 != vm.apiDomain.allelePairs[i].alleleKey2
+					) {
+						vm.apiDomain.allelePairs[i].pairStateKey = "847137";
+                                                vm.apiDomain.allelePairs[i].pairState = "Heterozygous";
+					}
+					if (
+                                                (vm.apiDomain.allelePairs[i].markerKey != "")
+					        && (
+					                (vm.apiDomain.allelePairs[i].pairStateKey == "")
+					                || (vm.apiDomain.allelePairs[i].pairStateKey == "")
+					        )
+					) {
 						alert("Required Fields may be missing:  Allele 1, Pair State");
 						return;
 					}
