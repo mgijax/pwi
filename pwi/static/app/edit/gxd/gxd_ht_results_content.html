@@ -60,7 +60,7 @@
 					<button ng-click="search()" ng-disabled="loading" class="label label-primary" style="display:none">Search</button>
 					<button id="searchButton" ng-click="search()" ng-disabled="loading" class="label-primary">Search</button>
 					<button id="clearButton" ng-click="clearAll()" ng-disabled="loading" class="label-primary">Clear</button>
-					<button id="modifyButton" ng-click="modifyItem()" ng-disabled="modifyDisabled()" class="label-primary">Modify</button>
+					<button id="modifyButton" ng-click="modifyItem()" ng-disabled="modifyDisabled()" class="label-primary" >Modify</button>
 					<img src="/pwi/static/images/green_check.png" width=27 ng-show="vm.message.type == 'success'">
 				</div>
 				<div class="alert alert-{{ vm.message.type }}" ng-show="vm.message.type && vm.message.type != 'success'">

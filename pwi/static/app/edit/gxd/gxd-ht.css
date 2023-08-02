@@ -126,6 +126,10 @@ main {
 	margin-top: 3px;
 }
 
+.updownarrows.disabled {
+    opacity: 0.3;
+}
+
 .glyphicon-arrow-up {
 	margin-bottom: 7px;
 }

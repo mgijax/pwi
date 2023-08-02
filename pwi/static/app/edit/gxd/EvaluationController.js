@@ -319,7 +319,9 @@
 			$scope.show_curated();
 		}
 
+                $scope.updatingGenotype = false
 		$scope.updateGenotype = function(row_num, display_index, displayed_array) {
+                        $scope.updatingGenotype = true
 			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
                         
                         if (!working_domain.genotype_object) {
@@ -347,6 +349,7 @@
                                 alert("Invalid genotype ID: " + working_domain.genotype_object.mgiid)
                                 working_domain._genotype_key = -1
                             }
+                            $scope.updatingGenotype = false
                             GxdGenotypeGetAPI.get({key:working_domain._genotype_key}, function(data) {
 				// working_domain._genotype_key = data.items[0].mgiid;
                                 const combo1 = data.alleleDetailNote ? data.alleleDetailNote.noteChunk : ''
@@ -359,8 +362,10 @@
                                     geneticbackground: data.strain
                                 }
                             }, function(err) {
-			});
+                                $scope.updatingGenotype = false
+			    });
                         }, function (err) {
+                                $scope.updatingGenotype = false
                         });
 
 		}
@@ -507,6 +512,7 @@
 		}
 
 		$scope.copyDownColumn = function(index, array, field) {
+                        if ($scope.updatingGenotype) return;
 			var src = array[index].sample_domain;
 			for(var i = index; i < array.length; i++) {
 				var dst = array[i].sample_domain;
@@ -517,6 +523,7 @@
 			}
 		}
 		$scope.copyUpColumn = function(index, array, field) {
+                        if ($scope.updatingGenotype) return;
 			var src = array[index].sample_domain;
 			for(var i = index; i >= 0; i--) {
 				var dst = array[i].sample_domain;
@@ -804,7 +811,7 @@
 		}
 
 		$scope.modifyDisabled = function() {
-			return (pageScope.pageModifyDisabled() || vm.data.length == 0);
+			return (pageScope.pageModifyDisabled() || vm.data.length == 0 || $scope.updatingGenotype);
 		}
 
 		$scope.expvar_changed = function(index) {
@@ -1118,7 +1125,13 @@
 		var shortcuts = Mousetrap($document[0].body);
 
 		$scope.KclearAll = function() { $scope.clearAll(); $scope.$apply(); }
-		$scope.KmodifyItem = function() { $scope.modifyItem(); $scope.$apply(); }
+
+		$scope.KmodifyItem = function() {
+                    document.activeElement.blur()
+                    if($scope.updatingGenotype) return; 
+                    $scope.modifyItem(); 
+                    $scope.$apply();
+                }
 		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
 		$scope.KfirstItem = function() { $scope.firstItem(); $scope.$apply(); }
 		$scope.KprevItem = function() { $scope.prevItem(); $scope.$apply(); }
