@@ -150,7 +150,7 @@
 			var newObject = angular.copy(vm.apiDomain);
                         vm.apiDomain = newObject;
 			vm.selectedIndex = -1;
-			resetDataDeselect(1);
+			resetDataDeselect();
 			setFocusFigureLabel();
 		}
 	
@@ -209,7 +209,7 @@
 				else {
 					// after add/create, search/by J: is run & results returned
 					// then deselect so form is ready for next add
-					resetDataDeselect(2);
+					resetDataDeselect();
 					search(true);
 					loadNotes();
 					refreshTotalCount();
@@ -410,6 +410,66 @@
                         jnumOnBlur();
 		}
 
+                // duplicate image
+		function duplicateImage() {
+			console.log("duplicateImage()");
+
+                        var newImage = vm.apiDomain;
+
+                        newImage.imageKey = "";
+                        newImage.accID = "";
+                        newImage.editAccessionIds = [];
+                        newImage.editAccessionIds[0] = {"accID":""};
+                        newImage.nonEditAccessionIds = [];
+                        newImage.nonEditAccessionIds[0] = {"accID":""};
+                        newImage.xdim = "";
+                        newImage.ydim = "";
+                        newImage.thumbnailImage = {};
+                        newImage.thumbnailImage.accID = "";
+                        newImage.createdByKey = "";
+                        newImage.createdBy = "";
+                        newImage.modifiedByKey = "";
+                        newImage.modifiedBy = "";
+                        newImage.creation_date = "";
+                        newImage.modification_date = "";
+
+                        newImage.captionNote.processStatus = "c";
+                        newImage.captionNote.noteKey = "";
+                        newImage.captionNote.objectKey = "";
+                        newImage.copyrightNote.processStatus = "c";
+                        newImage.copyrightNote.noteKey = "";
+                        newImage.copyrightNote.objectKey = "";
+			newImage.privateCuratorialNote = {};	
+			newImage.privateCuratorialNote.noteKey = "";
+			newImage.privateCuratorialNote.noteTypeKey = "1025";
+			newImage.privateCuratorialNote.noteChunk = "";	
+			newImage.externalLinkNote = {};	
+			newImage.externalLinkNote.noteKey = "";
+			newImage.externalLinkNote.noteTypeKey = "1039";
+			newImage.externalLinkNote.noteChunk = "";	
+
+                        if (newImage.imagePanes != null) {
+                                for(var i=0;i<newImage.imagePanes.length; i++) {
+                                        if (newImage.imagePanes[i].processStatus == "x") {
+                                                newImage.imagePanes[i].processStatus = "c";
+                                                newImage.imagePanes[i].imagePaneKey = "";
+                                                newImage.imagePanes[i].imageKey = "";
+                                                newImage.imagePanes[i].x = "";
+                                                newImage.imagePanes[i].y = "";
+                                                newImage.imagePanes[i].width = "";
+                                                newImage.imagePanes[i].height = "";
+                                                newImage.imagePanes[i].accID = "";
+                                                newImage.imagePanes[i].pixID = "";
+                                                newImage.imagePanes[i].xdim = "";
+                                                newImage.imagePanes[i].ydim = "";
+                                        }
+                                }
+                        }
+
+                        vm.apiDomain = newImage;
+                        createObject();
+                }
+
 		// linkout to image detail
                 function imgDetailLink() {
                 FindElement.byId("objectAccId").then(function(element){
@@ -586,8 +646,24 @@
 		}
 
 		// resets page data deselect
-		function resetDataDeselect(deselectType) {
-			console.log("resetDataDeselect(): " + deselectType);
+		function resetDataDeselect() {
+			console.log("resetDataDeselect()");
+
+			//do not reset
+			//vm.apiDomain.imageClassKey = "";	
+			//vm.apiDomain.refsKey = "";	
+			//vm.apiDomain.jnumid = "";	
+			//vm.apiDomain.short_citation = "";
+			
+			// copyright may be null
+		    	if (vm.apiDomain.copyrightNote == null) {
+				vm.apiDomain.copyrightNote = {};
+				vm.apiDomain.copyrightNote.noteKey = "";
+				vm.apiDomain.copyrightNote.noteChunk = "";	
+			}
+			else {
+				vm.apiDomain.copyrightNote.noteKey = "";
+			}
 
 			vm.apiDomain.imageKey = "";	
 			vm.apiDomain.imageTypeKey = "";	
@@ -608,33 +684,8 @@
 			vm.apiDomain.creation_date = "";
 			vm.apiDomain.modification_date = "";
 
-			// copyright may be null
-		    	if (vm.apiDomain.copyrightNote == null) {
-				vm.apiDomain.copyrightNote = {};
-			        vm.apiDomain.copyrightNote.noteTypeKey = "1023";
-			        vm.apiDomain.copyrightNote.noteChunk = "";	
-			}
-
-			vm.apiDomain.captionNote.noteKey = "";
-			vm.apiDomain.copyrightNote.noteKey = "";
-			vm.apiDomain.externalLinkNote.noteKey = "";
-			vm.apiDomain.externalLinkNote.noteTypeKey = "1039";
-			vm.apiDomain.externalLinkNote.noteChunk = "";
-
-                        if (deselectType == 1 && vm.apiDomain.imagePanes != null) {
-			        for(var i=0;i<vm.apiDomain.imagePanes.length; i++) {
-                                        if (vm.apiDomain.imagePanes[i].processStatus == "x") {
-                                                vm.apiDomain.imagePanes[i].processStatus = "c";
-                                        }
-                                }
-                        }
-
-                        // reset Notes & Image Panes
-                        if (deselectType == 2) {
-			        resetNotes()
-			        resetImagePanes()
-                        }
-
+			resetNotes()
+			resetImagePanes()
 			vm.queryMode = true;
 		}
 
@@ -698,11 +749,6 @@
 			console.log("setPaneCount()");
 
                         vm.paneCount = 0;
-
-			if (vm.apiDomain.imagePanes != null) {
-                                return;
-                        }
-
 			for(var i=0;i<vm.apiDomain.imagePanes.length; i++) {
                                 if (vm.apiDomain.imagePanes[i].processStatus == "x") {
                                         vm.paneCount += 1;
@@ -733,12 +779,10 @@
 
 			vm.queryMode = false;
 
-			if (vm.apiDomain.imagePanes != null) {
-			        if (vm.apiDomain.imagePanes.length > 0 
-				        && vm.apiDomain.imagePanes[0].paneLabel != null) {
-				        addPaneLabel();
-			        }
-                        }
+			if (vm.apiDomain.imagePanes.length > 0 
+				&& vm.apiDomain.imagePanes[0].paneLabel != null) {
+				addPaneLabel();
+			}
 
 			if (vm.apiDomain.captionNote == null) {
 				vm.apiDomain.captionNote = {};	
@@ -906,6 +950,7 @@
 		$scope.modifyObject = modifyObject;
 		$scope.deleteObject = deleteObject;
 		$scope.modifyAlleleAssoc = modifyAlleleAssoc;
+		$scope.duplicateImage = duplicateImage;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
