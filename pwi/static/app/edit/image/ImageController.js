@@ -486,10 +486,11 @@
 
 		// link out to prism
                 function prismLink() {
-                FindElement.byId("JNumID").then(function(element){
-                        var prismUrl = pageScope.url_for('pwi.prism', '#' + element.value);
-                        window.open(prismUrl, '_blank');
-                });
+                        vm.mode = 'prism'
+                        //FindElement.byId("JNumID").then(function(element){
+                        //var prismUrl = pageScope.url_for('pwi.prism', '#' + element.value);
+                        //window.open(prismUrl, '_blank');
+                        //});
                 }
 
 		/////////////////////////////////////////////////////////////////////
@@ -637,6 +638,9 @@
                         // allele/image pane assoc
                         vm.alleleAssocs = [];
 
+                        vm.mode = "normal" // "normal" or "prism"
+                        vm.prism = {}
+
 			resetCopyright()
 			resetNotes()
 			resetNonEditableAccessionIds()
@@ -740,6 +744,7 @@
 				loadAlleleAssoc();
 				loadNotes();
                                 setPaneCount();
+                                prismInit();
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data object.");
 			});
@@ -938,6 +943,218 @@
 		
 		}		
 		
+
+		/////////////////////////////////////////////////////////////////////
+		// PRISM functions
+		/////////////////////////////////////////////////////////////////////		
+
+                function prismInit () {
+                    const data = vm.apiDomain
+                    const pdata = vm.prism = {
+                        pixid: null,
+                        xdim: null,
+                        ydim: null,
+                        panes: [],
+                        overlays: [],
+                        scale: 1.0,
+                        showOverlays: true,
+                        undoStack: [],
+                        redoStack: [],
+                        imageList: []
+                    }
+                    pdata.pixid = (data.editAccessionIds && data.editAccessionIds[0]) ? data.editAccessionIds[0].numericPart : null
+                    pdata.xdim = data.xdim
+                    pdata.ydim = data.ydim
+                    pdata.imagePanes = data.imagePanes // shared intentionally
+                    pdata.overlays = []
+                    const ix = {}
+                    pdata.imagePanes.forEach(p => {
+                        if (!p.width) return;
+                        const key = `${p.x}|${p.y}|${p.width}|${p.height}`
+                        if (!ix[key]) {
+                            const ovl = prismNewOverlay(parseInt(p.x),parseInt(p.y),parseInt(p.width),parseInt(p.height),false, p)
+                            ix[key] = ovl
+                            pdata.overlays.push(ovl)
+                        } else {
+                            ix[key].panes.push(p)
+                        }
+                    })
+                    pdata.imageList = vm.results.map((r,index) => {
+                        const label = r.imageDisplay.substr(r.imageDisplay.indexOf(";")+1).trim()
+                        return { label, index, key: r.imageKey }
+                    }).sort((a,b) => {
+                        if (a.label < b.label) return -1
+                        if (a.label > b.label) return 1
+                        return 0
+                    })
+                }
+
+                // Returns a new overlay with the specified geometry and selection state.
+                // Each overlay points to the panes associated with it.
+                function prismNewOverlay(x, y, width, height, selected, imgPane) {
+                    const panes = imgPane ? [imgPane] : []
+                    return { x, y, width, height, selected, panes }
+
+                }
+
+                // Associates one pane with one overlay. Removes pane from previous association, if any.
+                // If overlay if null, dissociates from previous overlay and makes no new association.
+                function prismAssociate (pane, overlay) {
+                    vm.prism.overlays.forEach(o => {
+                        const i = o.panes.indexOf(pane)
+                        if (i >= 0) {
+                            o.panes.splice(i,1)
+                        }
+                    })
+                    if (overlay) {
+                        overlay.panes.push(pane)
+                    }
+                }
+
+                // Pushes the current edit state onto the undo stack and clears the redo statck.
+                // Undo-able actions call this function before changing the edit state.
+                function prismPushState () {
+                    vm.prism.undoStack.push({
+                        overlays: vm.prism.overlays.map(o => Object.assign({},o))
+                    })
+                    vm.prism.redoStack = []
+                }
+
+                // Pushes current edit state onto the redo stack,
+                // restores current edit state from top of undo stack.
+                $scope.prismUndo = function () {
+                    if (vm.prism.undoStack.length) {
+                        vm.prism.redoStack.push({
+                            overlays: vm.prism.overlays
+                        })
+                        const prevState = vm.prism.undoStack.pop()
+                        vm.prism.overlays = prevState.overlays
+                    }
+                }
+
+                // Pushes current state to the undo stack and resores from redo stack.
+                $scope.prismRedo = function () {
+                    if (vm.prism.redoStack.length) {
+                        vm.prism.undoStack.push({
+                            overlays: vm.prism.overlays
+                        })
+                        const nextState = vm.prism.redoStack.pop()
+                        vm.prism.overlays = nextState.overlays
+                    }
+                }
+
+                // Change the image zoom level. Implemented with CSS scale transform.
+                $scope.prismZoom = function (amount) {
+                    const p = vm.prism
+                    if (amount > 0) {
+                        p.scale *= 1.1
+                    } else if (amount < 0) {
+                        p.scale *= 0.90
+                    } else {
+                        p.scale = 1.0
+                    }
+
+                    // Scale the image by setting a scaling transform style.
+                    // Also, transform-origin is set to upper left corner (see image.css)
+                    p.transform = 'scale(' + vm.prism.scale + ')'
+                }
+
+                // Shows/hides the overlays
+                $scope.prismToggleOverlays = function () {
+                    vm.prism.showOverlays = !vm.prism.showOverlays
+                }
+
+                // Click handler for overlays. May be a select or a split.
+                $scope.prismClickedOverlay = function (evt) {
+                    // To find the model data for the overlay that was clicked.
+                    // Parse the element's id (e.g. 'ovl-14') to get the
+                    // index (14), then get the data element (vm.prism.overlays[14])
+                    const ovlElt = evt.target
+                    const index = parseInt(ovlElt.id.substr(4))
+                    if (evt.altKey) {
+                        $scope.prismSplitOverlays(evt)
+                    } else {
+                        $scope.prismSelectOverlay(index, evt.shiftKey)
+                    }
+                    evt.stopPropagation()
+                }
+
+                // Change the selection state.
+                // If shiftSelect is false, set the overlay's selection state to true and
+                // sets the state of all other coverlays to false. If shiftSelect is true, 
+                // toggles the selection state of the specified overlay only (no others are affected).
+                $scope.prismSelectOverlay = function (index, shiftSelect) {
+                    const ovl = vm.prism.overlays[index]
+                    if (shiftSelect) {
+                        ovl.selected = !ovl.selected
+                    } else {
+                        vm.prism.overlays.forEach(o => {
+                            o.selected = o === ovl
+                        })
+                    }
+                }
+
+                // Splits all selected overlays along a horizontal or vertical line passing through
+                // the point where the mouse was clicked. 
+                $scope.prismSplitOverlays = function (evt) {
+                    const direction = (evt.shiftKey ? "vertical" : "horizontal")
+                    const img = document.getElementById("prism-image")
+                    const imgRect = img.getBoundingClientRect()
+                    const x = Math.round((evt.clientX - imgRect.x) / vm.prism.scale)
+                    const y = Math.round((evt.clientY - imgRect.y) / vm.prism.scale)
+
+                    prismPushState()
+
+                    const newOvls = []
+                    vm.prism.overlays.forEach(ovl => {
+                        if (!ovl.selected) return
+                        if (direction === "horizontal") {
+                            if (ovl.y >= y || (ovl.y + ovl.height) <= y) return
+                            newOvls.push(prismNewOverlay(ovl.x, y, ovl.width, ovl.height - (y - ovl.y), true))
+                            ovl.height = y - ovl.y
+                        } else {
+                            if (ovl.x >= x || (ovl.x + ovl.width) <= x) return
+                            newOvls.push(prismNewOverlay(x, ovl.y, ovl.width - (x - ovl.x), ovl.height, true))
+                            ovl.width = x - ovl.x
+                        }
+                    })
+                    vm.prism.overlays  = vm.prism.overlays.concat(newOvls)
+
+                    if (newOvls.length === 0) $scope.prismPopState()
+                }
+
+                // Set selection state of all overlays to true
+                $scope.prismSelectAllOverlays = function () {
+                    vm.prism.overlays.forEach(o => {
+                        o.selected = true
+                    })
+                }
+
+                // Set selection state of all overlays to false
+                $scope.prismUnselectAllOverlays = function () {
+                    vm.prism.overlays.forEach(o => {
+                        o.selected = false
+                    })
+                }
+
+                // Delete overlays where selected state is true
+                $scope.prismDeletedSelectedOverlays = function () {
+                    prismPushState()
+                    vm.prism.overlays = vm.prism.overlays.filter(o => !o.selected)
+                }
+
+                // Delete all overlays
+                $scope.prismDeleteAllOverlays = function () {
+                    prismPushState()
+                    vm.prism.overlays = []
+                }
+
+                // Create a single overlay that exactly covers the image.
+                $scope.prismCreateCoveringOverlay = function () {
+                    prismPushState()
+                    vm.prism.overlays.push(prismNewOverlay(0,0,vm.prism.xdim,vm.prism.ydim, true))
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
