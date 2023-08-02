@@ -410,6 +410,66 @@
                         jnumOnBlur();
 		}
 
+                // duplicate image
+		function duplicateImage() {
+			console.log("duplicateImage()");
+
+                        var newImage = vm.apiDomain;
+
+                        newImage.imageKey = "";
+                        newImage.accID = "";
+                        newImage.editAccessionIds = [];
+                        newImage.editAccessionIds[0] = {"accID":""};
+                        newImage.nonEditAccessionIds = [];
+                        newImage.nonEditAccessionIds[0] = {"accID":""};
+                        newImage.xdim = "";
+                        newImage.ydim = "";
+                        newImage.thumbnailImage = {};
+                        newImage.thumbnailImage.accID = "";
+                        newImage.createdByKey = "";
+                        newImage.createdBy = "";
+                        newImage.modifiedByKey = "";
+                        newImage.modifiedBy = "";
+                        newImage.creation_date = "";
+                        newImage.modification_date = "";
+
+                        newImage.captionNote.processStatus = "c";
+                        newImage.captionNote.noteKey = "";
+                        newImage.captionNote.objectKey = "";
+                        newImage.copyrightNote.processStatus = "c";
+                        newImage.copyrightNote.noteKey = "";
+                        newImage.copyrightNote.objectKey = "";
+			newImage.privateCuratorialNote = {};	
+			newImage.privateCuratorialNote.noteKey = "";
+			newImage.privateCuratorialNote.noteTypeKey = "1025";
+			newImage.privateCuratorialNote.noteChunk = "";	
+			newImage.externalLinkNote = {};	
+			newImage.externalLinkNote.noteKey = "";
+			newImage.externalLinkNote.noteTypeKey = "1039";
+			newImage.externalLinkNote.noteChunk = "";	
+
+                        if (newImage.imagePanes != null) {
+                                for(var i=0;i<newImage.imagePanes.length; i++) {
+                                        if (newImage.imagePanes[i].processStatus == "x") {
+                                                newImage.imagePanes[i].processStatus = "c";
+                                                newImage.imagePanes[i].imagePaneKey = "";
+                                                newImage.imagePanes[i].imageKey = "";
+                                                newImage.imagePanes[i].x = "";
+                                                newImage.imagePanes[i].y = "";
+                                                newImage.imagePanes[i].width = "";
+                                                newImage.imagePanes[i].height = "";
+                                                newImage.imagePanes[i].accID = "";
+                                                newImage.imagePanes[i].pixID = "";
+                                                newImage.imagePanes[i].xdim = "";
+                                                newImage.imagePanes[i].ydim = "";
+                                        }
+                                }
+                        }
+
+                        vm.apiDomain = newImage;
+                        createObject();
+                }
+
 		// linkout to image detail
                 function imgDetailLink() {
                 FindElement.byId("objectAccId").then(function(element){
@@ -890,6 +950,7 @@
 		$scope.modifyObject = modifyObject;
 		$scope.deleteObject = deleteObject;
 		$scope.modifyAlleleAssoc = modifyAlleleAssoc;
+		$scope.duplicateImage = duplicateImage;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

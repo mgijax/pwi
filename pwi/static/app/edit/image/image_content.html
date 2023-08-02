@@ -16,7 +16,7 @@
 
 		<div class="row topMargin">
 
-			<div class="col-sm-3" style="">
+			<div class="col-sm-2" style="">
 				<label class="label label-edit">J#</label>
 				<input class="form-control" 
 					ng-blur="jnumOnBlur()"
@@ -37,8 +37,8 @@
                                 </select>
 			</div>
 
-                        <div class="col-sm-2" ng-if="!vm.queryMode">
-                                <div class="gridButtonsWrapper">
+                        <div class="col-sm-2" style="">
+                                <div class="gridButtonsWrapper" ng-if="!vm.queryMode">
                                   <span style="position: relative; bottom: -1;">
                                     Image Detail<img style="position:absolute;" id="imgDetailButton" class="externalLink"
                                       src="/pwi/static/images/link_out.png" width=20 height=20
@@ -47,6 +47,9 @@
                                 </div>
                         </div>
 
+                        <div class="col-sm-2" style="text-align:right;">
+		                <button type="button" id="duplicateButton" tabindex="-1" ng-click="duplicateImage()" >Duplicate</button>
+                        </div>
 		</div>
 
 		<div class="row topMargin">

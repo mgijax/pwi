@@ -229,7 +229,9 @@
                     'ext.NCBI Gene Model':              'https://www.ncbi.nlm.nih.gov/gene?cmd=Retrieve&dopt=Graphics&list_uids=',
                     'ext.Ensembl Gene Model':           'http://useast.ensembl.org/Mus_musculus/Gene/Summary?g=',
 		    'ext.Pubmed':			'https://pubmed.ncbi.nlm.nih.gov/',
-		    'ext.Doi':			        'http://dx.doi.org/'
+		    'ext.Doi':			        'http://dx.doi.org/',
+                    'ext.RGD':                          'https://rgd.mcw.edu/rgdweb/report/gene/main.html?id=',
+                    'ext.UniProt':                      'https://www.ebi.ac.uk/QuickGO/annotations?geneProductId='
                 }
 
                 // Function for creating links to other pwi pages
