@@ -130,6 +130,7 @@ endpoints = {
     "nonmutantcellline": {},
     "organism": {},
     "probedetail": {},
+    "prism": {},
     "probe": {},
     "probesummary": {},
     "referencesummary": {},

@@ -1,0 +1,151 @@
+/*
+ * overrides and generic classes
+ */
+main {
+	background-color: #eeeeee;
+	margin-left: 0px;
+}
+button {
+	background-color: rgb(252,251,186);
+	margin: 3px 2px;
+        font-size: 12px;
+}
+button:disabled {
+	opacity: 0.5;
+}
+.form-control {
+	height: 22px;
+	padding: 2px 3px;
+	font-size: 12px;
+}
+.label { 
+	color: #000; 
+	padding: .1em .6em;
+}
+.label-static { 
+	background-color: rgb(203,232,248); 
+}
+.ui-widget {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+.spacer { 
+	height:6px;
+}
+.section {
+	border-style: ridge;
+	border-color:lightgray;
+}
+.sectionDivider {
+	border-top: 2px ridge lightgray;
+}
+form select, form input, form textarea {
+	margin-top: 1px;
+}
+textarea {
+	max-width:100%;
+}
+
+/*
+ * page-specific styles 
+ */
+
+.externalLink {
+        cursor: pointer;
+}
+
+.topMargin {
+	margin-top: 8px;
+}
+.bottomMargin {
+	margin-bottom: 8px;
+}
+.topPadding {
+	padding-top: 8px;
+}
+.bottomPadding {
+	padding-bottom: 8px;
+}
+
+/*
+ * If classes are used as overrides of oddResultRow, they must be defined
+ * after the oddResultRow class here in the style sheet.
+ */
+.oddResultRow {background-color: #ddd;}
+.resultsTableSelectedRow {background-color: rgb(252,251,186);}
+.deletedRow {background-color: orange;}
+
+#prism {
+}
+#prism-toolbar {
+}
+#prism-image-list {
+    max-height: 600px;
+    overflow: scroll;
+}
+.prism-image-entry {
+    cursor: pointer;
+    border: thin solid white;
+    font-weight: bold;
+}
+.prism-image-entry:hover {
+    background-color: white;
+}
+.prism-image-entry.selected {
+    background-color: white;
+}
+.prism-pane-entry {
+    padding-left: 16px;
+    font-weight: normal;
+}
+.prism-pane-entry.updated {
+    border: thin solid red;
+}
+.prism-pane-entry:hover {
+    background-color: lightgray;
+}
+.prism-image-entry > span,
+.prism-pane-entry > span > span {
+   float: right;
+   font-size: 11px;
+}
+#prism-noimage-div {
+    height: 600px;
+    width: 600px;
+    background: url("/pwi/static/images/noimage.jpeg");
+    display: none;
+}
+#prism.empty #prism-noimage-div {
+    display: block;
+}
+#prism-image-div {
+    padding: 0px;
+    overflow: visible;
+    z-index: 100;
+}
+#prism-wrapper {
+    position: relative;
+    width: fit-content;
+    transform-origin: top left;
+}
+#prism.empty #prism-wrapper {
+    display: none;
+}
+.prism-overlay {
+    position: absolute;
+    opacity: 0.7;
+    background-color: gray;
+    border: thin dashed black;
+}
+.prism-overlay.selected {
+    opacity: 0.4;
+    background-color: blue;
+    border: thin solid white;
+}
+.prism-pane-label {
+    background: transparent;
+    color: yellow;
+    font-size: 12pt;
+    display: block;
+    text-align: center;
+    pointer-events: none;
+}

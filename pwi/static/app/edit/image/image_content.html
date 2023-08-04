@@ -11,74 +11,8 @@
 <div class="container-fluid" style='min-width:1000px'>
 <div class="row ">
 
-        <!-- PRISM Image display and pane segmentation area --->
-        <div id="prism" class="col-sm-12" ng-show="vm.mode==='prism'" ng-if="vm.prism.pixid">
-            <div id="prism-toolbar" class="col-sm-12">
-                <input ng-model="vm.apiDomain.jnumid" />
-                <button ng-click="prismZoom(-1)" title="Zoom out">-1</button>
-                <button ng-click="prismZoom(0)" title="Reset zoom">0</button>
-                <button ng-click="prismZoom(+1)" title="Zoom in">+1</button>
-                <span>|</span>
-                <button disabled>ClickAssign</button>
-                <button disabled>GridAssign</button>
-                <button disabled>OnePane</button>
-                <span>|</span>
-                <button ng-click="prismUndo()" ng-disabled="vm.prism.undoStack.length === 0">Undo</button>
-                <button ng-click="prismRedo()" ng-disabled="vm.prism.redoStack.length === 0">Redo</button>
-                <span>|</span>
-                <button ng-click="prismCreateCoveringOverlay()" title="Create an overlay that covers the image.">Cover</button>
-                <button ng-click="prismDeletedSelectedOverlays()" title="Delete selected overlays.">Delete</button>
-                
-
-                <span style="float:right;">
-                <button ng-click="prismSelectAllOverlays()" title="Select all overlays.">Select all</button>
-                <button ng-click="prismToggleOverlays()" title="Hide/show the overlays.">{{ vm.prism.showOverlays ? 'Hide' : 'Show' }}</button>
-                <button ng-click="prismDeleteAllOverlays()" title="Delete all overlays.">Delete all</button>
-                <button disabled >Help</button>
-                <button ng-click="vm.mode='normal'" >Exit</button>
-                </span>
-            </div>
-
-            <div id="prism-image-list" class="col-sm-2">
-                <div ng-repeat="img in vm.prism.imageList"
-                    ng-click="setObject(img.index)"
-                    class="prism-image-entry"
-                    ng-class="{ selected : img.key === vm.apiDomain.imageKey }"
-                    >{{img.label}}</div>
-            </div>
-
-            <div id="prism-image-div" ng-click="prismUnselectAllOverlays()" class="col-sm-10">
-                <div id="prism-wrapper"
-                    ng-style="{ transform: vm.prism.transform }">
-                    <img id="prism-image" src="{{PIXDB_URL}}{{ vm.prism.pixid }}"
-                         ng-style="{
-                             width: vm.prism.xdim + 'px',
-                             height: vm.prism.ydim + 'px'
-                             }" />
-                    <div class="prism-overlay"
-                         ng-repeat="ovl in vm.prism.overlays"
-                         ng-show="vm.prism.showOverlays"
-                         ng-click="prismClickedOverlay($event)"
-                         ng-class="{
-                             selected: ovl.selected
-                             }"
-                         ng-style="{
-                             left: ovl.x + 'px',
-                             top: ovl.y + 'px',
-                             width: ovl.width + 'px',
-                             height: ovl.height + 'px'
-                             }"
-                         id="ovl-{{$index}}"
-                        >
-                        <span ng-repeat="pane in ovl.panes" class="prism-pane-label">{{pane.paneLabel}}; </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- end PRISM -->
-
 	<!-- main left panel -->
-	<div class="col-sm-9 section" style="min-height:1300px;" ng-show="vm.mode==='normal'">
+	<div class="col-sm-9 section" style="min-height:1300px;">
 
 		<div class="row topMargin">
 
@@ -184,7 +118,7 @@
                                   		<span style="position: relative; bottom: -1;">
                                     		Prism<img style="position:absolute;" id="prismButton" class="externalLink"
                                       		src="/pwi/static/images/link_out.png" width=20 height=20
-                                         			ng-click="vm.mode='prism'" >
+                                         			ng-click="prismLink()" >
                                   		</span>
                                 	</div>
                         		</div>
@@ -355,7 +289,7 @@
 	</div>
 
 	<!-- main right panel -->
-	<div class="col-sm-3 section" style="min-height:1300px;" ng-show="vm.mode==='normal'">
+	<div class="col-sm-3 section" style="min-height:1300px;" >
 
 		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
 		<button type="button" id="clearButton" tabindex="-1" ng-click="clear()" >Clear</button>

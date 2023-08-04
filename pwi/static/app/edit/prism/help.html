@@ -1,0 +1,207 @@
+<div id="helpSectionWrapper">
+
+<h2>P-WI Image Editor Interface functionality</h2>
+
+<p>
+Creative Commons Copyright Statement Blanks<br>
+In some cases a paper is from a journal that does not normally display a copyright statement, but it has a creative commons license. You can add the appropriate copyright statement, and we will attach images. Enter the correct license and link based on what is in the publication. 
+</p>
+<a tabindex="-1" href="http://prodwww.informatics.jax.org/all/GXD/WikiDocs/CreativeCommonsLicenses.txt" target="_blank">Creative Commons License Blanks</a>
+
+<h4>General Description</h4>
+<p>
+The Image module is a search, display and edit page all in one. A user must be logged in to edit but can search without logging in.
+
+</p><h4>Keyboard Short-cuts</h4>
+There are reported issues using these short-cuts with Mac/Firefox. 
+<ul>
+        <li>Add = Ctrl-Alt-A</li>
+        <li>Delete = Ctrl-Alt-D</li>
+        <li>Search = Ctrl-Alt-S</li>
+        <li>Clear = Ctrl-Alt-C</li>
+        <li>Modify = Ctrl-Alt-M</li>
+        <li>First = Ctrl-Alt-F</li>
+        <li>Previous = Ctrl-Alt-P</li>
+        <li>Next = Ctrl-Alt-N</li>
+        <li>Last = Ctrl-Alt-L</li>
+        
+</ul>
+
+<h4>Color-coded Labels</h4>
+<ul>
+        <li>Thistle = fields that may be searched (but not modified)</li>
+        <li>Green = fields that may be modified by the Curator</li>
+        <li>Blue = Read-only fields</li>
+        <li>Yellow = Action buttons</li>
+</ul>
+
+<h4>Supported Browsers</h4>
+<ul>
+        <li>Chrome and FireFox are supported on both PC and Mac computers.</li>
+        <li>Safari is NOT supported for the PWI. There are features that do not work.</li>
+</ul>
+
+<h3>Searching</h3>
+<p>
+All fields that have labels highlighted in thistle/blue/green may be used for searching. 
+They may be searched individually or in combination. To include data in a tab 
+in a search: click on the tab to expand it and enter text to be searched. 
+When more than one field is used in a search, it is treated as an AND search.
+</p>
+
+<h4>Wildcards</h4>
+<ul>
+        <li>Wildcards (%) may be used for most fields. </li>
+        <li>A wildcard may be used at the beginning, middle and/or end of your search text: e.g. %paired%, casein% or AK32%43%.</li>
+</ul> 
+ 
+<h4>Search by Dates</h4>
+<ul>
+        <li>Valid date formats for searching are:
+                <ul>
+                        <li>mm/dd/yyyy or mm-dd-yyyy</li>
+                        <li>mm/dd/yy or mm-dd-yy</li>
+                        <li>yyyy/mm/dd or yyyy-mm-dd</li>
+                </ul>
+        </li>
+        <li>Searching for a range of dates:
+                <ul>
+                        <li>equal to: enter a single date</li>
+                        <li>greater than: &gt; mm/dd/yyyy</li>
+                        <li>greater than or equal to: &gt;= mm/dd/yyyy</li>
+                        <li>less than: &lt; mm/dd/yyyy</li>
+                        <li>less than or equal to: &lt;= mm/dd/yyyy</li>
+                        <li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
+                        </ul>
+        </li>
+</ul> 
+<h4>Dialogue warning boxes(popups) behavior</h4>
+<ul>
+<li>When you are deleting images, you will be given a popup verifying that you want to do this.</li>
+<li>Depending on how quickly you delete and your browser (Firefox in particular), subsequent popups might include a check box asking if you want to "Prevent this page from creating additional dialogs."</li>
+<li>Do <b>NOT</b> click this because clicking Yes in the box is required to enable deletions (and if the box is not shown, you cannot click Yes).</li>
+<li>The only way to undo clicking the checkbox is to quit and relaunch the browser.</li>
+<li>Therefore, it is best to IGNORE this checkbox.</li>
+</ul>
+<h4>Duplicate</h4>
+<li>This allows you to create a new image stub using values from an existing stub.  All fields but External Link Notes and MGI Image/PIX will be copied to the new image stub.  Tip: change the figure label to the one you want for the new stub before hitting Duplicate.</li>
+<h4>Deselect</h4>
+<li>If you deselect the highlighted stub in the result return, all fields will be cleared except J# and copyright. This is useful when you have modified an existing stub and want to create a new one associated with that J#.</li>
+<h4>Image Classes and Types</h4>
+<p>
+There are three classes of images:
+</p>
+<ul>
+        <li>Expression</li>
+        <li>Molecular</li>
+        <li>Phenotypes</li>
+</ul>
+<p>
+There are two types of images:
+</p>
+<ul>
+        <li>full size</li>
+        <li>Thumbnail</li>
+</ul>
+<p>
+Full size phenotype images can be modified to Molecular or Molecular to Phenotype. The type of thumbnail will follow that of the full size image.<br/>
+All images contain at least one image pane, whether it is named or not. (Data associations are made to the pane, not the image.)
+</p>
+<h4>Expression Images</h4>
+<ul>
+        <li>Only full sized images are created with each add.</li>
+        <li>Expression curatorial policies:
+                <ul>
+                <li>GXD routinely enters image stubs without attaching JPGs to them</li>
+                <li>GXD routinely enters image panes.</li>
+                <li>GXD uses Prism, so individual panes may have X,Y coordinates.</li>
+                </ul></li>
+</ul>
+<h4>Phenotype/Molecular Images</h4>
+<ul>
+        <li>A full size and thumbnail image is created with each add.</li>
+        <li>The default when you enter via MGD images is type = phenotype.</li>
+        <li>Phenotype curatorial polices:
+                <ul>
+                <li>Pheno does not enter image stubs without attaching JPGs.</li>
+                <li>Pheno does not create named image panes.</li>
+                <li>Pheno does not use Prism, so individual panes will not have X,Y coordinates.</li>
+                <li>For thumbnail images: the caption is displayed in the FeWI but the copyright field is not, so a copyright statement is not required for the thumbnails</li>
+                </ul>
+        </li>
+</ul>
+<h4>Copyright</h4>
+There are various flavors of copyrights
+<ol>
+        <li>Journals that have given image permissions specifically to GXD or MGI. The statements are static and haven't changed over time.</li>
+        <li>Open Access Journals (generally use creative commons licenses). The license has likely changed over time (either type, version, or both)</li>
+        <li>Hybrid Access Journals (use creative commons, but not for every article). Curators choose either the license or no license.</li>
+</ol>
+<p>
+Generally the field is autopopulated during J# validation:
+</p>
+<ul>
+        <li>If there is only 1 copyright for the journal in the Journal Simple Vocab, it will autopopulate.</li>
+        <li>If there is more than 1 copyright for the journal in the simple vocab there are 3 possibilities:</li>
+<ol>
+                        <li>The curator will see a red picklist above the copyright called 'Journal Licenses'. Curator checks the pdf and chooses the correct license.</li>
+                        <li>For journals with a hybrid policy, the curator will see a red picklist. One entry is 'No image permissions'. Curator chooses between a license and no copyright statement.
+                        <li>The database determines which license to use based on the year of publication.</li>
+</ol>
+</ul>
+<p>
+Other features of the copyrights field.</p>
+<ul>            
+        <li>Curator can remove or modify copyrights, but a QC will list J#'s that have more than 1 copyright statement.</li>
+        <li>Some copyrights require a DOI ID. If this is null, a warning to the curator may be returned.</li>
+        <li>A chosen copyright statement will carry into the next figure for a J#, if the curator doesn't clear the module. Otherwise, curator will have to choose the copyright again.</li>
+</ul>   
+
+<h4>JPGs</h4>
+<ul>
+        <li>JPGs are attached to image stubs using the Image Submission module.</li>
+        <li>JPGs are submitted to PixelDB, creating a PixID. This PixID is then associated with the image stub.</li>
+        <li>To detach a JPG from a stub, use the erase button and hit Modify. Now you can attach another JPG. (The detached original JPG in now an "orphan" in PixelDB; these orphans are periodically purged.)</li>
+</ul>
+<h4>X, Y Coordinates</h4>
+<ul>
+        <li>The system determines the X,Y coordinates of an attached JPG.</li>
+        <li>The coordinates for an individual pane are entered using Prism.</li>
+</ul>
+<h4>External Link Notes</h4>
+<ul>
+<li>Used by phenotypes.</li>
+</ul>
+<h4>Other Accession IDs</h4>
+<ul>
+        <li>Used by Expression.</li>
+        <li>Currently IDs displayed for: GenePaint, and GUDMAP.</li>
+        <li>(There are also IDs stored for EMAGE but they are not displayed in the PWI as they are associated with panes; the other 3 are associated directly with the stub.)</li>
+</ul>
+<h4>Allele Associations</h4>
+<ul>
+        <li>These are used by phenotypes.</li>
+        <li>Alleles can be associated with an image stub in two ways; they can be directly indexed to an image or indirectly via a genotype that includes the allele.</li>
+        <li>The allele associations are created/updated only by clicking on the <b>Modify Allele Associations</b> button; they are not changed by modifications saved by using the Modify button in the upper right corner of the form.</li>
+        <li>When the button is clicked, the system ''scans'' the caption field to find the MGI id of alleles within the allele tag ("\AlleleSymbol(MGI:xxxx|0)|).</li>
+        <li>If the MGI id is a valid allele id, it will be added to the Allele Associations table. If it is not a valid id, it will not be added.</li>
+        <li>To change/update an association, the Curator must create/change the caption, hit the Add/Modify button in the upper right hand corner, and then click the Modify Allele Associations button.</li>
+        <li>If there are no alleles IDs in the caption, the allele associations will be removed when you click the button.  You need to be careful, though, because allele associations established via indexing to a genotype (eg J:175213) can be lost this way.</li>
+        <li>The default association of an image to an allele is primary=no; to make that stub the primary stub, the curator will have to change the value in the allele module. (There is no requirement to have a primary image; they can all be primary=no.)</li>
+        <li>Molecular images should only have one associated allele; Phenotype images can have many.</li>
+</ul>
+<h4>Further Information</h4>
+<p>See <a tabindex="-1" href="http://mgiwiki/mediawiki/index.php/sw:EI_Image">here</a>
+</p>
+
+
+ 
+</div> <!-- helpSectionWrapper -->
+
+
+</main>
+
+</body>
+</html> 
+
+</div> <!-- helpSectionWrapper -->

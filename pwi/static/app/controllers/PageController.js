@@ -209,7 +209,7 @@
                     'pwi.pdfviewer' :                   $scope.PDFVIEWER_URL,
                     'pwi.pdfviewerhome' :               $scope.PDFVIEWER_URL.replace("?id=",""),
                     'pwi.pixeldb' :                     $scope.PIXDB_URL,
-                    'pwi.prism' :                       $scope.PRISM_URL,
+                    'pwi.prism' :                       $scope.PWI_BASE_URL + 'edit/prism',
                     'pwi.probe' :                       $scope.PWI_BASE_URL + 'edit/probe',
                     'pwi.probedetail' :                 $scope.PWI_BASE_URL + 'edit/probedetail',
                     'pwi.probesummary' :                $scope.PWI_BASE_URL + 'edit/probesummary',

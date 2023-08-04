@@ -1,0 +1,99 @@
+
+<title >PRISM</title>
+
+<div ng-hide="vm.hideErrorContents">
+	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
+</div>
+
+<div class="container-fluid" style='min-width:1000px'>
+<div class="row ">
+
+        <!-- PRISM Image display and pane segmentation area --->
+        <div id="prism" class="col-sm-12" ng-class="{empty:vm.imageList.length===0 && !loading }">
+            <div id="prism-toolbar" class="col-sm-12">
+                <input ng-model="vm.jnumid" ng-blur="prismNewJnum()" ng-keydown="prismKeydown($event)"/>
+                <button ng-click="prismZoom(-1)" title="Zoom out">-1</button>
+                <button ng-click="prismZoom(0)" title="Reset zoom">0</button>
+                <button ng-click="prismZoom(+1)" title="Zoom in">+1</button>
+                <span>|</span>
+                <button disabled>ClickAssign</button>
+                <button disabled>GridAssign</button>
+                <button disabled>OnePane</button>
+                <span>|</span>
+                <button ng-click="prismUndo()" ng-disabled="vm.prism.undoStack.length === 0">Undo</button>
+                <button ng-click="prismRedo()" ng-disabled="vm.prism.redoStack.length === 0">Redo</button>
+                <span>|</span>
+                <button ng-click="prismCreateCoveringOverlay()" title="Create an overlay that covers the image.">Cover</button>
+                <button ng-click="prismDeletedSelectedOverlays()" title="Delete selected overlays.">Delete</button>
+                
+
+                <span style="float:right;">
+                <button ng-click="prismSelectAllOverlays()" title="Select all overlays.">Select all</button>
+                <button ng-click="prismToggleOverlays()" title="Hide/show the overlays.">{{ vm.prism.showOverlays ? 'Hide' : 'Show' }}</button>
+                <button ng-click="prismDeleteAllOverlays()" title="Delete all overlays.">Delete all</button>
+                <button disabled >Help</button>
+                </span>
+            </div>
+
+            <div id="prism-image-list" class="col-sm-3">
+                <div ng-repeat="img in vm.imageList"
+                    ng-click="imageEntryClicked(img)"
+                    class="prism-image-entry"
+                    ng-class="{ selected : img.imageKey === vm.currImage.imageKey }"
+                    >Figure: {{img.figureLabel}}
+                    <span>({{img.imageType}}; {{ img.numPanes }} pane{{ img.numPanes === 1 ? '' : 's' }})</span>
+                    <div ng-if="img.imageKey === vm.currImage.imageKey && !vm.hidePaneList">
+                        <div ng-repeat="pane in vm.currImage.imagePanes"
+                            ng-click="prismClickedPane($event,$index)"
+                            class="prism-pane-entry"
+                            ng-class="{updated : pane.processStatus === 'u'}"
+                            >
+                            <span ng-if="pane.imagePaneKey">
+                                {{pane.paneLabel || '*'}}
+                                <span>(x:{{pane.x}} y:{{pane.y}} w:{{pane.width}} h:{{pane.height}})</span>
+                            </span>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+
+            <div id="prism-image-div" ng-click="prismUnselectAllOverlays()" class="col-sm-9">
+                <div id="prism-noimage-div"></div>
+                <div id="prism-wrapper"
+                    ng-style="{ transform: vm.prism.transform }">
+                    <img id="prism-image" src="{{PIXDB_URL}}{{ vm.prism.pixid }}"
+                         ng-style="{
+                             width: vm.prism.xdim + 'px',
+                             height: vm.prism.ydim + 'px'
+                             }" />
+                    <div class="prism-overlay"
+                         ng-repeat="ovl in vm.prism.overlays"
+                         ng-show="vm.prism.showOverlays"
+                         ng-click="prismClickedOverlay($event)"
+                         ng-class="{
+                             selected: ovl.selected
+                             }"
+                         ng-style="{
+                             left: ovl.x + 'px',
+                             top: ovl.y + 'px',
+                             width: ovl.width + 'px',
+                             height: ovl.height + 'px'
+                             }"
+                         id="ovl-{{$index}}"
+                        >
+                        <span ng-repeat="pane in ovl.panes" class="prism-pane-label">{{pane.paneLabel}}; </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end PRISM -->
+
+</div>
+</div>
+
+<!-- Java API JSON data dump -->
+<show-model vm="vm" />
+
+<ng-include src="STATIC_APP_URL + '/edit/prism/help.html'" />
