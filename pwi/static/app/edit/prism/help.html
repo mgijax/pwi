@@ -1,207 +1,93 @@
-<div id="helpSectionWrapper">
+<h2>P-WI PRISM functionality</h2>
 
-<h2>P-WI Image Editor Interface functionality</h2>
+<h4>Using the tool</h4>
+	<ul>
+		<li>Load a new J#:</li>
+		<li>Enter the J# (with or without the prefix) in the text field at the top left and hit Return (or tab out of the field). The first image for the J# is opened automatically. </li>
+		<li>See a given figure and its panes:</li>
+		<li>Click on the figure label in the table on the left. The image for the figure is displayed. If pane coordinates have already been defined, the corresponding overlays are also displayed. </li>
+		<li>Draw a region:</li>
+			<ul>
+				<li>Drag the mouse over the desired section of the image.</li>
+				<li>Use the Cover feature.</li>
+				<li>Use the OnePane feature. Coordinates are automatically assigned with this feature. </li>
+			</ul>	
+		<li>Select region(s):</li>
+			<ul>		
+				<li>Click on it. </li>
+				<li>To select multiple regions, hold the shift key down while clicking.</li>
+				<li>If an image pane has coordinates, then clicking on the pane's row in the table will select the region in the image. </li>
+				<li>Clicking the button "SelectAll" will select all regions.</li>
+			</ul>							
+		<li>Split regions:</li>
+			<ul>		
+				<li>Select the region(s) to split. </li>
+				<li>To split along a horizontal, Option-click (hold down the Option (or Alt) key while clicking). All selected regions will be split along a horizontal line though the clicked location. (Regions not intersected by the horizontal are unaffected.) </li>
+				<li>To split along the vertical, also hold down the Shift key (Option-Shift-click).</li>
+			</ul>	
+		<li>Delete region(s) by selecting the region(s) to delete and click the "Delete" button (or type the corresp. keyboard shortcut). Panes that were currently associated with the regions will be dis-associated (and display a "?" for coordinates).</li>
+		<li>Associate a pane with a region:</li>
+			<ul>		
+				<li>Option 1: Drag the pane label from the table and drop onto the desired region. </li>
+				<li>Option 2: click "OnePane" to associate a single pane with the entire image area. Automatically assigns the coordinates. Use this when the entire image area is the pane.</li>
+				<li>Option 3: Click "ClickAssign" (note: the button stays depressed), and then click the regions in order. Panes will be assigned in order. You may click on a different panelabel (in the table) to start/continue from a different point. When you are done, click "ClickAssign" again, to reset the button. </li>
+				<li>Option 4: Click "GridAssign". Autoassigns all panes in order to defined regions in a left-to-right, top-to-bottom order. Option 4 works better when you have defined regions by splitting rather than by drawing freehand.</li>
+			</ul>
+		<li>Associate multiple panes with a region:</li>
+			<ul>
+				<li>Select multiple panes in the left column.</li>
+				<li>Drag and drop the selection onto the desired image region.</li>
+			</ul>	
+	</ul>
+	
+<h4>Error Messages</h4>
+	<ul>
+		<li>If the J# has no figures in the database (or cannot be found), an error message appears. </li>
+		<li>If a figure record exists, but has no associated image (JPEG file), a "No image available" message appears.</li>
+		<li>If there is no corresponding image, "No image available" is displayed.</li>
+		<li>If you try to leave without saving "There are unsaved changes. Would you like to save your changes?" is displayed.</li>
+	</ul>
+	
+<h4>Mouse actions:</h4>
+	<ul>
+		<li>click	Clicking on a region selects it.</li>
+		<li>shift-click	Selects multiple regions.</li>
+		<li>drag	Draws a new region.</li>
+		<li>option-click	Splits all selected regions along a horizontal line through the click point.</li>
+		<li>option-shift-click	Splits all selected regions along a vertical line through the click point.</li>
+		<li>Tip: on a fresh image (no regions yet) option-click or option-shift-click on the image will automatically create a covering region and then do the split.</li>
+	</ul>
 
-<p>
-Creative Commons Copyright Statement Blanks<br>
-In some cases a paper is from a journal that does not normally display a copyright statement, but it has a creative commons license. You can add the appropriate copyright statement, and we will attach images. Enter the correct license and link based on what is in the publication. 
-</p>
-<a tabindex="-1" href="http://prodwww.informatics.jax.org/all/GXD/WikiDocs/CreativeCommonsLicenses.txt" target="_blank">Creative Commons License Blanks</a>
-
-<h4>General Description</h4>
-<p>
-The Image module is a search, display and edit page all in one. A user must be logged in to edit but can search without logging in.
-
-</p><h4>Keyboard Short-cuts</h4>
-There are reported issues using these short-cuts with Mac/Firefox. 
-<ul>
-        <li>Add = Ctrl-Alt-A</li>
-        <li>Delete = Ctrl-Alt-D</li>
-        <li>Search = Ctrl-Alt-S</li>
-        <li>Clear = Ctrl-Alt-C</li>
-        <li>Modify = Ctrl-Alt-M</li>
-        <li>First = Ctrl-Alt-F</li>
-        <li>Previous = Ctrl-Alt-P</li>
-        <li>Next = Ctrl-Alt-N</li>
-        <li>Last = Ctrl-Alt-L</li>
-        
-</ul>
-
-<h4>Color-coded Labels</h4>
-<ul>
-        <li>Thistle = fields that may be searched (but not modified)</li>
-        <li>Green = fields that may be modified by the Curator</li>
-        <li>Blue = Read-only fields</li>
-        <li>Yellow = Action buttons</li>
-</ul>
-
-<h4>Supported Browsers</h4>
-<ul>
-        <li>Chrome and FireFox are supported on both PC and Mac computers.</li>
-        <li>Safari is NOT supported for the PWI. There are features that do not work.</li>
-</ul>
-
-<h3>Searching</h3>
-<p>
-All fields that have labels highlighted in thistle/blue/green may be used for searching. 
-They may be searched individually or in combination. To include data in a tab 
-in a search: click on the tab to expand it and enter text to be searched. 
-When more than one field is used in a search, it is treated as an AND search.
-</p>
-
-<h4>Wildcards</h4>
-<ul>
-        <li>Wildcards (%) may be used for most fields. </li>
-        <li>A wildcard may be used at the beginning, middle and/or end of your search text: e.g. %paired%, casein% or AK32%43%.</li>
-</ul> 
- 
-<h4>Search by Dates</h4>
-<ul>
-        <li>Valid date formats for searching are:
-                <ul>
-                        <li>mm/dd/yyyy or mm-dd-yyyy</li>
-                        <li>mm/dd/yy or mm-dd-yy</li>
-                        <li>yyyy/mm/dd or yyyy-mm-dd</li>
-                </ul>
-        </li>
-        <li>Searching for a range of dates:
-                <ul>
-                        <li>equal to: enter a single date</li>
-                        <li>greater than: &gt; mm/dd/yyyy</li>
-                        <li>greater than or equal to: &gt;= mm/dd/yyyy</li>
-                        <li>less than: &lt; mm/dd/yyyy</li>
-                        <li>less than or equal to: &lt;= mm/dd/yyyy</li>
-                        <li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
-                        </ul>
-        </li>
-</ul> 
-<h4>Dialogue warning boxes(popups) behavior</h4>
-<ul>
-<li>When you are deleting images, you will be given a popup verifying that you want to do this.</li>
-<li>Depending on how quickly you delete and your browser (Firefox in particular), subsequent popups might include a check box asking if you want to "Prevent this page from creating additional dialogs."</li>
-<li>Do <b>NOT</b> click this because clicking Yes in the box is required to enable deletions (and if the box is not shown, you cannot click Yes).</li>
-<li>The only way to undo clicking the checkbox is to quit and relaunch the browser.</li>
-<li>Therefore, it is best to IGNORE this checkbox.</li>
-</ul>
-<h4>Duplicate</h4>
-<li>This allows you to create a new image stub using values from an existing stub.  All fields but External Link Notes and MGI Image/PIX will be copied to the new image stub.  Tip: change the figure label to the one you want for the new stub before hitting Duplicate.</li>
-<h4>Deselect</h4>
-<li>If you deselect the highlighted stub in the result return, all fields will be cleared except J# and copyright. This is useful when you have modified an existing stub and want to create a new one associated with that J#.</li>
-<h4>Image Classes and Types</h4>
-<p>
-There are three classes of images:
-</p>
-<ul>
-        <li>Expression</li>
-        <li>Molecular</li>
-        <li>Phenotypes</li>
-</ul>
-<p>
-There are two types of images:
-</p>
-<ul>
-        <li>full size</li>
-        <li>Thumbnail</li>
-</ul>
-<p>
-Full size phenotype images can be modified to Molecular or Molecular to Phenotype. The type of thumbnail will follow that of the full size image.<br/>
-All images contain at least one image pane, whether it is named or not. (Data associations are made to the pane, not the image.)
-</p>
-<h4>Expression Images</h4>
-<ul>
-        <li>Only full sized images are created with each add.</li>
-        <li>Expression curatorial policies:
-                <ul>
-                <li>GXD routinely enters image stubs without attaching JPGs to them</li>
-                <li>GXD routinely enters image panes.</li>
-                <li>GXD uses Prism, so individual panes may have X,Y coordinates.</li>
-                </ul></li>
-</ul>
-<h4>Phenotype/Molecular Images</h4>
-<ul>
-        <li>A full size and thumbnail image is created with each add.</li>
-        <li>The default when you enter via MGD images is type = phenotype.</li>
-        <li>Phenotype curatorial polices:
-                <ul>
-                <li>Pheno does not enter image stubs without attaching JPGs.</li>
-                <li>Pheno does not create named image panes.</li>
-                <li>Pheno does not use Prism, so individual panes will not have X,Y coordinates.</li>
-                <li>For thumbnail images: the caption is displayed in the FeWI but the copyright field is not, so a copyright statement is not required for the thumbnails</li>
-                </ul>
-        </li>
-</ul>
-<h4>Copyright</h4>
-There are various flavors of copyrights
-<ol>
-        <li>Journals that have given image permissions specifically to GXD or MGI. The statements are static and haven't changed over time.</li>
-        <li>Open Access Journals (generally use creative commons licenses). The license has likely changed over time (either type, version, or both)</li>
-        <li>Hybrid Access Journals (use creative commons, but not for every article). Curators choose either the license or no license.</li>
-</ol>
-<p>
-Generally the field is autopopulated during J# validation:
-</p>
-<ul>
-        <li>If there is only 1 copyright for the journal in the Journal Simple Vocab, it will autopopulate.</li>
-        <li>If there is more than 1 copyright for the journal in the simple vocab there are 3 possibilities:</li>
-<ol>
-                        <li>The curator will see a red picklist above the copyright called 'Journal Licenses'. Curator checks the pdf and chooses the correct license.</li>
-                        <li>For journals with a hybrid policy, the curator will see a red picklist. One entry is 'No image permissions'. Curator chooses between a license and no copyright statement.
-                        <li>The database determines which license to use based on the year of publication.</li>
-</ol>
-</ul>
-<p>
-Other features of the copyrights field.</p>
-<ul>            
-        <li>Curator can remove or modify copyrights, but a QC will list J#'s that have more than 1 copyright statement.</li>
-        <li>Some copyrights require a DOI ID. If this is null, a warning to the curator may be returned.</li>
-        <li>A chosen copyright statement will carry into the next figure for a J#, if the curator doesn't clear the module. Otherwise, curator will have to choose the copyright again.</li>
-</ul>   
-
-<h4>JPGs</h4>
-<ul>
-        <li>JPGs are attached to image stubs using the Image Submission module.</li>
-        <li>JPGs are submitted to PixelDB, creating a PixID. This PixID is then associated with the image stub.</li>
-        <li>To detach a JPG from a stub, use the erase button and hit Modify. Now you can attach another JPG. (The detached original JPG in now an "orphan" in PixelDB; these orphans are periodically purged.)</li>
-</ul>
-<h4>X, Y Coordinates</h4>
-<ul>
-        <li>The system determines the X,Y coordinates of an attached JPG.</li>
-        <li>The coordinates for an individual pane are entered using Prism.</li>
-</ul>
-<h4>External Link Notes</h4>
-<ul>
-<li>Used by phenotypes.</li>
-</ul>
-<h4>Other Accession IDs</h4>
-<ul>
-        <li>Used by Expression.</li>
-        <li>Currently IDs displayed for: GenePaint, and GUDMAP.</li>
-        <li>(There are also IDs stored for EMAGE but they are not displayed in the PWI as they are associated with panes; the other 3 are associated directly with the stub.)</li>
-</ul>
-<h4>Allele Associations</h4>
-<ul>
-        <li>These are used by phenotypes.</li>
-        <li>Alleles can be associated with an image stub in two ways; they can be directly indexed to an image or indirectly via a genotype that includes the allele.</li>
-        <li>The allele associations are created/updated only by clicking on the <b>Modify Allele Associations</b> button; they are not changed by modifications saved by using the Modify button in the upper right corner of the form.</li>
-        <li>When the button is clicked, the system ''scans'' the caption field to find the MGI id of alleles within the allele tag ("\AlleleSymbol(MGI:xxxx|0)|).</li>
-        <li>If the MGI id is a valid allele id, it will be added to the Allele Associations table. If it is not a valid id, it will not be added.</li>
-        <li>To change/update an association, the Curator must create/change the caption, hit the Add/Modify button in the upper right hand corner, and then click the Modify Allele Associations button.</li>
-        <li>If there are no alleles IDs in the caption, the allele associations will be removed when you click the button.  You need to be careful, though, because allele associations established via indexing to a genotype (eg J:175213) can be lost this way.</li>
-        <li>The default association of an image to an allele is primary=no; to make that stub the primary stub, the curator will have to change the value in the allele module. (There is no requirement to have a primary image; they can all be primary=no.)</li>
-        <li>Molecular images should only have one associated allele; Phenotype images can have many.</li>
-</ul>
-<h4>Further Information</h4>
-<p>See <a tabindex="-1" href="http://mgiwiki/mediawiki/index.php/sw:EI_Image">here</a>
-</p>
-
-
- 
-</div> <!-- helpSectionWrapper -->
-
-
-</main>
-
-</body>
-</html> 
-
-</div> <!-- helpSectionWrapper -->
+<h4>Tool Bar Buttons:</h4>
+	<ul>Hovering over tool bar buttons shows a description of the tool.	
+		<li>Reload</li>
+		<li>PDF</li>
+		<li>Undo</li>
+		<li>Redo</li>
+		<li>-1 0 +1 - zoom in or out</li>
+		<li>Hide - toggles showing the selections</li>
+		<li>Clear - clears all selections</li>
+		<li>Save - saves all figures (not restricted to only the current figure)</li>
+		<li>Cover - covers whole image space</li>
+		<li>Delete - deletes currently selected region.</li>
+		<li>SelectAll</li>
+		<li>ClickAssign - description above</li>
+		<li>GridAssign - description above</li>
+		<li>OnePane - description above</li>
+	</ul>
+	
+<h4>Keyboard Short-cuts</h4>
+	<ul>Note: "Option" may be "Alt" on your keyboard.
+		<li>option-s	Save</li>
+		<li>option-z	Undo</li>
+		<li>option-r	Redo</li>
+		<li>DEL or BACKSPACE	Delete selected</li>
+		<li>option-x	Delete selected</li>
+		<li>option-shift-x	Clear (delete all)</li>
+		<li>option-g	GridAssign</li>
+		<li>option-o	Onepane</li>
+		<li>option-c	Cover</li>
+		<li>option--	Zoom-out</li>
+		<li>option-+	Zoom-in</li>
+		<li>option-0	Original size</li>
+	</ul>

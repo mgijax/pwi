@@ -486,7 +486,7 @@
 
                 function prismLink() {
                         FindElement.byId("JNumID").then(function(element){
-                        var prismUrl = pageScope.url_for('pwi.prism', '#' + element.value);
+                        var prismUrl = pageScope.url_for('pwi.prism', '?jnum=' + element.value);
                         window.open(prismUrl, '_blank');
                         });
                 }

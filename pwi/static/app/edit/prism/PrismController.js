@@ -52,10 +52,12 @@
 		/////////////////////////////////////////////////////////////////////		
 		
                 function init () {
-                    if (vm.jnumid) searchByJnum(vm.jnumid)
+                    const jnum = document.location.search.split("?jnum=")[1]
+                    if (jnum) searchByJnum(jnum)
                 }
 
                 function searchByJnum (jnumid) {
+                    vm.jnumid = jnumid
                     pageScope.loadingStart();
                     ImageSearchAPI.search( { jnumid } , function(data) {
                             if (data.length === 0) {
