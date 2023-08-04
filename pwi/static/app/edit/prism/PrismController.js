@@ -58,6 +58,7 @@
 
                 function searchByJnum (jnumid) {
                     vm.jnumid = jnumid
+                    if (!jnumid) return
                     pageScope.loadingStart();
                     ImageSearchAPI.search( { jnumid } , function(data) {
                             if (data.length === 0) {
@@ -88,6 +89,18 @@
                     }, function(err) {
                             pageScope.handleError(vm, "Error retrieving data object.");
                     });
+                }
+
+                function save () {
+                    alert("Save not implemented.")
+                }
+
+                function gridAssign () {
+                    alert("GridAssign not implemented.")
+                }
+
+                function onePane () {
+                    alert("OnePane not implemented.")
                 }
 
                 function imageEntryClicked (img) {
@@ -402,6 +415,7 @@
                 $scope.clickedPane = clickedPane
                 $scope.clickedOverlay = clickedOverlay
                 $scope.unselectAllOverlays = unselectAllOverlays
+                $scope.save = save
                 $scope.undo = undo
                 $scope.redo = redo
 		
@@ -409,6 +423,15 @@
 		globalShortcuts.bind(['alt+z'], () => { undo(); $scope.$apply() });
 		globalShortcuts.bind(['alt+r'], () => { redo(); $scope.$apply() });
 		globalShortcuts.bind(['backspace'], () => { deleteSelectedOverlays(); $scope.$apply() });
+		globalShortcuts.bind(['alt+x'], () => { deleteSelectedOverlays(); $scope.$apply() });
+		globalShortcuts.bind(['shift+alt+x'], () => { deleteAllOverlays(); $scope.$apply() });
+		globalShortcuts.bind(['alt+c'], () => { createCoveringOverlay(); $scope.$apply() });
+		globalShortcuts.bind(['alt+s'], () => { save(); $scope.$apply() });
+		globalShortcuts.bind(['alt+g'], () => { gridAssign(); $scope.$apply() });
+		globalShortcuts.bind(['alt+o'], () => { onePane(); $scope.$apply() });
+		//globalShortcuts.bind(['alt+up'], () => { zoom(+1); $scope.$apply() });
+		//globalShortcuts.bind(['alt+down'], () => { zoom(-1); $scope.$apply() });
+		//globalShortcuts.bind(['alt+0'], () => { zoom(0); $scope.$apply() });
 		
 		// call to initialize the page, and start the ball rolling...
 		init();
