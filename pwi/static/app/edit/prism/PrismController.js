@@ -124,7 +124,7 @@
                         if (!p.width) return;
                         const key = `${p.x}|${p.y}|${p.width}|${p.height}`
                         if (!ix[key]) {
-                            const ovl = prismNewOverlay(parseInt(p.x),parseInt(p.y),parseInt(p.width),parseInt(p.height),false, p)
+                            const ovl = newOverlay(parseInt(p.x),parseInt(p.y),parseInt(p.width),parseInt(p.height),false, p)
                             ix[key] = ovl
                             pdata.overlays.push(ovl)
                         } else {
@@ -143,29 +143,29 @@
                 }
 
                 // Called when user changes the J#
-                $scope.prismNewJnum = function () {
+                function changedJnum () {
                     searchByJnum(vm.jnumid)
                 }
 
                 // Key handler - blur focus if user hits ENTER
-                $scope.prismKeydown = function (evt) {
+                function keydown (evt) {
                     if (evt.keyCode === 13) evt.target.blur()
                 }
 
                 // Returns a new overlay with the specified geometry and selection state.
                 // Each overlay points to the panes associated with it.
-                function prismNewOverlay(x, y, width, height, selected, imgPane) {
+                function newOverlay(x, y, width, height, selected, imgPane) {
                     const panes = imgPane ? [imgPane] : []
                     return { x, y, width, height, selected, panes }
 
                 }
 
                 // Return the pverlay associated with the given pane, or undefined if none.
-                function prismGetAssociatedOverlay (pane) {
+                function getAssociatedOverlay (pane) {
                     return vm.prism.overlays.filter(o => o.panes.indexOf(pane) >= 0)[0]
                 }
 
-                function prismSyncOverlayToPane (p, ovl) {
+                function syncOverlayToPane (p, ovl) {
                     p.x = ovl.x
                     p.y = ovl.y
                     p.width = ovl.width
@@ -173,41 +173,41 @@
                     p.processStatus = 'u'
                 }
 
-                function prismSyncOverlayToPanes (ovl) {
-                    ovl.panes.forEach(p => prismSyncOverlayToPane(p,ovl))
+                function syncOverlayToPanes (ovl) {
+                    ovl.panes.forEach(p => syncOverlayToPane(p,ovl))
                 }
 
-                function prismNullifyPane (pane) {
+                function nullifyPane (pane) {
                     pane.x = pane.y = pane.width = pane.height = null;
                     pane.processStatus = 'u'
                 }
 
                 // dissociate pane for its current overlay, if any
-                function prismDissociate (pane) {
+                function dissociate (pane) {
                     vm.prism.overlays.forEach(o => {
                         const i = o.panes.indexOf(pane)
                         if (i >= 0) {
                             o.panes.splice(i,1)
-                            prismNullifyPane(pane)
+                            nullifyPane(pane)
                         }
                     })
                 }
 
                 // Associates one pane with one overlay. Removes pane from previous association, if any.
                 // If overlay if null, dissociates from previous overlay and makes no new association.
-                function prismAssociate (pane, ovl) {
+                function associate (pane, ovl) {
                     // dissociate pane for its current overlay, if any
-                    prismDissociate(pane)
+                    dissociate(pane)
                     // Associate pane with new overlay
                     if (ovl) {
                         ovl.panes.push(pane)
-                        prismSyncOverlayToPane(pane, ovl)
+                        syncOverlayToPane(pane, ovl)
                     }
                 }
 
                 // UNDO/REDO functions -------------------------------------
 
-                function prismCopyPane (src, tgt) {
+                function copyPane (src, tgt) {
                     tgt.processStatus = src.processStatus
                     tgt.x = src.x
                     tgt.y = src.y
@@ -217,7 +217,7 @@
 
                 // Pushes the current edit state onto the undo stack and clears the redo statck.
                 // Undo-able actions call this function before changing the edit state.
-                function prismPushState () {
+                function pushState () {
                     vm.prism.undoStack.push({
                         overlays: vm.prism.overlays.map(o => Object.assign({},o)),
                         panes: vm.prism.imagePanes.map(p => Object.assign({},p))
@@ -227,7 +227,7 @@
 
                 // Pushes current edit state onto the redo stack,
                 // restores current edit state from top of undo stack.
-                $scope.prismUndo = function () {
+                function undo () {
                     if (vm.prism.undoStack.length) {
                         vm.prism.redoStack.push({
                             overlays: vm.prism.overlays,
@@ -240,7 +240,7 @@
                 }
 
                 // Pushes current state to the undo stack and resores from redo stack.
-                $scope.prismRedo = function () {
+                function redo () {
                     if (vm.prism.redoStack.length) {
                         vm.prism.undoStack.push({
                             overlays: vm.prism.overlays,
@@ -254,7 +254,7 @@
                 // ---------------------------------------------------------
 
                 // Change the image zoom level. Implemented with CSS scale transform.
-                $scope.prismZoom = function (amount) {
+                function zoom (amount) {
                     const p = vm.prism
                     if (amount > 0) {
                         p.scale *= 1.1
@@ -270,30 +270,30 @@
                 }
 
                 // Shows/hides the overlays
-                $scope.prismToggleOverlays = function () {
+                function toggleOverlays () {
                     vm.prism.showOverlays = !vm.prism.showOverlays
                 }
 
                 // Click handler for overlays. May be a select or a split.
-                $scope.prismClickedOverlay = function (evt) {
+                function clickedOverlay (evt) {
                     // To find the model data for the overlay that was clicked.
                     // Parse the element's id (e.g. 'ovl-14') to get the
                     // index (14), then get the data element (vm.prism.overlays[14])
                     const ovlElt = evt.target
                     const index = parseInt(ovlElt.id.substr(4))
                     if (evt.altKey) {
-                        $scope.prismSplitOverlays(evt)
+                        $scope.splitOverlays(evt)
                     } else {
-                        $scope.prismSelectOverlay(index, evt.shiftKey)
+                        $scope.selectOverlay(index, evt.shiftKey)
                     }
                     evt.stopPropagation()
                 }
 
                 // Handler for clicking on pane label
-                $scope.prismClickedPane = function (evt, idx) {
+                function clickedPane (evt, idx) {
                     const pane = vm.currImage.imagePanes[idx]
-                    const ovl = prismGetAssociatedOverlay(pane)
-                    _prismSelectOverlay (ovl, evt.shiftKey)
+                    const ovl = getAssociatedOverlay(pane)
+                    _selectOverlay (ovl, evt.shiftKey)
                     evt.stopPropagation()
                 }
 
@@ -301,12 +301,12 @@
                 // If shiftSelect is false, set the overlay's selection state to true and
                 // sets the state of all other coverlays to false. If shiftSelect is true, 
                 // toggles the selection state of the specified overlay only (no others are affected).
-                $scope.prismSelectOverlay = function (index, shiftSelect) {
+                $scope.selectOverlay = function (index, shiftSelect) {
                     const ovl = vm.prism.overlays[index]
-                    _prismSelectOverlay (ovl, shiftSelect)
+                    _selectOverlay (ovl, shiftSelect)
                 }
 
-                function _prismSelectOverlay (ovl, shiftSelect) {
+                function _selectOverlay (ovl, shiftSelect) {
                     if (shiftSelect) {
                         ovl.selected = !ovl.selected
                     } else {
@@ -318,102 +318,97 @@
 
                 // Splits all selected overlays along a horizontal or vertical line passing through
                 // the point where the mouse was clicked. 
-                $scope.prismSplitOverlays = function (evt) {
+                $scope.splitOverlays = function (evt) {
                     const direction = (evt.shiftKey ? "vertical" : "horizontal")
                     const img = document.getElementById("prism-image")
                     const imgRect = img.getBoundingClientRect()
                     const x = Math.round((evt.clientX - imgRect.x) / vm.prism.scale)
                     const y = Math.round((evt.clientY - imgRect.y) / vm.prism.scale)
 
-                    prismPushState()
+                    pushState()
 
                     const newOvls = []
                     vm.prism.overlays.forEach(ovl => {
                         if (!ovl.selected) return
                         if (direction === "horizontal") {
                             if (ovl.y >= y || (ovl.y + ovl.height) <= y) return
-                            newOvls.push(prismNewOverlay(ovl.x, y, ovl.width, ovl.height - (y - ovl.y), true))
+                            newOvls.push(newOverlay(ovl.x, y, ovl.width, ovl.height - (y - ovl.y), true))
                             ovl.height = y - ovl.y
-                            prismSyncOverlayToPanes(ovl)
+                            syncOverlayToPanes(ovl)
                         } else {
                             if (ovl.x >= x || (ovl.x + ovl.width) <= x) return
-                            newOvls.push(prismNewOverlay(x, ovl.y, ovl.width - (x - ovl.x), ovl.height, true))
+                            newOvls.push(newOverlay(x, ovl.y, ovl.width - (x - ovl.x), ovl.height, true))
                             ovl.width = x - ovl.x
-                            prismSyncOverlayToPanes(ovl)
+                            syncOverlayToPanes(ovl)
                         }
                     })
                     vm.prism.overlays  = vm.prism.overlays.concat(newOvls)
 
-                    if (newOvls.length === 0) $scope.prismPopState()
+                    if (newOvls.length === 0) $scope.popState()
                 }
 
                 // Set selection state of all overlays to true
-                $scope.prismSelectAllOverlays = function () {
+                function selectAllOverlays () {
                     vm.prism.overlays.forEach(o => {
                         o.selected = true
                     })
                 }
 
                 // Set selection state of all overlays to false
-                $scope.prismUnselectAllOverlays = function () {
+                function unselectAllOverlays () {
                     vm.prism.overlays.forEach(o => {
                         o.selected = false
                     })
                 }
 
                 // Delete overlays where selected state is true
-                $scope.prismDeletedSelectedOverlays = function () {
-                    prismPushState()
+                function deleteSelectedOverlays () {
+                    pushState()
                     vm.prism.overlays = vm.prism.overlays.filter(o => {
-                        if (o.selected) o.panes.forEach(p => prismNullifyPane(p))
+                        if (o.selected) o.panes.forEach(p => nullifyPane(p))
                         return !o.selected
                     })
                 }
 
                 // Delete all overlays
-                $scope.prismDeleteAllOverlays = function () {
-                    prismPushState()
+                function deleteAllOverlays () {
+                    pushState()
                     vm.prism.overlays.forEach(o => {
-                        o.panes.forEach(p => prismNullifyPane(p))
+                        o.panes.forEach(p => nullifyPane(p))
                     })
                     vm.prism.overlays = []
                 }
 
                 // Create a single overlay that exactly covers the image.
-                $scope.prismCreateCoveringOverlay = function () {
-                    prismPushState()
-                    vm.prism.overlays.push(prismNewOverlay(0,0,vm.prism.xdim,vm.prism.ydim, true))
+                function createCoveringOverlay () {
+                    pushState()
+                    vm.prism.overlays.push(newOverlay(0,0,vm.prism.xdim,vm.prism.ydim, true))
                 }
 
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
 
-		$scope.selectImage = selectImage;
-		$scope.imageEntryClicked = imageEntryClicked;
+		$scope.selectImage = selectImage
+		$scope.imageEntryClicked = imageEntryClicked
+                $scope.deleteSelectedOverlays = deleteSelectedOverlays
+                $scope.deleteAllOverlays = deleteAllOverlays
+                $scope.selectAllOverlays = selectAllOverlays
+                $scope.toggleOverlays = toggleOverlays
+                $scope.changedJnum = changedJnum
+                $scope.zoom = zoom
+                $scope.keydown = keydown
+                $scope.createCoveringOverlay = createCoveringOverlay
+                $scope.clickedPane = clickedPane
+                $scope.clickedOverlay = clickedOverlay
+                $scope.unselectAllOverlays = unselectAllOverlays
+                $scope.undo = undo
+                $scope.redo = redo
 		
-		// global shortcuts
-		//$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
-		//$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
-		//$scope.Kfirst = function() { $scope.firstSummaryObject(); $scope.$apply(); }
-		//$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
-		//$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
-		//$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
-		//$scope.Kadd = function() { $scope.createObject(); $scope.$apply(); }
-		//$scope.Kmodify = function() { $scope.modifyObject(); $scope.$apply(); }
-		//$scope.Kdelete = function() { $scope.deleteObject(); $scope.$apply(); }
-
 		var globalShortcuts = Mousetrap($document[0].body);
-		//globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
-		//globalShortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
-		//globalShortcuts.bind(['ctrl+alt+f'], $scope.Kfirst);
-		//globalShortcuts.bind(['ctrl+alt+p'], $scope.Kprev);
-		//globalShortcuts.bind(['ctrl+alt+n'], $scope.Knext);
-		//globalShortcuts.bind(['ctrl+alt+l'], $scope.Klast);
-		//globalShortcuts.bind(['ctrl+alt+a'], $scope.Kadd);
-		//globalShortcuts.bind(['ctrl+alt+m'], $scope.Kmodify);
-		//globalShortcuts.bind(['ctrl+alt+d'], $scope.Kdelete);
-
+		globalShortcuts.bind(['alt+z'], () => { undo(); $scope.$apply() });
+		globalShortcuts.bind(['alt+r'], () => { redo(); $scope.$apply() });
+		globalShortcuts.bind(['backspace'], () => { deleteSelectedOverlays(); $scope.$apply() });
 		
 		// call to initialize the page, and start the ball rolling...
 		init();

@@ -76,6 +76,9 @@ textarea {
 
 #prism {
 }
+#prism-help {
+    padding-left: 16px;
+}
 #prism-toolbar {
 }
 #prism-image-list {
