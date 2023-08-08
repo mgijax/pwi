@@ -63,7 +63,7 @@
                     idLabel: 'Accession IDs',
                     apiArg: 'accid',
                     service: GenotypeGetByAccIDAPI,
-                    download: downloadBase + 'downloadGenotypeByAccID?accid='
+                    download: downloadBase + 'downloadGenotypeByAccIDs?accid='
                 }]
 
 		// Initializes the needed page values 
