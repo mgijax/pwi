@@ -1390,13 +1390,6 @@
 			vm.clipboardDomain.genotypeClipboardMembers.sort();
 		}
 
-		// summary clipboard
-		function summaryClipboard() {
-			console.log("summaryClipboard()");
-                        var genotypeUrl = pageScope.url_for('pwi.genotypesummary', '?user_id=' + USERNAME);
-                        window.open(genotypeUrl, '_blank');
-		}
-
 		// load a clipboard
 		function loadClipboard() {
 			console.log("loadClipboard()");
@@ -1417,6 +1410,30 @@
 				pageScope.handleError(vm, "API ERROR: MGISetMemberGetAPI.get");
 			});
 		}	
+
+		// search summary
+		function searchSummary() {
+			console.log("searchSummary()");
+
+                        if (vm.results.length == 0) {
+                                return;
+                        }
+
+                        // send all results.accID to genotypesummary
+                        var params = []
+			for(var i=0;i<vm.results.length; i++) {
+				params.push(vm.results[i].accID);
+			}
+                        var genotypeUrl = pageScope.url_for('pwi.genotypesummary', '?accid=' + params.join(","));
+                        window.open(genotypeUrl, '_blank');
+		}
+
+		// summary clipboard
+		function summaryClipboard() {
+			console.log("summaryClipboard()");
+                        var genotypeUrl = pageScope.url_for('pwi.genotypesummary', '?user_id=' + USERNAME);
+                        window.open(genotypeUrl, '_blank');
+		}
 
 		// link out to mpannot using clipboard keys
                 function mpannotLink() {
@@ -1509,7 +1526,10 @@
                 $scope.deleteClipboard = deleteClipboard;
                 $scope.clearClipboard = clearClipboard;
                 $scope.sortClipboard = sortClipboard;
+
+                // link outs
                 $scope.summaryClipboard = summaryClipboard;
+                $scope.searchSummary = searchSummary;
                 $scope.mpannotLink = mpannotLink;
                 $scope.doannotLink = doannotLink;
 

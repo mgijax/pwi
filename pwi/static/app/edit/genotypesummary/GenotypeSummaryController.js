@@ -18,6 +18,7 @@
 			// resource APIs
                         GenotypeGetByRefAPI,
                         GenotypeGetByClipboardAPI,
+                        GenotypeGetByAccIDAPI,
 			// config
 			JAVA_API_URL,
 			USERNAME
@@ -57,6 +58,12 @@
                     apiArg: 'accid',
                     service: GenotypeGetByClipboardAPI,
                     download: downloadBase + 'downloadGenotypeByClipboard?accid='
+                },{
+                    idArg : 'accid',
+                    idLabel: 'Accession IDs',
+                    apiArg: 'accid',
+                    service: GenotypeGetByAccIDAPI,
+                    download: downloadBase + 'downloadGenotypeByAccID?accid='
                 }]
 
 		// Initializes the needed page values 
