@@ -1534,8 +1534,8 @@
                 $scope.sortClipboard = sortClipboard;
 
                 // link outs
-                $scope.summaryClipboard = summaryClipboard;
                 $scope.searchSummary = searchSummary;
+                $scope.summaryClipboard = summaryClipboard;
                 $scope.mpannotLink = mpannotLink;
                 $scope.doannotLink = doannotLink;
 
