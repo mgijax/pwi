@@ -13,8 +13,11 @@
 			$window, 
 			// utilities
                         NoteTagConverter,
+                        FileWriter,
+                        UrlParser,
 			// resource APIs
                         GenotypeGetByRefAPI,
+                        GenotypeGetByClipboardAPI,
 			// config
 			JAVA_API_URL,
 			USERNAME
@@ -41,20 +44,39 @@
 		vm.apiDomain = {};
                 $scope.vmd = vm.apiDomain
 
+                const downloadBase = JAVA_API_URL + "genotype/"
+                const summaryOptions = [{
+                    idArg : 'refs_id',
+                    idLabel: 'Reference JNum',
+                    apiArg: 'accid',
+                    service: GenotypeGetByRefAPI,
+                    download: downloadBase + 'downloadGenotypeByRef?accid='
+                },{
+                    idArg : 'user_id',
+                    idLabel: 'Clipboard By User',
+                    apiArg: 'accid',
+                    service: GenotypeGetByClipboardAPI,
+                    download: downloadBase + 'downloadGenotypeByClipboard?accid='
+                }]
+
 		// Initializes the needed page values 
                 this.$onInit = function () { 
-                        const accid = document.location.search.split("?refs_id=")[1]
-                        if (accid) {
+                    const args = UrlParser.parseSearchString()
+                    for (let oi = 0; oi < summaryOptions.length; oi++) {
+                        const o = summaryOptions[oi]
+                        if (args[o.idArg]) {
+                            const accid = document.location.search.split("?" + o.idArg + "=")[1]
                             vm.loading=true
-			    vm.downloadUrl = JAVA_API_URL + 'genotype/downloadGenotypeByRef?accid=' + accid
-                            vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',accid]])
-                            this.service = GenotypeGetByRefAPI
+			    vm.downloadUrl = o.download + accid
+                            vm.youSearchForString = $scope.youSearchedFor([[o.idLabel,accid]])
+                            this.service = o.service
                             this.serviceArg = {accid}
                             // load the first page
                             $scope.pageAction(1, vm.page_size)
-                        } else {
-                            throw "No argument. Please specify jnum."
+                            return
                         }
+                    }
+                    throw "No argument. Please specify one of: refs_id, user_id."
                 };
 
                 $scope.pageAction = (pageFirstRow, pageNRows) => {

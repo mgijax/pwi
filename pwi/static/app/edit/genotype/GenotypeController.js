@@ -1390,6 +1390,13 @@
 			vm.clipboardDomain.genotypeClipboardMembers.sort();
 		}
 
+		// summary clipboard
+		function summaryClipboard() {
+			console.log("summaryClipboard()");
+                        var genotypeUrl = pageScope.url_for('pwi.genotypesummary', '?user_id=' + USERNAME);
+                        window.open(genotypeUrl, '_blank');
+		}
+
 		// load a clipboard
 		function loadClipboard() {
 			console.log("loadClipboard()");
@@ -1434,7 +1441,6 @@
 			console.log(params);
                         var mpannotUrl = pageScope.url_for('pwi.mpannot', '?searchKeys=' + params.join(","));
 			console.log(mpannotUrl);
-
                         window.open(mpannotUrl, '_blank');
                 }
 
@@ -1503,6 +1509,7 @@
                 $scope.deleteClipboard = deleteClipboard;
                 $scope.clearClipboard = clearClipboard;
                 $scope.sortClipboard = sortClipboard;
+                $scope.summaryClipboard = summaryClipboard;
                 $scope.mpannotLink = mpannotLink;
                 $scope.doannotLink = doannotLink;
 
