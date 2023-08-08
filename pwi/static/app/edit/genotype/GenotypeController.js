@@ -1415,17 +1415,21 @@
 		function searchSummary() {
 			console.log("searchSummary()");
 
-                        if (vm.results.length == 0) {
-                                return;
-                        }
+                        search();
 
-                        // send all results.accID to genotypesummary
-                        var params = []
-			for(var i=0;i<vm.results.length; i++) {
-				params.push(vm.results[i].accID);
-			}
-                        var genotypeUrl = pageScope.url_for('pwi.genotypesummary', '?accid=' + params.join(","));
-                        window.open(genotypeUrl, '_blank');
+                        setTimeout(function() {
+                                if (vm.results.length == 0) {
+                                        return;
+                                }
+
+                                // send all results.accID to genotypesummary
+                                var params = []
+			        for(var i=0;i<vm.results.length; i++) {
+				        params.push(vm.results[i].accID);
+			        }
+                                var genotypeUrl = pageScope.url_for('pwi.genotypesummary', '?accid=' + params.join(","));
+                                window.open(genotypeUrl, '_blank');
+                        }, (500));
 		}
 
 		// summary clipboard
