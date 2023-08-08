@@ -1431,6 +1431,12 @@
 		// summary clipboard
 		function summaryClipboard() {
 			console.log("summaryClipboard()");
+
+			if (vm.clipboardDomain.genotypeClipboardMembers.length == 0) {
+                                return;
+                        }
+
+                        // send username to genotypesummary
                         var genotypeUrl = pageScope.url_for('pwi.genotypesummary', '?user_id=' + USERNAME);
                         window.open(genotypeUrl, '_blank');
 		}
