@@ -62,15 +62,19 @@
             </div>
 
 
-            <div id="prism-image-div" ng-click="unselectAllOverlays()" class="col-sm-9">
+            <div id="prism-image-div" ng-click="clickedBackground($event)" class="col-sm-9">
                 <div id="prism-noimage-div"></div>
                 <div id="prism-wrapper"
                     ng-style="{ transform: vm.prism.transform }">
+                    <!-- the image -->
                     <img id="prism-image" src="{{PIXDB_URL}}{{ vm.prism.pixid }}"
+                         draggable="false"
                          ng-style="{
                              width: vm.prism.xdim + 'px',
                              height: vm.prism.ydim + 'px'
                              }" />
+
+                    <!-- overlays -->
                     <div class="prism-overlay"
                          ng-repeat="ovl in vm.prism.overlays"
                          ng-show="vm.prism.showOverlays"
@@ -88,6 +92,10 @@
                         >
                         <span ng-repeat="pane in ovl.panes" class="prism-pane-label">{{pane.paneLabel}}; </span>
                     </div>
+
+                    <!-- rubberband -->
+                    <div id="prism-rubberband" />
+
                 </div>
             </div>
         </div>

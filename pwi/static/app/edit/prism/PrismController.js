@@ -15,6 +15,8 @@
 			ErrorMessage,
 			FindElement,
 			Focus,
+                        // services
+                        DragifyService,
 			// resource APIs
 			ImageSearchAPI,
 			ImageGatherByKeyAPI,
@@ -23,6 +25,8 @@
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {};
+
+                window.vm = vm
 
                 vm.jnumid = null
                 vm.imageList = []
@@ -135,6 +139,64 @@
                         if (a.figureLabel > b.figureLabel) return 1
                         return 0
                     })
+
+                    initDragNDraw()
+                }
+
+                // Initializes the draw-by-dragging behavior in the image area.
+                // Draws an outlined box as the user drags within the image.
+                // At drag end, creates a new overlay and selects it.
+                function initDragNDraw () {
+
+                    const wrapper = document.getElementById("prism-wrapper")
+                    const img = document.getElementById("prism-image")
+
+                    function getRect (d) {
+                        const rect = {
+                            x: (d.startX - d.rootRect.x) / vm.prism.scale,
+                            y: (d.startY - d.rootRect.y) / vm.prism.scale,
+                            width: d.deltaX / vm.prism.scale,
+                            height: d.deltaY / vm.prism.scale
+                        }
+                        if (rect.width < 0) {
+                            rect.x += rect.width
+                            rect.width *= -1
+                        } 
+                        if (rect.height < 0) {
+                            rect.y += rect.height
+                            rect.height *= -1
+                        } 
+                        return rect
+                    }
+
+                    function setGeom (elt, rect) {
+                        elt.style.left = rect.x + 'px'
+                        elt.style.top = rect.y + 'px'
+                        elt.style.width = rect.width + 'px'
+                        elt.style.height = rect.height + 'px'
+                    }
+
+                    DragifyService.dragify(wrapper, {
+                        dragstart: (e,d) => {
+                            d.rubberband = document.getElementById("prism-rubberband")
+                            d.rubberband.style.display = 'block'
+                            setGeom(d.rubberband, getRect (d))
+                        },
+                        drag: (e,d) => {
+                            setGeom(d.rubberband, getRect (d))
+                        },
+                        dragend: (e,d) => {
+                            const r = getRect(d)
+                            d.rubberband.style.display = 'none'
+                            const ovl = newOverlay(Math.round(r.x), Math.round(r.y), Math.round(r.width), Math.round(r.height), true)
+                            pushState()
+                            vm.prism.overlays.push(ovl)
+                            window.setTimeout(function () {selectOverlay(ovl); $scope.$apply()}, 1)
+                        },
+                        dragcancel: (d) => {
+                            d.rubberband.style.display = 'none'
+                        }
+                    }, wrapper, this)
                 }
 
                 // Initializes the list of overlays based on the geometries of the given panes
@@ -190,12 +252,12 @@
                         if (a.y < b.y) return -1
                         if (a.y > b.y) return 1
                         if (a.x < b.x) return -1
-                        if (a.y > b.y) return 1
+                        if (a.x > b.x) return 1
                         return 0
                     })
                     pushState()
                     for (let i = 0; i < Math.min(vm.prism.overlays.length, vm.prism.imagePanes.length); i++) {
-                        associate(vm.prism.imagePanes[i], vm.prism.overlays[i])
+                        associate(vm.prism.imagePanes[i], ovls[i])
                     }
                 }
 
@@ -377,6 +439,12 @@
                     evt.stopPropagation()
                 }
 
+                //
+                function clickedBackground (e) {
+                    unselectAllOverlays()
+                }
+
+                //
                 function saveNeeded () {
                     if (!vm.prism) return false
                     for (let p of vm.prism.imagePanes) {
@@ -535,6 +603,7 @@
                 $scope.keydown = keydown
                 $scope.createCoveringOverlay = createCoveringOverlay
                 $scope.clickedOverlay = clickedOverlay
+                $scope.clickedBackground = clickedBackground
                 $scope.unselectAllOverlays = unselectAllOverlays
                 $scope.saveImage = saveImage
                 $scope.undo = undo
