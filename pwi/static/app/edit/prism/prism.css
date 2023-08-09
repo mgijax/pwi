@@ -13,6 +13,10 @@ button {
 button:disabled {
 	opacity: 0.5;
 }
+button.clickAssignMode {
+	background-color: rgb(0,251,186);
+}
+
 .form-control {
 	height: 22px;
 	padding: 2px 3px;
@@ -101,10 +105,14 @@ textarea {
     font-weight: normal;
 }
 .prism-pane-entry.updated {
-    border: thin solid red;
+   background-image: url("/pwi/static/images/updated.gif");
+   background-repeat: no-repeat;
 }
 .prism-pane-entry:hover {
     background-color: lightgray;
+}
+.prism-pane-entry.selected {
+   background-color: #dfe8f7;
 }
 .prism-image-entry > span,
 .prism-pane-entry > span > span {
