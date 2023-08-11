@@ -88,7 +88,7 @@
                     });
                 }
 
-                function saveImage () {
+                function saveImage (callback) {
                     pageScope.loadingStart();
                     // revove 'selected' field that was added to image panes
                     vm.currImage.imagePanes.forEach(p => { delete p.selected })
@@ -102,6 +102,7 @@
                             prismInit();
                         }
                         pageScope.loadingEnd();
+                        if (callback) callback()
                     }, function(err) {
                         pageScope.handleError(vm, "Error updating image.");
                         pageScope.loadingEnd();
@@ -140,14 +141,27 @@
                         return 0
                     })
 
-                    initDragNDraw()
+                    if (!vm.dndInitialized) {
+                        initDragNDraw()
+                        initDragNDrop()
+                        vm.dndInitialized = true
+                    }
                 }
 
-                // Initializes the draw-by-dragging behavior in the image area.
+                function reload () {
+                    checkSaveProceed(() => searchByJnum(vm.jnumid))
+                }
+
+                function showPdf () {
+                    //const url = 'http://bhmgiapp01.jax.org/usrlocalmgi/live/pdfviewer/pdfviewer.cgi?id=' + vm.jnumid
+                    const url =  $scope.PDFVIEWER_URL + vm.jnumid
+                    window.open(url, '_blank')
+                }
+
+                // Initializes handlers for drawing overlays by dragging.
                 // Draws an outlined box as the user drags within the image.
                 // At drag end, creates a new overlay and selects it.
                 function initDragNDraw () {
-
                     const wrapper = document.getElementById("prism-wrapper")
                     const img = document.getElementById("prism-image")
 
@@ -197,6 +211,55 @@
                             d.rubberband.style.display = 'none'
                         }
                     }, wrapper, this)
+                }
+
+                // Initializes handlers for making associations by dragging panes onto overlays.
+                // All currently selected panes at the start of the drag are associated to the pane that is the target at drag end.
+                //
+                function initDragNDrop () {
+                    const prism = document.getElementById("prism")
+                    const imageList = document.getElementById("prism-image-list")
+                    function getXY (e,d) {
+                        return {
+                            x: (e.clientX - d.rootRect.x) / vm.prism.scale,
+                            y: (e.clientY - d.rootRect.y) / vm.prism.scale
+                        }
+                    }
+                    function setXY (elt, xy, dxy) {
+                        dxy = dxy || {}
+                        elt.style.left = (xy.x + (dxy.dx || 0)) + 'px'
+                        elt.style.top  = (xy.y + (dxy.dy || 0)) + 'px'
+                    }
+                    DragifyService.dragify(imageList, {
+                        dragstart: (e,d) => {
+                            d.panes = vm.prism.imagePanes.filter(p => p.selected)
+                            if (d.panes.length === 0) return false
+                            const string = d.panes.map(p => p.paneLabel).join('; ') + ';'
+                            d.dragAvatar = document.getElementById("prism-pane-drag")
+                            d.dragAvatar.innerText = string
+                            d.dragAvatar.dxy = { dx: -2, dy: -16 }
+                            setXY(d.dragAvatar, getXY(e,d), d.dragAvatar.dxy)
+                        },
+                        drag: (e,d) => {
+                            setXY(d.dragAvatar, getXY(e,d), d.dragAvatar.dxy)
+                            d.dragAvatar.style.display = 'block'
+                        },
+                        dragend: (e,d) => {
+                            d.dragAvatar.style.display = 'none'
+                            const xy = getXY(e,d)
+                            const ovlElt = document.querySelector(".prism-overlay:hover")
+                            if (ovlElt) {
+                                pushState()
+                                const index = parseInt(ovlElt.id.substr(4))
+                                const ovl = vm.prism.overlays[index]
+                                d.panes.forEach(p => associate(p, ovl))
+                                window.setTimeout(function () {selectOverlay(ovl); $scope.$apply()}, 1)
+                            }
+                        },
+                        dragcancel: (d) => {
+                            d.dragAvatar.style.display = 'none'
+                        }
+                    }, prism, this)
                 }
 
                 // Initializes the list of overlays based on the geometries of the given panes
@@ -268,10 +331,9 @@
                     vm.prism.imagePanes.forEach(p => associate(p, vm.prism.overlays[0]))
                 }
 
-
                 // Called when user changes the J#
                 function changedJnum () {
-                    searchByJnum(vm.jnumid)
+                    checkSaveProceed(() => searchByJnum(vm.jnumid))
                 }
 
                 // Key handler - blur focus if user hits ENTER
@@ -401,12 +463,12 @@
                 // ---------------------------------------------------------
 
                 // Change the image zoom level. Implemented with CSS scale transform.
-                function zoom (amount) {
+                function zoom (amount, extra) {
                     const p = vm.prism
                     if (amount > 0) {
-                        p.scale *= 1.1
+                        p.scale *= extra ? 2 : 1.1
                     } else if (amount < 0) {
-                        p.scale *= 0.90
+                        p.scale *= extra ? 0.5 : 0.90
                     } else {
                         p.scale = 1.0
                     }
@@ -446,11 +508,39 @@
 
                 //
                 function saveNeeded () {
-                    if (!vm.prism) return false
+                    if (!vm.prism || !vm.prism.imagePanes) return false
                     for (let p of vm.prism.imagePanes) {
                         if (p.processStatus === 'u') return true
                     }
                     return false
+                }
+
+                // Checks if save is needed before proceeding with an action (a function call).
+                function checkSaveProceed(action) {
+                    if (!saveNeeded()) {
+                        action()
+                        return
+                    }
+                    $scope.saveAndProceed = () => dialogChoice('saveAndProceed', action),
+                    $scope.proceed = () => dialogChoice('proceed', action),
+                    $scope.cancelAction = () => dialogChoice('cancel', action)
+
+                    document.getElementById("prism-save-dialog").showModal()
+                }
+
+                function dialogChoice (choice, action) {
+                    document.getElementById("prism-save-dialog").close()
+                    if (choice === "saveAndProceed") {
+                        console.log("Saving")
+                        saveImage(action)
+                    } else if (choice === "proceed") {
+                        console.log("Proceeding")
+                        action()
+                    } else {
+                        console.log("Cancelling")
+                    }
+
+
                 }
 
                 // Clicked image entry label
@@ -458,15 +548,12 @@
                     if (img.imageKey === vm.currImage.imageKey) {
                         vm.hidePaneList = ! vm.hidePaneList
                     } else {
-                        if (saveNeeded() && !window.confirm("Unsaved changes exist! Click Cancel and then Save. " +
-                            "Or to proceed, click OK (changes will be lost).")) {
-                            return
-                        }
-                        selectImage(img)
-                        vm.hidePaneList = false
+                        checkSaveProceed(() => {
+                            selectImage(img)
+                            vm.hidePaneList = false
+                        })
                     }
                 }
-
 
                 // Handler for clicking on pane label
                 function paneEntryClicked (evt, idx) {
@@ -474,7 +561,7 @@
                     const ovl = getAssociatedOverlay(pane)
                     if (evt.shiftKey && vm.prism.clickAssignNextPane === null) {
                         pane.selected = !pane.selected
-                        ovl.selected = pane.selected
+                        if (ovl) ovl.selected = pane.selected
                     } else {
                         vm.prism.overlays.forEach(o => o.selected = false)
                         vm.prism.imagePanes.forEach(p => p.selected = false)
@@ -482,7 +569,7 @@
                         if (vm.prism.clickAssignNextPane !== null) {
                             vm.prism.clickAssignNextPane = idx
                         } else {
-                            ovl.selected = true
+                            if (ovl) ovl.selected = true
                         }
                     }
                     evt.stopPropagation()
@@ -588,10 +675,16 @@
                     vm.prism.overlays.push(newOverlay(0,0,vm.prism.xdim,vm.prism.ydim, true))
                 }
 
+                function showHelp () {
+                    document.getElementById('prism-help').scrollIntoView()
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
 
+                $scope.reload = reload
+                $scope.showPdf = showPdf
 		$scope.imageEntryClicked = imageEntryClicked
                 $scope.paneEntryClicked = paneEntryClicked
                 $scope.deleteSelectedOverlays = deleteSelectedOverlays
@@ -608,6 +701,7 @@
                 $scope.saveImage = saveImage
                 $scope.undo = undo
                 $scope.redo = redo
+                $scope.showHelp = showHelp
 
                 $scope.splitOverlays = splitOverlays
                 $scope.gridAssign = gridAssign
@@ -615,6 +709,7 @@
                 $scope.onePane = onePane
 
                 $scope.saveNeeded = saveNeeded
+                $scope.dialogChoice = dialogChoice
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['alt+z'], () => { undo(); $scope.$apply() });
@@ -623,12 +718,13 @@
 		globalShortcuts.bind(['alt+x'], () => { deleteSelectedOverlays(); $scope.$apply() });
 		globalShortcuts.bind(['shift+alt+x'], () => { deleteAllOverlays(); $scope.$apply() });
 		globalShortcuts.bind(['alt+c'], () => { createCoveringOverlay(); $scope.$apply() });
-		globalShortcuts.bind(['alt+s'], () => { save(); $scope.$apply() });
+		globalShortcuts.bind(['alt+s'], () => { saveImage(); $scope.$apply() });
 		globalShortcuts.bind(['alt+g'], () => { gridAssign(); $scope.$apply() });
 		globalShortcuts.bind(['alt+o'], () => { onePane(); $scope.$apply() });
-		//globalShortcuts.bind(['alt+up'], () => { zoom(+1); $scope.$apply() });
-		//globalShortcuts.bind(['alt+down'], () => { zoom(-1); $scope.$apply() });
-		//globalShortcuts.bind(['alt+0'], () => { zoom(0); $scope.$apply() });
+                // 
+		globalShortcuts.bind(['+'], () => { zoom(1); $scope.$apply() });
+		globalShortcuts.bind(['-'], () => { zoom(-1); $scope.$apply() });
+		globalShortcuts.bind(['0'], () => { zoom(0); $scope.$apply() });
 		
 		// call to initialize the page, and start the ball rolling...
 		init();

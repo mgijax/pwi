@@ -79,6 +79,8 @@ textarea {
 .deletedRow {background-color: orange;}
 
 #prism {
+    position: relative;
+    user-select: none;
 }
 #prism-help {
     padding-left: 16px;
@@ -145,6 +147,19 @@ textarea {
     border: thin dashed black;
     background: none;
     pointer-events: none;
+    z-index: 100;
+}
+#prism-save-dialog {
+    z-index: 1000;
+}
+#prism-pane-drag {
+    padding: 6px;
+    pointer-events: none;
+    position: absolute;
+    background-color: white;
+    border: thin solid black;
+    font-size: 10px;
+    z-index: 100;
 }
 #prism.empty #prism-wrapper {
     display: none;
