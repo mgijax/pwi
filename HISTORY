@@ -3,6 +3,21 @@
 # and try again
 #
 
+TAG: pwi-6-0-22-66
+TAG: pwi-6-0-22-65
+DATE: 08/08/2023
+STAFF: lec
+wts2-765/fl2-222/Remove mrk_alias table: backend components
+wts2-1249/fl2-475/GXD image module: change "copy" image from deselect to Add button
+wts2-1242/fl2-468/Add a link to RGD and UniProt when there is a Rat/Human identifier in the 'inferred from field'
+wts2-1250/fl2-477/Genotype Module - Clipboard Summary
+wts2-1251/fl2-478/Genotype Module - Result Search Summary
+
+TAG: pwi-6-0-22-64
+DATE: 07/20/2023
+STAFF: jer
+wts2-1234/fl2-446 re-written genotype feature in HT index cannot hand…
+
 TAG: pwi-6-0-22-63
 DATE: 07/13/2023
 STAFF: lec

@@ -1411,6 +1411,40 @@
 			});
 		}	
 
+		// search summary
+		function searchSummary() {
+			console.log("searchSummary()");
+
+                        search();
+
+                        setTimeout(function() {
+                                if (vm.results.length == 0) {
+                                        return;
+                                }
+
+                                // send all results.accID to genotypesummary
+                                var params = []
+			        for(var i=0;i<vm.results.length; i++) {
+				        params.push(vm.results[i].accID);
+			        }
+                                var genotypeUrl = pageScope.url_for('pwi.genotypesummary', '?accid=' + params.join(","));
+                                window.open(genotypeUrl, '_blank');
+                        }, (2000));
+		}
+
+		// summary clipboard
+		function summaryClipboard() {
+			console.log("summaryClipboard()");
+
+			if (vm.clipboardDomain.genotypeClipboardMembers.length == 0) {
+                                return;
+                        }
+
+                        // send username to genotypesummary
+                        var genotypeUrl = pageScope.url_for('pwi.genotypesummary', '?user_id=' + USERNAME);
+                        window.open(genotypeUrl, '_blank');
+		}
+
 		// link out to mpannot using clipboard keys
                 function mpannotLink() {
 			console.log("mpannotLink");
@@ -1434,7 +1468,6 @@
 			console.log(params);
                         var mpannotUrl = pageScope.url_for('pwi.mpannot', '?searchKeys=' + params.join(","));
 			console.log(mpannotUrl);
-
                         window.open(mpannotUrl, '_blank');
                 }
 
@@ -1503,6 +1536,10 @@
                 $scope.deleteClipboard = deleteClipboard;
                 $scope.clearClipboard = clearClipboard;
                 $scope.sortClipboard = sortClipboard;
+
+                // link outs
+                $scope.searchSummary = searchSummary;
+                $scope.summaryClipboard = summaryClipboard;
                 $scope.mpannotLink = mpannotLink;
                 $scope.doannotLink = doannotLink;
 
