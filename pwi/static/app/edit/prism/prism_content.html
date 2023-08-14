@@ -9,9 +9,9 @@
 <div class="row ">
 
         <!-- PRISM Image display and pane segmentation area --->
-        <div id="prism" class="col-sm-12" ng-class="{empty:vm.imageList.length===0 && !loading }">
+        <div id="prism" class="col-sm-12" ng-class="{empty: vm.noCurrentImage && !loading }">
             <div id="prism-toolbar" class="col-sm-12">
-                <input ng-model="vm.jnumid" ng-blur="changedJnum()" ng-keydown="keydown($event)" placeholder="Enter a Jnum"/>
+                <input onclick="this.select()" ng-model="vm.jnumid" ng-blur="changedJnum()" ng-keydown="keydown($event)" placeholder="Enter a Jnum"/>
                 <button ng-click="reload()" title="Reload current J#.">Reload</button>
                 <button ng-click="showPdf()" title="Show the PDF document for this J#.">PDF</button>
                 <span>|</span>
@@ -21,7 +21,7 @@
                 <span>|</span>
                 <button ng-click="saveImage()" ng-disabled="!saveNeeded()" title="Save changes to current image.">Save</button>
                 <span>|</span>
-                <button ng-click="clickAssign()" ng-class="{clickAssignMode:vm.prism.clickAssignNextPane !== null}" title="Toggle. While on, associates panes to regions as you click.">ClickAssign</button>
+                <button ng-click="clickAssign()" ng-class="{clickAssignMode:(vm.prism.clickAssignNextPane !== null && vm.prism.clickAssignNextPane !== undefined) }" title="Toggle. While on, associates panes to regions as you click.">ClickAssign</button>
                 <button ng-click="gridAssign()" title="Auto-assigns panes to regions in left-to-right, top-to-bottom order.">GridAssign</button>
                 <button ng-click="onePane()" title="Creates a single covering region and associates all panes.">OnePane</button>
                 <span>|</span>
@@ -52,6 +52,7 @@
                             ng-click="paneEntryClicked($event,$index)"
                             class="prism-pane-entry"
                             ng-class="{updated : pane.processStatus === 'u', selected: pane.selected }"
+                            id="pane-entry-{{$index}}"
                             >
                             <span ng-if="pane.imagePaneKey">
                                 {{pane.paneLabel || '*'}}
@@ -62,7 +63,6 @@
                     
                 </div>
             </div>
-
 
             <div id="prism-image-div" ng-click="clickedBackground($event)" class="col-sm-9">
                 <div id="prism-noimage-div"></div>

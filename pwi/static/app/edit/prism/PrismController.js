@@ -20,7 +20,8 @@
 			// resource APIs
 			ImageSearchAPI,
 			ImageGatherByKeyAPI,
-			ImageUpdateAPI
+			ImageUpdateAPI,
+                        USERNAME
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -28,9 +29,12 @@
 
                 window.vm = vm
 
+                vm.loggedIn = USERNAME
+
                 vm.jnumid = null
                 vm.imageList = []
                 vm.hidePaneList = false;
+                vm.noCurrentImage = true
 
 		// mapping of object data 
 		vm.currImage = {};
@@ -54,14 +58,19 @@
                 }
 
                 function searchByJnum (jnumid) {
-                    vm.jnumid = jnumid
                     if (!jnumid) return
+                    let jn = jnumid.trim().toUpperCase()
+                    if (jn.match('^[0-9]')) jn = 'J:' + jn
+                    if (!jn.match('^J:[0-9]+')) {
+                        alert('Invalid or malformed J number: ' + jnumid)
+                    }
+                    vm.jnumid = jn
                     pageScope.loadingStart();
                     ImageSearchAPI.search( { jnumid } , function(data) {
                             if (data.length === 0) {
                                 vm.imageList = []
                                 vm.currImage = {}
-                                vm.prism = {}
+                                clearPrismData()
                                 window.setTimeout( () => alert("Jnumber '" + jnumid + "' is not valid or has no images."), 100)
                             }
                             vm.imageList = data.sort((a,b) => {
@@ -109,9 +118,8 @@
                     });
                 }
 
-                function prismInit() {
-                    const data = vm.currImage
-                    const pdata = vm.prism = {
+                function clearPrismData () {
+                    vm.prism = {
                         pixid: null,
                         xdim: null,
                         ydim: null,
@@ -125,7 +133,14 @@
                         imageList: [],
                         clickAssignNextPane: null
                     }
+                    return vm.prism
+                }
+
+                function prismInit() {
+                    const data = vm.currImage
+                    const pdata = clearPrismData()
                     pdata.pixid = (data.editAccessionIds && data.editAccessionIds[0]) ? data.editAccessionIds[0].numericPart : null
+                    vm.noCurrentImage = !pdata.pixid
                     pdata.xdim = data.xdim
                     pdata.ydim = data.ydim
                     pdata.imagePanes = data.imagePanes // shared intentionally
@@ -232,7 +247,10 @@
                     }
                     DragifyService.dragify(imageList, {
                         dragstart: (e,d) => {
-                            d.panes = vm.prism.imagePanes.filter(p => p.selected)
+                            const pdiv = e.target.closest(".prism-pane-entry")
+                            if (!pdiv) return
+                            const pi = parseInt(pdiv.id.replace("pane-entry-",""))
+                            d.panes = vm.prism.imagePanes.filter((p,i) => p.selected || i === pi)
                             if (d.panes.length === 0) return false
                             const string = d.panes.map(p => p.paneLabel).join('; ') + ';'
                             d.dragAvatar = document.getElementById("prism-pane-drag")
@@ -333,7 +351,9 @@
 
                 // Called when user changes the J#
                 function changedJnum () {
-                    checkSaveProceed(() => searchByJnum(vm.jnumid))
+                    checkSaveProceed(() => {
+                        window.location.search = '?jnum=' + vm.jnumid
+                    })
                 }
 
                 // Key handler - blur focus if user hits ENTER
@@ -509,6 +529,7 @@
                 //
                 function saveNeeded () {
                     if (!vm.prism || !vm.prism.imagePanes) return false
+                    if (USERNAME === 'None') return false
                     for (let p of vm.prism.imagePanes) {
                         if (p.processStatus === 'u') return true
                     }
@@ -559,9 +580,36 @@
                 function paneEntryClicked (evt, idx) {
                     const pane = vm.currImage.imagePanes[idx]
                     const ovl = getAssociatedOverlay(pane)
-                    if (evt.shiftKey && vm.prism.clickAssignNextPane === null) {
+                    if (evt.metaKey && vm.prism.clickAssignNextPane === null) {
+                        // toggle selection state of target (only)
                         pane.selected = !pane.selected
                         if (ovl) ovl.selected = pane.selected
+                    } else if (evt.shiftKey && vm.prism.clickAssignNextPane === null) {
+                        // select range from (target to nearest selected above or below)
+                        let idx2 = null
+                        for (let i = idx+1; i < vm.currImage.imagePanes.length; i++) {
+                            if (vm.currImage.imagePanes[i].selected) {
+                                idx2 = i
+                                break
+                            }
+                        }
+                        if (idx2 === null) {
+                            for (let i = idx-1; i >= 0; i--) {
+                                if (vm.currImage.imagePanes[i].selected) {
+                                    idx2 = i
+                                    break
+                                }
+                            }
+                            if (idx2 === null) idx2 = idx
+                        }
+                        vm.prism.overlays.forEach(o => o.selected = false)
+                        vm.prism.imagePanes.forEach(p => p.selected = false)
+                        for (let i = Math.min(idx, idx2); i <= Math.max(idx,idx2); i++) {
+                            const pane = vm.prism.imagePanes[i]
+                            const ovl = getAssociatedOverlay(pane)
+                            pane.selected = true
+                            if (ovl) ovl.selected = true
+                        }
                     } else {
                         vm.prism.overlays.forEach(o => o.selected = false)
                         vm.prism.imagePanes.forEach(p => p.selected = false)
@@ -606,6 +654,18 @@
                     vm.prism.imagePanes.forEach(p => p.selected = false)
                     vm.prism.overlays.forEach(o => {
                         o.selected = false
+                    })
+                }
+
+                // Move selected overlays
+                function moveSelectedOverlays (dx, dy) {
+                    const selected = vm.prism.overlays.filter(o => o.selected)
+                    if (selected.length === 0) return
+                    pushState()
+                    selected.forEach(o => {
+                        o.x += dx
+                        o.y += dy
+                        syncOverlayToPanes(o)
                     })
                 }
 
@@ -714,7 +774,7 @@
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['alt+z'], () => { undo(); $scope.$apply() });
 		globalShortcuts.bind(['alt+r'], () => { redo(); $scope.$apply() });
-		globalShortcuts.bind(['backspace'], () => { deleteSelectedOverlays(); $scope.$apply() });
+		globalShortcuts.bind(['backspace','del','ctrl+h'], () => { deleteSelectedOverlays(); $scope.$apply() });
 		globalShortcuts.bind(['alt+x'], () => { deleteSelectedOverlays(); $scope.$apply() });
 		globalShortcuts.bind(['shift+alt+x'], () => { deleteAllOverlays(); $scope.$apply() });
 		globalShortcuts.bind(['alt+c'], () => { createCoveringOverlay(); $scope.$apply() });
@@ -725,6 +785,22 @@
 		globalShortcuts.bind(['+'], () => { zoom(1); $scope.$apply() });
 		globalShortcuts.bind(['-'], () => { zoom(-1); $scope.$apply() });
 		globalShortcuts.bind(['0'], () => { zoom(0); $scope.$apply() });
+                //
+                function moveSelected (e,dir) {
+                    const dist = e.shiftKey ? 10 : 1
+                    e.preventDefault()
+                    switch (dir) {
+                    case 'up'    : moveSelectedOverlays(0,-dist); break;
+                    case 'down'  : moveSelectedOverlays(0,dist); break;
+                    case 'left'  : moveSelectedOverlays(-dist,0); break;
+                    case 'right' : moveSelectedOverlays(dist,0); break;
+                    }
+                    $scope.$apply()
+                }
+                globalShortcuts.bind(['up','shift+up'],    (e) => moveSelected(e, 'up'));
+                globalShortcuts.bind(['down','shift+down'],  (e) => moveSelected(e, 'down'));
+                globalShortcuts.bind(['left', 'shift+left'],  (e) => moveSelected(e, 'left'));
+                globalShortcuts.bind(['right', 'shift+right'], (e) => moveSelected(e, 'right'));
 		
 		// call to initialize the page, and start the ball rolling...
 		init();
