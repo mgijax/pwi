@@ -101,26 +101,14 @@
 
                 this.doSummary = function (idArg) {
                     vm.loading=true
-                    if (idArg == "accid") {
-                        this.service.search(this.serviceArg, function (results) {
-                                prepareForDisplay(results.items)
-                                vm.loading=false
-                                vm.total_count = results.total_count
-			        $scope.restoreScrollPosition(1)
-                        }, function (err) {
-                                pageScope.handleError(vm, "API ERROR: " + err);
-                        })
-                    }
-                    else {
-                        this.service.search(this.serviceArg, function (results) {
-                                prepareForDisplay(results.items)
-                                vm.loading=false
-                                vm.total_count = results.total_count
-			        $scope.restoreScrollPosition(1)
-                        }, function (err) {
-                                pageScope.handleError(vm, "API ERROR: " + err);
-                        })
-                    }
+                    this.service.search(this.serviceArg, function (results) {
+                        prepareForDisplay(results.items)
+                        vm.loading=false
+                        vm.total_count = results.total_count
+			$scope.restoreScrollPosition(1)
+                    }, function (err) {
+                        pageScope.handleError(vm, "API ERROR: " + err);
+                    })
                 }
 
                 function prepareForDisplay (genotypes) {
