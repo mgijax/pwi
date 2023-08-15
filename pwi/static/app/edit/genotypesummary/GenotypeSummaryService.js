@@ -23,7 +23,7 @@
 	// get genotype by accession ids
 	function GenotypeGetByAccIDAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'genotype/getGenotypeByAccIDs', {}, {
-			'search': { method: 'GET', isArray: false }
+			'search': { method: 'POST' }
 		});
 	}
 

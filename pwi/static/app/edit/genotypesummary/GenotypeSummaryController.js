@@ -77,31 +77,50 @@
 			    vm.downloadUrl = o.download + accid
                             vm.youSearchForString = $scope.youSearchedFor([[o.idLabel,accid]])
                             this.service = o.service
-                            this.serviceArg = {accid}
+                            if (o.idArg == "accid") {
+                                this.serviceArg = accid
+                            }
+                            else {
+                                this.serviceArg = {accid}
+                            }
                             // load the first page
-                            $scope.pageAction(1, vm.page_size)
+                            $scope.pageAction(1, vm.page_size, o.idArg)
                             return
                         }
                     }
                     throw "No argument. Please specify one of: refs_id, user_id."
                 };
 
-                $scope.pageAction = (pageFirstRow, pageNRows) => {
-                    this.serviceArg.offset = pageFirstRow - 1
-                    this.serviceArg.limit = pageNRows
-                    this.doSummary ()
+                $scope.pageAction = (pageFirstRow, pageNRows, idArg) => {
+                    if (idArg != "accid") {
+                        this.serviceArg.offset = pageFirstRow - 1
+                        this.serviceArg.limit = pageNRows
+                    }
+                    this.doSummary (idArg)
                 }
 
-                this.doSummary = function () {
+                this.doSummary = function (idArg) {
                     vm.loading=true
-                    this.service.search(this.serviceArg, function (results) {
-                        prepareForDisplay(results.items)
-                        vm.loading=false
-                        vm.total_count = results.total_count
-			$scope.restoreScrollPosition(1)
-                    }, function (err) {
-                        pageScope.handleError(vm, "API ERROR: Get genotypes by " + idLabel + ": " + err);
-                    })
+                    if (idArg == "accid") {
+                        this.service.search(this.serviceArg, function (results) {
+                                prepareForDisplay(results.items)
+                                vm.loading=false
+                                vm.total_count = results.total_count
+			        $scope.restoreScrollPosition(1)
+                        }, function (err) {
+                                pageScope.handleError(vm, "API ERROR: " + err);
+                        })
+                    }
+                    else {
+                        this.service.search(this.serviceArg, function (results) {
+                                prepareForDisplay(results.items)
+                                vm.loading=false
+                                vm.total_count = results.total_count
+			        $scope.restoreScrollPosition(1)
+                        }, function (err) {
+                                pageScope.handleError(vm, "API ERROR: " + err);
+                        })
+                    }
                 }
 
                 function prepareForDisplay (genotypes) {
