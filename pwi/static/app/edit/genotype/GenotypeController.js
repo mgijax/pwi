@@ -1429,7 +1429,7 @@
 			        }
                                 var genotypeUrl = pageScope.url_for('pwi.genotypesummary', '?accid=' + params.join(","));
                                 window.open(genotypeUrl, '_blank');
-                        }, (2000));
+                        }, (3000));
 		}
 
 		// summary clipboard
