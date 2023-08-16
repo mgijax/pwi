@@ -5,7 +5,7 @@
 <li>User enters parameters, then clicks Search Summary button. The Search summary button should not be used after clicking Search (use one or the other).</li>
 <li>All genotypes listed on the search results box are included in the summary.</li>
 <li>Top of the summary lists the MGI ID's for all records in the search results.</li>
-<li>Sort is based on the order from the 'searched by' ID list, so it matches the sort of the results.</li>
+<li>Sort is by genetic background, then by allele detail display. Due to different ways the API compiles the data for the search results versus the summary, entries with multiple alleles may not match the sort of the results.</li>
 <li>Yes’es in the Annotations columns are based on any annotations using the genotype, not solely those derived from the reference.</li>
 <li>The summary logic does not use the expression cache. This means genotypes appear on the summary once they are annotated to specimens/gel lanes; it is not necessary that the results are annotated.</li>
 <li>Genotype results are paginated - 250 results per page. Results may also be downloaded as a tab-delimited file.</li>
