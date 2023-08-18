@@ -1427,8 +1427,9 @@
 			        for(var i=0;i<vm.results.length; i++) {
 				        params.push(vm.results[i].accID);
 			        }
-                                var genotypeUrl = pageScope.url_for('pwi.genotypesummary', '?accid=' + params.join(","));
-                                window.open(genotypeUrl, '_blank');
+                                const form = document.getElementById("genotype-search-summary-form")
+                                form.accid.value = params.join(",")
+                                form.submit()
                         }, (5000));
 		}
 

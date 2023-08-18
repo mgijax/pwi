@@ -21,7 +21,8 @@
                         GenotypeGetByAccIDAPI,
 			// config
 			JAVA_API_URL,
-			USERNAME
+			USERNAME,
+                        REQUEST_ARGS
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -68,19 +69,18 @@
 
 		// Initializes the needed page values 
                 this.$onInit = function () { 
-                    const args = UrlParser.parseSearchString()
                     for (let oi = 0; oi < summaryOptions.length; oi++) {
                         const o = summaryOptions[oi]
-                        if (args[o.idArg]) {
-                            const accid = document.location.search.split("?" + o.idArg + "=")[1]
+                        if (REQUEST_ARGS[o.idArg]) {
+                            const accid = REQUEST_ARGS[o.idArg]
                             vm.loading=true
 			    vm.downloadUrl = o.download + accid
                             vm.youSearchForString = $scope.youSearchedFor([[o.idLabel,accid]])
                             this.service = o.service
                             if (o.idArg == "accid") {
                                 this.serviceArg = accid
-                            }
-                            else {
+                                vm.page_size = 100000
+                            } else {
                                 this.serviceArg = {accid}
                             }
                             // load the first page
@@ -88,7 +88,7 @@
                             return
                         }
                     }
-                    throw "No argument. Please specify one of: refs_id, user_id."
+                    throw "No argument. Please specify one of: refs_id, user_id, accid."
                 };
 
                 $scope.pageAction = (pageFirstRow, pageNRows, idArg) => {
