@@ -1,6 +1,7 @@
 import os
 from flask import Blueprint, request, render_template
 from pwi import app, log
+import json
 
 ######################################################################################################
 # Set up a dictionary (called endpoints) that maps endpoint names to the parameters needed to render their pages. 
@@ -205,6 +206,18 @@ def fillEndpointCfg (epName):
         log(epCfg)
 
 ###
+
+def packageArgs (mdict) :
+    d = {}
+    for (key,vals) in mdict.lists():
+        if len(vals) == 1:
+            d[key] = vals[0]
+        else:
+            d[key] = vals
+    return json.dumps(d)
+        
+
+###
 # All defined endpoints route to this handler function.
 def genericEndpointHandler () :
     # get the endpoint name
@@ -214,6 +227,10 @@ def genericEndpointHandler () :
     # add the access token
     params['access_token'] = app.config['ACCESS_TOKEN']
     # log(epName+':\n'+ str(params))
+
+    args = request.args.copy()
+    args.update(request.form)
+    params['request_args'] = packageArgs(args)
 
     # render the template
     return render_template("pageLayout.html", **params)
@@ -226,5 +243,5 @@ edit = Blueprint('edit', __name__, url_prefix='/edit')
 # Attach  route for each defined endpoint (we do it this way instead of using @app.route
 # so we only have to list the endpoints once.)
 for epName in endpoints.keys():
-        edit.add_url_rule("/" + epName + "/", view_func=genericEndpointHandler)
+        edit.add_url_rule("/" + epName + "/", view_func=genericEndpointHandler, methods=['GET', 'POST'])
         fillEndpointCfg(epName)

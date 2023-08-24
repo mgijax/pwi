@@ -3,9 +3,13 @@
 # and try again
 #
 
+TAG: pwi-6-0-22-70
+TAG: pwi-6-0-22-69
+TAG: pwi-6-0-22-68
+TAG: pwi-6-0-22-67
 TAG: pwi-6-0-22-66
 TAG: pwi-6-0-22-65
-DATE: 08/08/2023
+DATE: 08/08/2023, 08/18/2023
 STAFF: lec
 wts2-765/fl2-222/Remove mrk_alias table: backend components
 wts2-1249/fl2-475/GXD image module: change "copy" image from deselect to Add button

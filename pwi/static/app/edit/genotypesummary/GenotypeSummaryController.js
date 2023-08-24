@@ -21,7 +21,8 @@
                         GenotypeGetByAccIDAPI,
 			// config
 			JAVA_API_URL,
-			USERNAME
+			USERNAME,
+                        REQUEST_ARGS
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -68,31 +69,37 @@
 
 		// Initializes the needed page values 
                 this.$onInit = function () { 
-                    const args = UrlParser.parseSearchString()
                     for (let oi = 0; oi < summaryOptions.length; oi++) {
                         const o = summaryOptions[oi]
-                        if (args[o.idArg]) {
-                            const accid = document.location.search.split("?" + o.idArg + "=")[1]
+                        if (REQUEST_ARGS[o.idArg]) {
+                            const accid = REQUEST_ARGS[o.idArg]
                             vm.loading=true
 			    vm.downloadUrl = o.download + accid
                             vm.youSearchForString = $scope.youSearchedFor([[o.idLabel,accid]])
                             this.service = o.service
-                            this.serviceArg = {accid}
+                            if (o.idArg == "accid") {
+                                this.serviceArg = accid
+                                vm.page_size = 100000
+                            } else {
+                                this.serviceArg = {accid}
+                            }
                             // load the first page
-                            $scope.pageAction(1, vm.page_size)
+                            $scope.pageAction(1, vm.page_size, o.idArg)
                             return
                         }
                     }
-                    throw "No argument. Please specify one of: refs_id, user_id."
+                    throw "No argument. Please specify one of: refs_id, user_id, accid."
                 };
 
-                $scope.pageAction = (pageFirstRow, pageNRows) => {
-                    this.serviceArg.offset = pageFirstRow - 1
-                    this.serviceArg.limit = pageNRows
-                    this.doSummary ()
+                $scope.pageAction = (pageFirstRow, pageNRows, idArg) => {
+                    if (idArg != "accid") {
+                        this.serviceArg.offset = pageFirstRow - 1
+                        this.serviceArg.limit = pageNRows
+                    }
+                    this.doSummary (idArg)
                 }
 
-                this.doSummary = function () {
+                this.doSummary = function (idArg) {
                     vm.loading=true
                     this.service.search(this.serviceArg, function (results) {
                         prepareForDisplay(results.items)
@@ -100,7 +107,7 @@
                         vm.total_count = results.total_count
 			$scope.restoreScrollPosition(1)
                     }, function (err) {
-                        pageScope.handleError(vm, "API ERROR: Get genotypes by " + idLabel + ": " + err);
+                        pageScope.handleError(vm, "API ERROR: " + err);
                     })
                 }
 

@@ -92,6 +92,10 @@
 
 	  	angular.module('pwi').constant('CUR_DBSERVER', '{{config["CUR_DBSERVER"]}}');
 	  	angular.module('pwi').constant('CUR_DBNAME', '{{config["CUR_DBNAME"]}}');
+
+                angular.module('pwi').constant('REQUEST_ARGS', {{ request_args | safe}})
+
+
   	})();
 </script>
 
