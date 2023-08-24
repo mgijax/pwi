@@ -159,7 +159,13 @@
 											ng-change="setSampleStatus(row.row_num-1)"
 											ng-blur="updateGenotype(row.row_num, $index, displayedCollection)"
 										/>
-										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" tabindex="-1" ng-click="copyUpColumn($index, displayedCollection, 'genotype')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" tabindex="-1" ng-click="copyDownColumn($index, displayedCollection, 'genotype')"></a></div>
+										<div ng-class="{ updownarrows:true, disabled: updatingGenotype }">
+                                                                                <a href="" class="glyphicon glyphicon-arrow-up" tabindex="-1"
+                                                                                   ng-click="copyUpColumn($index, displayedCollection, 'genotype')"></a>
+                                                                                <br>
+                                                                                <a href="" class="glyphicon glyphicon-arrow-down" tabindex="-1"
+                                                                                   ng-click="copyDownColumn($index, displayedCollection, 'genotype')"></a>
+                                                                                </div>
 										<br>
 										<div ng-bind-html="row.sample_domain.genotype_object.geneticbackground | handleSubscript | htmlnobr"></div>
 										<div ng-bind-html="row.sample_domain.genotype_object.combination1_cache | handleSubscript | htmlnobr"></div>

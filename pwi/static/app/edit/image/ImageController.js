@@ -81,7 +81,7 @@
 		// mapped to query 'Search' button
 		// default is to select first result
 		// if deselect = true, then see below
-		function search(deselect) {				
+		function search(deselect, jnumid) {				
 		
 			pageScope.loadingStart();
 			vm.hideLoadingHeader = false;
@@ -90,7 +90,7 @@
 			vm.oldRequest = vm.apiDomain;
 	
 			// call API to search; pass query params (vm.selected)
-			ImageSearchAPI.search(vm.apiDomain, function(data) {
+			ImageSearchAPI.search((jnumid ? { jnumid } : vm.apiDomain), function(data) {
 				
 				vm.results = data;
 				vm.hideLoadingHeader = true;
@@ -484,12 +484,11 @@
                         window.open(imgUrl, '_blank');
                 }
 
-		// link out to prism
                 function prismLink() {
-                FindElement.byId("JNumID").then(function(element){
-                        var prismUrl = pageScope.url_for('pwi.prism', '#' + element.value);
+                        FindElement.byId("JNumID").then(function(element){
+                        var prismUrl = pageScope.url_for('pwi.prism', '?jnum=' + element.value);
                         window.open(prismUrl, '_blank');
-                });
+                        });
                 }
 
 		/////////////////////////////////////////////////////////////////////
@@ -602,8 +601,8 @@
 			vm.needsDXDOIid = false;
 			
 			// MGD vs GXD handling
-			if (isGxd){ vm.apiDomain.imageClassKey = "6481781"; }
-			if (isMgd){ vm.apiDomain.imageClassKey = ""; }
+			if (vm.isGxd){ vm.apiDomain.imageClassKey = "6481781"; }
+			if (vm.isMgd){ vm.apiDomain.imageClassKey = ""; }
 		}
 
 		// resets page data
@@ -938,6 +937,7 @@
 		
 		}		
 		
+
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		

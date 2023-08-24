@@ -54,6 +54,7 @@
 <script src="{{ url_for('static',filename='app/filters/SortFilter.js')}}"></script>
 
 <script src="{{ url_for('static',filename='app/services/ErrorMessageService.js')}}"></script>
+<script src="{{ url_for('static',filename='app/services/DragifyService.js')}}"></script>
 <script src="{{ url_for('static',filename='app/services/FindElementService.js')}}"></script>
 <script src="{{ url_for('static',filename='app/services/FocusElementService.js')}}"></script>
 <script src="{{ url_for('static',filename='app/services/NoteTagConverterService.js')}}"></script>
@@ -87,7 +88,6 @@
 	  	angular.module('pwi').constant('PWI_BASE_URL', "{{ url_for('index') }}");
 	  	angular.module('pwi').constant('PIXDB_URL', '{{config["PIXDB_URL"]}}');
 	  	angular.module('pwi').constant('PDFVIEWER_URL', '{{config["PDFVIEWER_URL"]}}');
-	  	angular.module('pwi').constant('PRISM_URL', '{{config["PRISM_URL"]}}');
 	  	angular.module('pwi').constant('WEBSHARE_URL', '{{config["WEBSHARE_URL"]}}');
 
 	  	angular.module('pwi').constant('CUR_DBSERVER', '{{config["CUR_DBSERVER"]}}');

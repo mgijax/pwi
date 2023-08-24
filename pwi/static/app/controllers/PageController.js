@@ -12,7 +12,6 @@
 			PWI_BASE_URL,
 			PDFVIEWER_URL,
 			PIXDB_URL,
-			PRISM_URL,
 			WEBSHARE_URL
 	) {
 		this.$onInit = function () {
@@ -57,7 +56,6 @@
 		$scope.PWI_BASE_URL = PWI_BASE_URL;
 		$scope.PDFVIEWER_URL = PDFVIEWER_URL;
 		$scope.PIXDB_URL = PIXDB_URL;
-		$scope.PRISM_URL = PRISM_URL;
 		$scope.WEBSHARE_URL = WEBSHARE_URL;
 		$scope.STATIC_APP_URL = PWI_BASE_URL + "static/app"
 		$scope.PAGE_HELP_URL = PWI_BASE_URL + document.location.pathname.replace("pwi","static/app") + "/help.html"
@@ -209,7 +207,7 @@
                     'pwi.pdfviewer' :                   $scope.PDFVIEWER_URL,
                     'pwi.pdfviewerhome' :               $scope.PDFVIEWER_URL.replace("?id=",""),
                     'pwi.pixeldb' :                     $scope.PIXDB_URL,
-                    'pwi.prism' :                       $scope.PRISM_URL,
+                    'pwi.prism' :                       $scope.PWI_BASE_URL + 'edit/prism',
                     'pwi.probe' :                       $scope.PWI_BASE_URL + 'edit/probe',
                     'pwi.probedetail' :                 $scope.PWI_BASE_URL + 'edit/probedetail',
                     'pwi.probesummary' :                $scope.PWI_BASE_URL + 'edit/probesummary',

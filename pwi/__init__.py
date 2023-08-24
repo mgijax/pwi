@@ -38,7 +38,6 @@ ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
 PDFVIEWER_URL = os.environ["PDFVIEWER_URL"]
 PDFSPLITTER_URL= os.environ["PDFSPLITTER_URL"]
 PIXDB_URL = os.environ["PIXDB_URL"]
-PRISM_URL = os.environ["PRISM_URL"]
 WEBSHARE_URL = os.environ["WEBSHARE_URL"]
 PWIREPORT_URL = os.environ["PWIREPORT_URL"]
 

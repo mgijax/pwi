@@ -40,6 +40,7 @@
     'pwi.mutantcellline',
     'pwi.nonmutantcellline',
     'pwi.organism',
+    'pwi.prism',
     'pwi.probe',
     'pwi.probedetail',
     'pwi.probesummary',
@@ -103,6 +104,7 @@
   angular.module('pwi.mutantcellline', ['ngResource']);
   angular.module('pwi.nonmutantcellline', ['ngResource']);
   angular.module('pwi.organism', ['ngResource']);
+  angular.module('pwi.prism', ['ngResource','ngSanitize']);
   angular.module('pwi.probe', ['ngResource']);
   angular.module('pwi.probedetail', ['ngResource','ngSanitize']);
   angular.module('pwi.probesummary', ['ngResource','ngSanitize']);

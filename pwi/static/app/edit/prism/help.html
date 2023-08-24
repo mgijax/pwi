@@ -1,0 +1,114 @@
+<div id="prism-help">
+<h2>P-WI PRISM functionality</h2>
+
+<h4>Basic concepts</h4>
+<ul>
+    <li>Image panes belong to a given image, have labels, may or may not have coordinates, and are stored in the database.
+    Panes are listed under their images in the table on the left.
+    <li>Regions (or overlays) are semi-transparent rectangles drawn on top of an actual image, are defined by their coordinates, may be associated with panes, and are ephemeral.</li>
+    <li>PRISM supports curating pane geometry by drawing regions and associating them with panes. PRISM provides several ways to draw panes and several ways to make associations.</li>
+</ul>
+<h4>Using the tool</h4>
+    <ul>
+        <li>Load a new J#:</li>
+            <ul>
+            <li>Enter the J# (with or without the prefix) in the text field at the top left and hit Return (or tab out of the field). The first image for the J# is opened automatically. </li>
+            </ul>
+        <li>See a given figure and its panes:</li>
+        <ul>
+            <li>Click on the figure label in the table on the left. The image for the figure is displayed. If pane coordinates have already been defined, the corresponding overlays are also displayed. </li>
+        </ul>
+        <li>Draw a region:</li>
+                <ul>
+                    <li>Drag the mouse over the desired section of the image.</li>
+                    <li>Use the Cover feature.</li>
+                    <li>Use the OnePane feature. Coordinates are automatically assigned with this feature. </li>
+                </ul>	
+        <li>Selecting panes and region(s):</li>
+                <ul>		
+                        <li>Both regions and panes can be selected by clicking on them.</li>
+                        <ul>
+                            <li>Clicking a region selects that region and any associated panes.</li>
+                            <li>Clicking a pane selects that pane and its associated region, if any. (Other panes associated with the same region, are not selected.)</li>
+                        </ul>
+                        <li>If an image pane has coordinates, then clicking on the pane's row in the table will select the region in the image. </li>
+                        <li>To select multiple regions, hold the shift key down while clicking.</li>
+                        <li>Clicking the button "SelectAll" will select all regions.</li>
+                </ul>							
+        <li>Move ("nudge") regions:</ul>
+            <ul>
+            <li>Press an arrow key to move all selected regions one pixel in that direction. Hold down the shift key to move them 10 pixels.
+            </ul>
+        <li>Split regions:</li>
+                <ul>		
+                        <li>Select the region(s) to split. </li>
+                        <li>To split along a horizontal, Option-click (hold down the Option (or Alt) key while clicking). All selected regions will be split along a horizontal line though the clicked location. (Regions not intersected by the horizontal are unaffected.) </li>
+                        <li>To split along the vertical, also hold down the Shift key (Option-Shift-click).</li>
+                </ul>	
+        <li>Delete region(s) by selecting the region(s) to delete and click the "Delete" button (or type the corresp. keyboard shortcut). Panes that were currently associated with the regions will be dis-associated (and display a "?" for coordinates).</li>
+        <li>Associate a pane with a region:</li>
+                <ul>		
+                        <li>Option 1: Drag the pane label from the table and drop onto the desired region. </li>
+                        <li>Option 2: click "OnePane" to associate a single pane with the entire image area. Automatically assigns the coordinates. Use this when the entire image area is the pane.</li>
+                        <li>Option 3: Click "ClickAssign" (note: the button stays depressed), and then click the regions in order. Panes will be assigned in order. You may click on a different panelabel (in the table) to start/continue from a different point. When you are done, click "ClickAssign" again, to reset the button. </li>
+                        <li>Option 4: Click "GridAssign". Autoassigns all panes in order to defined regions in a left-to-right, top-to-bottom order. Option 4 works better when you have defined regions by splitting rather than by drawing freehand.</li>
+                </ul>
+        <li>Associate multiple panes with a region:</li>
+                <ul>
+                        <li>Select multiple panes in the left column.</li>
+                        <li>Drag and drop the selection onto the desired image region.</li>
+                </ul>	
+    </ul>
+    
+<h4>Error Messages</h4>
+    <ul>
+            <li>If the J# has no figures in the database (or cannot be found), an error message appears. </li>
+            <li>If a figure record exists, but has no associated image (JPEG file), a "No image available" message appears.</li>
+            <li>If there is no corresponding image, "No image available" is displayed.</li>
+            <li>If you try to leave without saving "There are unsaved changes. Would you like to save your changes?" is displayed.</li>
+    </ul>
+    
+<h4>Mouse actions:</h4>
+    <ul>
+            <li>click	Clicking on a region selects it.</li>
+            <li>shift-click	Selects multiple regions.</li>
+            <li>drag	Draws a new region.</li>
+            <li>option-click	Splits all selected regions along a horizontal line through the click point.</li>
+            <li>option-shift-click	Splits all selected regions along a vertical line through the click point.</li>
+            <li>Tip: on a fresh image (no regions yet) option-click or option-shift-click on the image will automatically create a covering region and then do the split.</li>
+    </ul>
+
+<h4>Tool Bar Buttons:</h4>
+    <ul>Hovering over tool bar buttons shows a description of the tool.	
+            <li>Reload</li>
+            <li>PDF</li>
+            <li>Undo</li>
+            <li>Redo</li>
+            <li>-1 0 +1 - zoom in or out</li>
+            <li>Hide - toggles showing the selections</li>
+            <li>Clear - clears all selections</li>
+            <li>Save - saves all figures (not restricted to only the current figure)</li>
+            <li>Cover - covers whole image space</li>
+            <li>Delete - deletes currently selected region.</li>
+            <li>SelectAll</li>
+            <li>ClickAssign - description above</li>
+            <li>GridAssign - description above</li>
+            <li>OnePane - description above</li>
+    </ul>
+    
+<h4>Keyboard Short-cuts</h4>
+    <ul>Note: "Option" may be "Alt" on your keyboard.
+            <li>option-s	Save</li>
+            <li>option-z	Undo</li>
+            <li>option-r	Redo</li>
+            <li>DEL or BACKSPACE	Delete selected</li>
+            <li>option-x	Delete selected</li>
+            <li>option-shift-x	Clear (delete all)</li>
+            <li>option-g	GridAssign</li>
+            <li>option-o	Onepane</li>
+            <li>option-c	Cover</li>
+            <li>-	(Just "-", no option key.) Zoom-out</li>
+            <li>+	(Just "+", no option key.) Zoom-in</li>
+            <li>0	(Just "0", no option key.) Original size</li>
+    </ul>
+</div>
