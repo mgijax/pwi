@@ -103,7 +103,7 @@
 		
 			pageScope.loadingStart();
 			
-			if (vm.dataSetsDomain.dataSets[0].refsKey != "") {
+			if (vm.dataSetsDomain.dataSets[0].refsKey != "" && vm.dataSetsDomain.dataSets[0].refsKey != null) {
 				GenotypeSearchDataSetsAPI.query({key: vm.dataSetsDomain.dataSets[0].refsKey}, function(data) {
 					console.log(data);
 					vm.results = data;
