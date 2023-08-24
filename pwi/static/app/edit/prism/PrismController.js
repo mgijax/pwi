@@ -529,7 +529,7 @@
                 //
                 function saveNeeded () {
                     if (!vm.prism || !vm.prism.imagePanes) return false
-                    if (USERNAME === 'None') return false
+                    if (USERNAME === 'None' || USERNAME === '') return false
                     for (let p of vm.prism.imagePanes) {
                         if (p.processStatus === 'u') return true
                     }
