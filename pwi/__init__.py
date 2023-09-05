@@ -40,6 +40,7 @@ PDFSPLITTER_URL= os.environ["PDFSPLITTER_URL"]
 PIXDB_URL = os.environ["PIXDB_URL"]
 WEBSHARE_URL = os.environ["WEBSHARE_URL"]
 PWIREPORT_URL = os.environ["PWIREPORT_URL"]
+QCRPTS = os.environ["PWIREPORT_URL"].replace("pwi", "qcr.shtml")
 
 # application object
 folder = PWI + APP_PREFIX + "/static"
