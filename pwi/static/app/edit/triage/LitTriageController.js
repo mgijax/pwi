@@ -25,6 +25,7 @@
 			ReferenceAlleleAssocAPI,
 			ReferenceMarkerAssocAPI,
 			ReferenceStrainAssocAPI,
+			ReferenceDOIDAssocAPI,
 			JournalAPI,
 			ActualDbGetAPI,
 			// global resource APIs
@@ -32,6 +33,7 @@
 			ValidateAlleleAPI,
 			ValidateMarkerAPI,
 			ValidateStrainAPI,
+			ValidateTermAPI,
 			VocTermSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
@@ -146,6 +148,11 @@
 				vm.strainAssocType_choices = data.items;
 			});
 
+			// doid assoc droplist
+			MGIRefAssocTypeSearchAPI.search( {mgiTypeKey:"13"}, function(data) {
+				vm.doidAssocType_choices = data.items;
+			});
+
 		}
 
 		// set the auto-complete attachments
@@ -219,6 +226,7 @@
                         vm.selected.alleleAssocs = vm.refData.alleleAssocs;
                         vm.selected.markerAssocs = vm.refData.markerAssocs;
                         vm.selected.strainAssocs = vm.refData.strainAssocs;
+                        vm.selected.doidAssocs = vm.refData.doidAssocs;
                         
 			// ensure the query form has been touched before submission
 			// or the accession id exists
@@ -227,7 +235,8 @@
                                 vm.selected.accids != null || 
                                 vm.selected.alleleAssocs.length > 0 || 
                                 vm.selected.markerAssocs.length > 0 ||
-                                vm.selected.strainAssocs.length > 0
+                                vm.selected.strainAssocs.length > 0 ||
+                                vm.selected.doidAssocs.length > 0
                                 ) {
 
 				// start spinner & close query form area
@@ -268,6 +277,7 @@
                         //vm.selected.alleleAssocs = vm.refData.alleleAssocs;
                         //vm.selected.markerAssocs = vm.refData.markerAssocs;
                         //vm.selected.strainAssocs = vm.refData.strainAssocs;
+                        //vm.selected.doidAssocs = vm.refData.doidAssocs;
                         
 			// ensure the query form has been touched before submission
 			// or the accession id exists
@@ -276,7 +286,8 @@
                                 vm.selected.accids != null || 
                                 vm.selected.alleleAssocs.length > 0 || 
                                 vm.selected.markerAssocs.length > 0 ||
-                                vm.selected.strainAssocs.length > 0
+                                vm.selected.strainAssocs.length > 0 ||
+                                vm.selected.doidAssocs.length > 0
                                 ) {
 
 				// start spinner & close query form area
@@ -385,6 +396,7 @@
 			vm.refData.alleleAssocs = [];
 			vm.refData.markerAssocs = [];
 			vm.refData.strainAssocs = [];
+			vm.refData.doidAssocs = [];
 
 			if (vm.activeTab == undefined) {
 				vm.activeTab = 1;
@@ -925,6 +937,9 @@
 			else if (tabIndex==4) {
 				loadStrainAssoc();
 			}
+			else if (tabIndex==5) {
+				loadDOIDAssoc();
+			}
 		}
 
 		// mapped to some workflow status radio buttons
@@ -1313,6 +1328,118 @@
 			}
 		}
 
+		/////////////////////////////////////////////////////////////////////
+		// doid association tab functionality
+		/////////////////////////////////////////////////////////////////////
+		
+		// load doid assoc info of selected result
+		function loadDOIDAssoc() {
+			console.log("loadDOIDAssoc():vm.activeTab: " + vm.activeTab);
+
+			if (vm.activeTab!=5) {
+				return;
+			}
+
+                        if (vm.refData.refsKey == null || vm.refData.refsKey == "") {
+                                if (vm.refData.doidAssocs == null || vm.refData.doidAssocs.length == 0) {
+				        addDOIDAssocRow();
+                                }
+                                return;
+                        }
+
+			pageScope.loadingStart();
+
+                        ReferenceDOIDAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
+                                if (data.length == 0) { 
+                                        console.log("no doid assoc for key: " + vm.results[vm.selectedIndex].refsKey);
+                                        if (vm.refData.doidAssocs == null || vm.refData.doidAssocs.length == 0) {
+				                addDOIDAssocRow();
+                                        }
+				        pageScope.loadingEnd();
+                                } else {
+					vm.refData.doidAssocs = data;
+				        addDOIDAssocRow();
+				        pageScope.loadingEnd();
+                                }
+
+                        }, function(err) {     
+				setMessage(err.data);
+				pageScope.loadingEnd();
+                        });
+		}
+
+		// add new doid assoc
+		function addDOIDAssocRow() {
+                        console.log("addDOIDAssocRow()");
+
+			if (vm.refData.doidAssocs == undefined) {
+				vm.refData.doidAssocs = [];
+			}
+
+			var i = vm.refData.doidAssocs.length;
+
+			vm.refData.doidAssocs[i] = {
+				"processStatus": "c", 
+				"assocKey": "",
+				"objectKey": "",
+				"mgiTypeKey": "13",
+				"refAssocTypeKey": "1032",
+				//"refAssocType": "Indexed",
+				"refsKey": vm.refData.refsKey,
+				"doidTerm": "",
+				"doidAccID": ""
+			};
+		}		
+
+		// validate the id
+		function validateDOID(index, id) {
+			console.log("validateDOID() : " + id);
+
+			// params if used for the validation search only
+			var params = {};
+			//params.includeObsolete = vm.includeObsolete;
+
+			if ((id == "doidAccID")
+				&& (vm.refData.doidAssocs[index].doidAccID != null) 
+				&& (vm.refData.doidAssocs[index].doidAccID != undefined) 
+				&& (vm.refData.doidAssocs[index].doidAccID.trim() != "")
+				) {
+
+                                params.accessionIds = [];
+                                params.accessionIds.push({"accID":vm.refData.doidAssocs[index].doidAccID.trim()});
+			}
+			
+			if (JSON.stringify(params) != '{}') {
+                                params.vocabKey = "125";
+			        console.log(params);
+				ValidateTermAPI.search(params, function(data) {
+					if (data.length == 0) {
+						alert("Invalid DOID");
+						vm.refData.doidAssocs[index].objectKey = "";
+						vm.refData.doidAssocs[index].doidTerm = "";
+						vm.refData.doidAssocs[index].doidAccID = "";
+						document.getElementById(id).focus();
+					} else {
+						if ((vm.refData.doidAssocs[index].assocKey == undefined)
+							|| (vm.refData.doidAssocs[index].assocKey == null) 
+							|| (vm.refData.doidAssocs[index].assocKey == "")
+						) {
+							vm.refData.doidAssocs[index].processStatus = "c";
+						} else {
+							vm.refData.doidAssocs[index].processStatus = "u";
+						}
+						vm.refData.doidAssocs[index].objectKey = data[0].termKey;
+						vm.refData.doidAssocs[index].doidTerm = data[0].term;
+						vm.refData.doidAssocs[index].doidAccID = data[0].accessionIds[0].accID;
+					}
+
+				}, function(err) {
+					pageScope.handleError(vm, "Invalid DOID");
+					document.getElementById(id).focus();
+				});
+			}
+		}
+
 		//Expose functions on controller scope
 		$scope.search = search;
 		$scope.searchSummary = searchSummary;
@@ -1352,6 +1479,8 @@
 		$scope.validateMarker = validateMarker;
 		$scope.addStrainAssocRow = addStrainAssocRow;
 		$scope.validateStrain = validateStrain;
+		$scope.addDOIDAssocRow = addDOIDAssocRow;
+		$scope.validateDOID = validateDOID;
 
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clearAll(); $scope.$apply(); }

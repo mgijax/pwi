@@ -10,6 +10,7 @@
 		.factory('ReferenceAlleleAssocAPI', ReferenceAlleleAssocAPIResource)
 		.factory('ReferenceMarkerAssocAPI', ReferenceMarkerAssocAPIResource)
 		.factory('ReferenceStrainAssocAPI', ReferenceStrainAssocAPIResource)
+		.factory('ReferenceDOIDAssocAPI', ReferenceDOIDAssocAPIResource)
 		.factory('JournalAPI', JournalAPIResource)
 		.factory('ActualDbGetAPI', ActualDbGetAPIResource)
 		;
@@ -79,6 +80,12 @@
 
         function ReferenceStrainAssocAPIResource($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'mgireferenceassoc/strainByReference/:key', {}, {
+                        '': { method: 'JSONP' , isArray: true}
+                });
+        }
+
+        function ReferenceDOIDAssocAPIResource($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'mgireferenceassoc/doidByReference/:key', {}, {
                         '': { method: 'JSONP' , isArray: true}
                 });
         }

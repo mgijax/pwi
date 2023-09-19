@@ -737,6 +737,8 @@
 		ng-click="setActiveTab(3)" >Marker Associations</button>
     	<button type="button" tabindex="-1" id="strainTabButton" ng-class="{activeTab:vm.activeTab == 4}"
 		ng-click="setActiveTab(4)" >Strain Associations</button>
+    	<button type="button" tabindex="-1" id="doidTabButton" ng-class="{activeTab:vm.activeTab == 5}"
+		ng-click="setActiveTab(5)" >Disease Associations</button>
 
 	<button type="button" tabindex="-1" id="deleteEditTabButton" tabindex="-1" style="float: right;" ng-click="deleteEditTab()" 
 		ng-disabled="current_user.login==null||vm.disableDeleteDiscard==true" >Delete</button>
@@ -1415,6 +1417,74 @@
 		<!-- strain topMargin -->
 		</div>
 		<!-- strain association tab==2 -->
+
+		<!-- doid association tab -->
+         	<div ng-if="vm.activeTab==5">
+	 	<div class="row" >
+			<div class="col-sm-8" style="">
+				<div id="tabTableWrapper">
+				<table class="table table-bordered scrollable-menu" id="doidAssocTable" style="">
+    				<tbody>
+				<tr>
+				<th></th>
+				<th>Type</th>
+				<th>DO Term</th>
+				<th>Vocabulary Term</th>
+				<th>Modified By</th>
+				<th>Date</th>
+				</tr>
+
+				<!-- if deleting row, turn it orange -->
+				<!-- if adding new row, turn it lime -->
+
+				<tr ng-repeat="ref in vm.refData.doidAssocs" 
+					ng-click=""
+					ng-class-odd="'oddTableRow'"
+			    		ng-class="{deleteRow:vm.refData.doidAssocs[$index].processStatus == 'd', 
+						addRow:vm.refData.doidAssocs[$index].processStatus == 'c'}">
+				<td>
+				<span ng-click="deleteAssocRow(vm.refData.doidAssocs,$index)"> 
+					<img src="/pwi/static/images/remove.png"
+					style="width:12px; height: 12px; cursor: pointer;" />
+				</span>
+		        	</td>
+				<td>
+                                <select size="1" id="doidAssocType" tabindex="-1"
+					ng-model="ref.refAssocTypeKey"
+					ng-change="modifyAssocRow(vm.refData.doidAssocs, $index)"
+					>
+                                	<option ng-repeat="choice in vm.doidAssocType_choices" 
+						value="{{choice.refAssocTypeKey}}">{{choice.assocType}}</option>
+                                </select>
+				</td>
+
+				<td>
+				<input class="form-control" id="doidAccID" 
+					ng-model="ref.doidAccID"
+					ng-blur="validateDOID($index, 'doidAccID')" />
+				</td>
+
+				<td>{{ref.doidTerm}}</td>
+				<td>{{ref.modifiedBy}}</td>
+				<td>{{ref.modification_date}}</td>
+
+				</tr>
+				</tbody>
+				</table>
+				</div>
+			</div>
+			<!-- doid col-sm-10 -->
+		</div>
+		<div class="spacer"></div>
+		<div class="row">
+			<div class="col-sm-2" style="">
+			<button type="button" tabindex="-1" id="addDOIDAssocButton" ng-class=""
+				ng-click="addDOIDAssocRow()" >Add Row</button>
+			</div>
+		</div>
+		<!-- doid topMargin -->
+		</div>
+		<!-- doid association tab==2 -->
 	</div>
 </div>
 </form>
