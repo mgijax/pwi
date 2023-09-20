@@ -737,8 +737,10 @@
 		ng-click="setActiveTab(3)" >Marker Associations</button>
     	<button type="button" tabindex="-1" id="strainTabButton" ng-class="{activeTab:vm.activeTab == 4}"
 		ng-click="setActiveTab(4)" >Strain Associations</button>
+        <!--
     	<button type="button" tabindex="-1" id="doidTabButton" ng-class="{activeTab:vm.activeTab == 5}"
 		ng-click="setActiveTab(5)" >Disease Associations</button>
+        -->
 
 	<button type="button" tabindex="-1" id="deleteEditTabButton" tabindex="-1" style="float: right;" ng-click="deleteEditTab()" 
 		ng-disabled="current_user.login==null||vm.disableDeleteDiscard==true" >Delete</button>
