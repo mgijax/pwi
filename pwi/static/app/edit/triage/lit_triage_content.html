@@ -740,12 +740,12 @@
     	<button type="button" tabindex="-1" id="doidTabButton" ng-class="{activeTab:vm.activeTab == 5}"
 		ng-click="setActiveTab(5)" >Disease Associations</button>
 
-	<button type="button" tabindex="-1" id="deleteEditTabButton" tabindex="-1" style="float: right;" ng-click="deleteEditTab()" 
+	<button type="button" tabindex="-1" id="deleteEditTabButton" style="float: right;" ng-click="deleteEditTab()" 
 		ng-disabled="current_user.login==null||vm.disableDeleteDiscard==true" >Delete</button>
-	<button type="button" tabindex="-1" id="createEditTabButton" tabindex="-1" style="float: right;" ng-click="createEditTab()" 
-		ng-disabled="current_user.login==null" >Add</button>
-	<button type="button" tabindex="-1" id="cancelEditButton" tabindex="-1" style="float: right;" ng-click="cancelEdit()" >Cancel</button>
-	<button type="button" tabindex="-1" id="modifyEditTabButton" tabindex="-1" style="float: right;" ng-click="modifyEditTab()" 
+        <button type="button" tabindex="-1" id="createEditTabDutton" style="float: right;" ng-click="createEditTab()"
+                ng-disabled="current_user.login==null || vm.refData.refsKey!=''" >Add</button>
+	<button type="button" tabindex="-1" id="cancelEditButton" style="float: right;" ng-click="cancelEdit()" >Cancel</button>
+	<button type="button" tabindex="-1" id="modifyEditTabButton" style="float: right;" ng-click="modifyEditTab()" 
 		ng-disabled="current_user.login==null" >Modify</button>
 </div>
 </div>
