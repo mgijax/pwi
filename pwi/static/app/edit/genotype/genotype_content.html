@@ -392,7 +392,7 @@
 		<!-- to avoid validateStrain() blur firing before clear(), call ng-mousedown() too -->
 		<button type="button" id="clearButton" tabindex="-1" ng-mousedown="clear()" >Clear</button>
 		<button type="button" id="modifyButton" tabindex="-1" ng-click="modify()" >Modify</button>
-		<button type="button" id="createButton" tabindex="-1" ng-click="create()" >Add</button>
+                <button type="button" id="createButton" tabindex="-1" ng-click="create()" ng-disabled="vm.apiDomain.genotypeKey!=''&&vm.apiDomain.genotypeKey!=null" >Add</button>
 		<button type="button" id="deleteButton" tabindex="-1" ng-click="delete()" >Delete</button>
                 <button type="submit" id="searchSummaryButton" tabindex="-1" ng-click="searchSummary()">Search Summary</button>
 		<button type="submit" id="addClipboardRow" tabindex="-1" ng-click="addClipboardRow()" >Clipboard+</button>

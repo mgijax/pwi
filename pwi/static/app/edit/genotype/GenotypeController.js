@@ -234,10 +234,10 @@
 		function createGenotype() {
 			console.log("createGenotype() -> GenotypeCreateAPI()");
 
-			// check if record selected
-			if(vm.selectedIndex > 0) {
+			// verify if record selected
+			if (vm.selectedIndex >= 0) {
 				alert("Cannot Add if a record is already selected.");
-				return;
+                                return;
 			}
 
                         // set pairStateKey defaults

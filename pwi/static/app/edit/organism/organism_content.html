@@ -106,7 +106,7 @@
 		<!-- to avoid blur firing before clear(), call ng-mousedown() -->
 		<button type="button" id="clearButton" tabindex="-1" ng-mousedown="clear()" >Clear</button>
 		<button type="button" id="modifyButton" tabindex="-1" ng-click="modify()" >Modify</button>
-		<button type="button" id="createButton" tabindex="-1" ng-click="create()" >Add</button>
+                <button type="button" id="createButton" tabindex="-1" ng-click="create()" ng-disabled="vm.apiDomain.organismKey!=''&&vm.apiDomain.organismKey!=null" >Add</button>
 		<button type="button" id="deleteButton" tabindex="-1" ng-click="delete()" >Delete</button>
 		
 		<div class="spacer"></div>
