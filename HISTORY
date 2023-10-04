@@ -9,6 +9,23 @@ STAFF: lec
 wts2-1293/fl2-570/Add new terms to MCV/TDC
 wts2-1297/fl2-572/P-WI - Better control of Add button in LitTriage Module
 
+for modules that conatin warning "Cannot Add if a record is already selected.":
+add disable logic to html as well
+allele/AlleleController.js
+allelederivation/AlleleDerivationController.js
+antibody/AntibodyController.js
+antigen/AntigenController.js
+assay/AssayController.js
+clonelib/CloneLibController.js
+genotype/GenotypeController.js
+mapping/MappingController.js
+mutantcellline/MutantCellLineController.js
+nonmutantcellline/NonMutantCellLineController.js
+organism/OrganismController.js
+probe/ProbeController.js
+strain/StrainController.js
+triage/LitTriageController.js
+
 TAG: pwi-6-0-22-75
 DATE: 09/25/2023
 STAFF: lec
