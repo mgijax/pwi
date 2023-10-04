@@ -19,6 +19,7 @@ assay/AssayController.js
 clonelib/CloneLibController.js
 genotype/GenotypeController.js
 mapping/MappingController.js
+marker/MarkerController.js
 mutantcellline/MutantCellLineController.js
 nonmutantcellline/NonMutantCellLineController.js
 organism/OrganismController.js
