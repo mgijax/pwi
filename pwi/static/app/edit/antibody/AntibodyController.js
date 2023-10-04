@@ -231,8 +231,8 @@
 		/////////////////////////////////////////////////////////////////////
 
 
-                function createAntibody() {
-                        console.log("in createAntibody");
+                function create() {
+                        console.log("create()");
                         vm.allowCommit = true;
 
                         if (vm.selectedIndex > 0) {
@@ -252,7 +252,7 @@
                                 return;
                         }
                         if (vm.allowCommit){
-                            console.log("createAntibody() -> AntibodyCreateAPI()");
+                            console.log("create() -> AntibodyCreateAPI()");
                             pageScope.loadingStart();
 
                             console.log("before calling AntibodyCreateAPI");
@@ -288,8 +288,8 @@
                     }
                 }
         	// update antibody
-		function updateAntibody() {
-			console.log("updateAntibody() -> AntibodyUpdateAPI()");
+		function update() {
+			console.log("update() -> AntibodyUpdateAPI()");
 			var allowCommit = true;
 
 			// check if record selected
@@ -353,7 +353,7 @@
                 }
 
                 function deleteAntibody() {
-                    console.log("delete() -> AntibodyDeleteAPI()");
+                    console.log("deleteAntibody() -> AntibodyDeleteAPI()");
 
                     if ($window.confirm("Are you sure you want to delete this record?")) {
 
@@ -1057,8 +1057,8 @@
 		$scope.search = search;
 		$scope.searchAccId = searchAccId;
 		$scope.clear = clear;
-                $scope.createAntibody = createAntibody;
-		$scope.updateAntibody = updateAntibody;
+                $scope.create = create;
+		$scope.update = update;
                 $scope.deleteAntibody = deleteAntibody;
 		$scope.changeAntibodyRow = changeAntibodyRow;
 		$scope.addRefRow = addRefRow;
@@ -1095,8 +1095,8 @@
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
-                $scope.Kadd = function() { $scope.createAntibody(); $scope.$apply(); }
-                $scope.Kmodify = function() { $scope.updateAntibody(); $scope.$apply(); }
+                $scope.Kadd = function() { $scope.create(); $scope.$apply(); }
+                $scope.Kmodify = function() { $scope.update(); $scope.$apply(); }
                 $scope.Kdelete = function() { $scope.deleteAntibody(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);

@@ -1662,7 +1662,7 @@
 		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
 		<button type="button" id="clearButton" tabindex="-1" ng-mousedown="clear()" >Clear</button>
 		<button type="button" id="modifyButton" tabindex="-1" ng-click="modify()" >Modify</button>
-		<button type="button" id="createButton" tabindex="-1" ng-click="create()" >Add</button>
+                <button type="button" id="createButton" tabindex="-1" ng-click="create()" ng-disabled="vm.apiDomain.assayKey!=''&&vm.apiDomain.assayKey!=null" >Add</button>
 		<button type="button" id="deleteButton" tabindex="-1" ng-click="delete()" >Delete</button>
 
 		<div class="spacer"></div>

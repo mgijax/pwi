@@ -217,8 +217,8 @@
 		/////////////////////////////////////////////////////////////////////
 		// Add/Modify/Delete
 		/////////////////////////////////////////////////////////////////////
-                function createAntigen() {
-                        console.log("in createAntigen");
+                function create() {
+                        console.log("create()");
                         vm.allowCommit = true;
 
                         // verify if record selected
@@ -280,7 +280,7 @@
                 }
 
         	// update antigen
-		function updateAntigen() {
+		function update() {
 			console.log("update() -> AntigenUpdateAPI()");
 			var allowCommit = true;
 
@@ -782,8 +782,8 @@
 		$scope.search = search;
 		$scope.searchAccId = searchAccId;
 		$scope.clear = clear;
-                $scope.createAntigen = createAntigen;
-                $scope.updateAntigen = updateAntigen;
+                $scope.create = create;
+                $scope.update = update;
                 $scope.deleteAntigen = deleteAntigen;
 
 		$scope.changeAntigenRow = changeAntigenRow;
@@ -810,8 +810,8 @@
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
-                $scope.Kadd = function() { $scope.createAntigen(); $scope.$apply(); }
-                $scope.Kmodify = function() { $scope.updateAntigen(); $scope.$apply(); }
+                $scope.Kadd = function() { $scope.create(); $scope.$apply(); }
+                $scope.Kmodify = function() { $scope.update(); $scope.$apply(); }
                 $scope.Kdelete = function() { $scope.deleteAntigen(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);

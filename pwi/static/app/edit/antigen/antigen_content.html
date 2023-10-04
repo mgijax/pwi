@@ -200,8 +200,8 @@
 
 		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
 		<button type="button" id="clearButton" tabindex="-1" ng-click="clear()" >Clear</button>
-		<button type="button" id="updateButton" tabindex="-1" ng-click="updateAntigen()" >Modify</button>
-		<button type="button" id="createButton" tabindex="-1" ng-click="createAntigen()" >Add</button>
+		<button type="button" id="updateButton" tabindex="-1" ng-click="update()" >Modify</button>
+                <button type="button" id="createButton" tabindex="-1" ng-click="create()" ng-disabled="vm.apiDomain.antigenKey!=''&&vm.apiDomain.antigenKey!=null" >Add</button>
 		<button type="button" id="deleteButton" tabindex="-1" ng-click="deleteAntigen()" >Delete</button>
 		
 		<div class="spacer"></div>
