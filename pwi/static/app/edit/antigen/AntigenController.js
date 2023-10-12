@@ -222,7 +222,7 @@
                         vm.allowCommit = true;
 
                         // verify if record selected
-                        if (vm.selectedIndex > 0) {
+                        if (vm.apiDomain.antigenKey != null && vm.apiDomain.antigenKey != "") {
                                 alert("Cannot Add if a record is already selected.");
                                 vm.allowCommit = false;
                                 return;

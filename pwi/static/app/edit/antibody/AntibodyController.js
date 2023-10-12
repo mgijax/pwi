@@ -235,7 +235,7 @@
                         console.log("create()");
                         vm.allowCommit = true;
 
-                        if (vm.selectedIndex > 0) {
+                        if (vm.apiDomain.antibodyKey != null && vm.apiDomain.antibodyKey != "") {
                                 alert("Cannot Add if a record is already selected.");
                                 vm.allowCommit = false;
                                 return;
