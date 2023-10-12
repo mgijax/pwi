@@ -819,8 +819,7 @@
 		<button type="submit" id="searchButton" ng-click="search()" >Search</button>
 		<button type="button" id="clearButton" ng-click="clear()" >Clear</button>
 		<button type="button" id="resetSearchButtom" ng-click="resetSearch()" >Reset Search</button>
-		<button type="button" id="createMarkerButton" ng-click="createMarker()" 
-			ng-disabled="current_user.login==null || vm.apiDomain.markerKey!=null || vm.apiDomain.markerStatusKey==2" >Add</button>
+		<button type="button" id="createMarkerButton" ng-click="createMarker()" >Add</button>
 		<button type="button" id="updateMarkerButton" ng-click="updateMarker()" 
 			ng-disabled="current_user.login==null || vm.allowModify != true" >Modify</button>
 		<button type="button" id="deleteMarkerButton" ng-click="deleteMarker()" 
