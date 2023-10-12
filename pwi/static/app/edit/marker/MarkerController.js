@@ -160,10 +160,10 @@
 			console.log("createMarker() -> MarkerCreateAPI()");
 
 			// verify if record selected
-			if (vm.selectedIndex >= 0) {
-				alert("Cannot Add if a record is already selected.");
-                                return;
-			}
+			//if (vm.selectedIndex >= 0) {
+				//alert("Cannot Add if a record is already selected.");
+                                //return;
+			//}
 
 			// default history reference = J:23000
 			if (vm.apiDomain.history[0].refsKey == "") {
