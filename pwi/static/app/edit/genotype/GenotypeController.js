@@ -235,7 +235,7 @@
 			console.log("createGenotype() -> GenotypeCreateAPI()");
 
 			// verify if record selected
-			if (vm.selectedIndex >= 0) {
+			if (vm.apiDomain.genotypeKey != "") {
 				alert("Cannot Add if a record is already selected.");
                                 return;
 			}
