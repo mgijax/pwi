@@ -160,10 +160,10 @@
 			console.log("createMarker() -> MarkerCreateAPI()");
 
 			// verify if record selected
-			//if (vm.selectedIndex >= 0) {
-				//alert("Cannot Add if a record is already selected.");
-                                //return;
-			//}
+                        if (vm.apiDomain.markerKey != null && vm.apiDomain.markerKey != "") {
+				alert("Cannot Add if a record is already selected.");
+                                return;
+			}
 
 			// default history reference = J:23000
 			if (vm.apiDomain.history[0].refsKey == "") {
@@ -1048,6 +1048,7 @@
 		function resetMarker() {
 
 			vm.apiDomain = {};
+			vm.apiDomain.markerKey = "";
 			vm.apiDomain.organismKey = "1";
                         vm.apiDomain.symbol = "";
                         vm.apiDomain.name = "";

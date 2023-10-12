@@ -216,7 +216,7 @@
 			console.log("create() -> StrainCreateAPI()");
 
 			// verify if record selected
-			if (vm.selectedIndex >= 0) {
+                        if (vm.apiDomain.strainKey != null && vm.apiDomain.strainKey != "") {
 				alert("Cannot Add if a record is already selected.");
                                 return;
 			}

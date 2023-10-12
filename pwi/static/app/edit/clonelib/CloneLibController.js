@@ -153,7 +153,7 @@
 			console.log("create()");
 
 			// verify if record selected
-			if (vm.selectedIndex >= 0) {
+                        if (vm.apiDomain.sourceKey != null && vm.apiDomain.sourceKey != "") {
 				alert("Cannot Add if a record is already selected.");
                                 return;
 			}

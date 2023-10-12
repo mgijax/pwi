@@ -146,7 +146,7 @@
 			console.log("create()");
 
 			// verify if record selected
-			if (vm.selectedIndex > 0) {
+                        if (vm.apiDomain.cellLineKey != null && vm.apiDomain.cellLineKey != "") {
 				alert("Cannot Add if a record is already selected.");
                                 return;
 			}
