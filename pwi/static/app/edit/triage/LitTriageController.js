@@ -741,6 +741,12 @@
 			console.log("createEditTab() -> ReferenceCreateAPI()");
 			var allowCommit = true;
 			
+			// verify if record selected
+			if (vm.refData.refsKey != "") {
+				alert("Cannot Add if a record is already selected.");
+                                return;
+			}
+
 			// check required fields
 			// nothing at the moment
 			
