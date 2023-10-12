@@ -742,7 +742,7 @@
 			var allowCommit = true;
 			
 			// verify if record selected
-			if (vm.refData.refsKey != "") {
+			if (vm.refData.refsKey != null && vm.refData.refsKey != "") {
 				alert("Cannot Add if a record is already selected.");
                                 return;
 			}
