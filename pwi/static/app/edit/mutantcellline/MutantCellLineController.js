@@ -229,10 +229,12 @@
 				return;
 			}
 
-			if (vm.apiDomain.alleleSymbols.length > 0) {
-				alert("MCL is associated with an allele and cannot be deleted.");
-				return;
-			}
+			if (vm.apiDomain.alleleSymbols != null) {
+			        if (vm.apiDomain.alleleSymbols.length > 0) {
+				        alert("MCL is associated with an allele and cannot be deleted.");
+				        return;
+			        }
+                        }
 
 			if ($window.confirm("Are you sure you want to delete this record?")) {
 			
@@ -330,6 +332,8 @@
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 			resetBoolean();
+                        vm.apiDomain.processStatus = "c";
+                        vm.apiDomain.cellLineKey = "";
 		}
 
 		// reset booleans

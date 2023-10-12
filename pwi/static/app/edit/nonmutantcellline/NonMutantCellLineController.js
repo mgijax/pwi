@@ -324,6 +324,8 @@
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 			resetBoolean();
+                        vm.apiDomain.processStatus = "c";
+                        vm.apiDomain.cellLineKey = "";
 		}
 
 		// reset booleans
