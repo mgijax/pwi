@@ -3,12 +3,14 @@
 # and try again
 #
 
+TAG: pwi-6-0-22-82
 TAG: pwi-6-0-22-81
 DATE: 10/19/2023
 STAFF: lec
 wts2-1301/fl2-579/P-WI GXD Assay Module Results Table header - add age
 wts2-1303/fl2-578/genotype null search treated as selected record
 wts2-1307/fl2-582/duplicate notes in allele/strain pwi
+wts2-1300/fl2-585/P-WI GXD Index Summary - add synonyms
 
 TAG: pwi-6-0-22-80
 DATE: 10/12/2023
