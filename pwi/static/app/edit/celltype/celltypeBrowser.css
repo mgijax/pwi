@@ -111,7 +111,8 @@ ul#clipboard li{
     overflow-x: hidden;
     overflow-y: auto;
 }
-#termSearch {
+#termSearch,
+#definitionSearch{
     width: 88%;
 }
 #termDetailsArea {

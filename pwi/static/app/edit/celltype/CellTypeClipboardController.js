@@ -43,6 +43,7 @@
 
 		// search fields
 		vm.termSearch = "";
+		vm.definitionSearch = "";
 		vm.searchResults = { items:[], total_count: 0 };
 		
 		// current selected term
@@ -308,12 +309,12 @@
                         
 			console.log("cell type search()");
 
-			if (!vm.termSearch ) {
+			if (!vm.termSearch && !vm.definitionSearch) {
 				return;
 			}
 
                         // assume term 
-                        var json = '{"term": "' + vm.termSearch + '", "vocabKey": "102"}';
+                        var json = '{"term": "' + vm.termSearch + '", "note": "' + vm.definitionSearch + '", "vocabKey": "102"}';
 
                         // but check if this is a cell type ID instead of a term
 			if (vm.termSearch.toLowerCase().search('cl:') == 0) {
@@ -337,7 +338,7 @@
 
                                 for(var i = 0; i < vm.searchResults.items.length; i++) {      
                                     var term = vm.searchResults.items[i]
-				    prepareForDisplay(term, vm.termSearch)
+				    prepareForDisplay(term, vm.termSearch, vm.definitionSearch)
                                 }
 				selectTerm(vm.searchResults.items[0]);
                                 
@@ -353,7 +354,7 @@
                         return promise;
 		}
 
-		function prepareForDisplay (term, termSearch) {
+		function prepareForDisplay (term, termSearch, definitionSearch) {
 			term.synonyms = (term.synonyms || []).map(s => s.synonym)
 			if (termSearch) {
 			    const ts2 = termSearch.split(";")
@@ -370,7 +371,9 @@
 				    break;
 				}
 			    }
-			}
+			} else if (definitionSearch) {
+                            term.term_bold = term.term
+                        }
 		}
 		
 		function selectTerm(term) {
@@ -416,6 +419,7 @@
 		
 		function clear() {
 			vm.termSearch = "";
+			vm.definitionSearch = "";
 			
 			ErrorMessage.clear();
 			
