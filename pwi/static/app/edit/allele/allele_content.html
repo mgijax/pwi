@@ -197,6 +197,9 @@
 				<button type="button" id="hideShowProidNoteButton" 
 					ng-class="{'hasNoteButton':  vm.apiDomain.proidNote.noteChunk != ''}"
 					ng-click="hideShowProidNote()" >Associated PRO IDs</button>
+				<button type="button" id="hideShowProjectidNoteButton" 
+					ng-class="{'hasNoteButton':  vm.apiDomain.projectidNote.noteChunk != ''}"
+					ng-click="hideShowProjectidNote()" >Additional Project PRO IDs</button>
 			</div>
 			</div>
 
@@ -293,6 +296,17 @@
                                         ng-click="clearNote(vm.apiDomain.proidNote)">
 				<label "label label-view-only">if duplicate appears, click X and Modify</label>
 				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.proidNote.noteChunk" id="proidNote" ></textarea>
+				<div class="spacer"></div>
+			</div>
+			</div>
+
+			<div class="row" ng-hide="vm.hideProjectidNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-edit-search">Additional Project PRO IDs</label>
+                                <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
+                                        ng-click="clearNote(vm.apiDomain.projectidNote)">
+				<label "label label-view-only">if duplicate appears, click X and Modify</label>
+				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.projectidNote.noteChunk" id="projectidNote" ></textarea>
 				<div class="spacer"></div>
 			</div>
 			</div>

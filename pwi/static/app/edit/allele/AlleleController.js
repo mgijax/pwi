@@ -675,9 +675,10 @@
 			vm.hideMolecularNote = true;
 			vm.hideNomenNote = true;
 			vm.hideInducibleNote = true;
-			vm.hideProidNote = true;
 			vm.hideIkmcNote = true;
 			vm.hideCreNote = true;
+			vm.hideProidNote = true;
+			vm.hideProjectidNote = true;
 		}
 
 		// resets allele data
@@ -1911,14 +1912,17 @@
 		function hideShowInducibleNote() {
 			vm.hideInducibleNote = !vm.hideInducibleNote;
 		}
-		function hideShowProidNote() {
-			vm.hideProidNote = !vm.hideProidNote;
-		}
 		function hideShowIkmcNote() {
 			vm.hideIkmcNote = !vm.hideIkmcNote;
 		}
 		function hideShowCreNote() {
 			vm.hideCreNote = !vm.hideCreNote;
+		}
+		function hideShowProidNote() {
+			vm.hideProidNote = !vm.hideProidNote;
+		}
+		function hideShowProjectidNote() {
+			vm.hideProjectidNote = !vm.hideProjectidNote;
 		}
 
 		// add new note row
@@ -1941,14 +1945,17 @@
 			if (noteType == "Inducible") {
 				noteTypeKey = "1032";
 			}
-			if (noteType == "Proid") {
-				noteTypeKey = "1036";
-			}
 			if (noteType == "Ikmc") {
 				noteTypeKey = "1041";
 			}
 			if (noteType == "Cre") {
 				noteTypeKey = "1040";
+			}
+			if (noteType == "Proid") {
+				noteTypeKey = "1036";
+			}
+			if (noteType == "Projectid") {
+				noteTypeKey = "1052";
 			}
 
 			note = {
@@ -1972,14 +1979,17 @@
 			if (noteType == "Inducible") {
 				vm.apiDomain.inducibleNote = note;
 			}
-			if (noteType == "Proid") {
-				vm.apiDomain.proidNote = note;
-			}
 			if (noteType == "Ikmc") {
 				vm.apiDomain.ikmcNote = note;
 			}
 			if (noteType == "Cre") {
 				vm.apiDomain.creNote = note;
+			}
+			if (noteType == "Proid") {
+				vm.apiDomain.proidNote = note;
+			}
+			if (noteType == "Projectid") {
+				vm.apiDomain.projectidNote = note;
 			}
 		}
 
@@ -1990,9 +2000,10 @@
 			addNote(vm.apiDomain.molecularNote, "Molecular");
 			addNote(vm.apiDomain.nomenNote, "Nomenclature");
 			addNote(vm.apiDomain.inducibleNote, "Inducible");
-			addNote(vm.apiDomain.proidNote, "Proid");
 			addNote(vm.apiDomain.ikmcNote, "Ikmc");
 			addNote(vm.apiDomain.creNote, "Cre");
+			addNote(vm.apiDomain.proidNote, "Proid");
+			addNote(vm.apiDomain.projectidNote, "Projectid");
 		}
 
 		// attach to inducible note
@@ -2133,6 +2144,7 @@
 		$scope.hideShowCreNote = hideShowCreNote;
 		$scope.hideShowIkmcNote = hideShowIkmcNote;
 		$scope.hideShowProidNote = hideShowProidNote;
+		$scope.hideShowProjectidNote = hideShowProjectidNote;
 
 		// other functions: buttons, onBlurs and onChanges
 		$scope.selectResult = selectResult;
