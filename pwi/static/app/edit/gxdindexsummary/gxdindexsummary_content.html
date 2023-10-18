@@ -109,6 +109,7 @@
     <span ng-if="vm.summaryBy === 'Reference'">
         <span>{{ vm.items[$index].markerSymbol }}</span>
         <span class="normal">{{ vm.items[$index].markerName }}</span>
+        <span class="normal" ng-if="vm.items[$index].synonyms != null">(Synonyms: {{ vm.items[$index].synonyms }})</span>
         <span class="normal" ng-if="vm.items[$index].isFullCoded === '1'">(Fully Coded)</span>
     </span>
     <table class="dataTable">
