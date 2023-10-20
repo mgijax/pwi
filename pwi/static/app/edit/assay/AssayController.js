@@ -87,7 +87,8 @@
 		vm.dlAssay = {};
 		vm.dlHeader = {};
 		vm.selectedDLIndex = 0;
-		vm.allowProcessDL = true;
+		vm.allowProcessDL = false;
+		vm.activateProcessDL = false;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -315,6 +316,11 @@
         	// modify
 		function modify() {
 			console.log("modify() -> AssayUpdateAPI()");
+
+		        if (vm.allowProcessDL == true && vm.activateProcessDL == false) {
+				alert("Double Label info has been entered, but Process button has not been clicked.");
+                                return;
+                        }
 
 			// verify if record selected
                         if (vm.selectedIndex < 0) {
@@ -570,6 +576,9 @@
 		        vm.selectedGelLaneIndex = 0;
                         vm.gelBandIncomplete = false;
                         resetBoolean();
+
+		        vm.allowProcessDL = false;
+		        vm.activateProcessDL = false;
 
                         // use current assay type
                         if (vm.apiDomain.isInSitu != null) {
@@ -3518,6 +3527,7 @@
 			var setLabel = "";
 			var numberOfColors = 1;
 			vm.allowProcessDL = true;
+		        vm.activateProcessDL = false;
 
 			for(var i=0;i<Object.keys(vm.dlProcess).length; i++) {
 
@@ -3655,6 +3665,7 @@
 					) {
 						alert("No Color Selected For Gene")
 						vm.allowProcessDL = false;
+		                                vm.activateProcessDL = false;
 						return;
 					}
 					if (vm.dlProcess[i].otherGene[j].attachColor == true) {
@@ -3668,6 +3679,7 @@
 					) {
 						alert("No Color Selected For Text")
 						vm.allowProcessDL = false;
+		                                vm.activateProcessDL = false;
 						return;
 					}
 					if (vm.dlProcess[i].otherText[j].attachColor == true) {
@@ -3707,6 +3719,7 @@
 			previewDL(true);
 
 			if (vm.allowProcessDL == false) {
+		                vm.activateProcessDL = false;
 				return;
 			}
 
@@ -3738,10 +3751,14 @@
 			}
 
 			// call Modify()
+		        vm.activateProcessDL = true;
 			modify();
 			
 			// turn off double label tab
-			vm.activeDoubleLabel = !vm.activeDoubleLabel;
+                        if (vm.activateProcessDL == true) {
+			        vm.activeDoubleLabel = !vm.activeDoubleLabel;
+                        }
+
 		}
 
                 //
