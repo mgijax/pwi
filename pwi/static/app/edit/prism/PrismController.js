@@ -248,7 +248,10 @@
                     DragifyService.dragify(imageList, {
                         dragstart: (e,d) => {
                             const pdiv = e.target.closest(".prism-pane-entry")
-                            if (!pdiv) return
+                            if (!pdiv) {
+                                d.cancel()
+                                return
+                            }
                             const pi = parseInt(pdiv.id.replace("pane-entry-",""))
                             d.panes = vm.prism.imagePanes.filter((p,i) => p.selected || i === pi)
                             if (d.panes.length === 0) return false
@@ -275,7 +278,7 @@
                             }
                         },
                         dragcancel: (d) => {
-                            d.dragAvatar.style.display = 'none'
+                            if (d.dragAvatar) d.dragAvatar.style.display = 'none'
                         }
                     }, prism, this)
                 }
