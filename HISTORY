@@ -2,7 +2,7 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
-TAG: pwi-6-0-22-8?
+TAG: pwi-6-0-22-84
 DATE: 11/01/2023
 STAFF: lec
 wts2-1316/fl2-610/Lit Triage module status history search problem
