@@ -1,9 +1,14 @@
 #
-# if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip 
-# and try again
+# if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
-TAG: mgi_java_api-6-0-22-83
+TAG: pwi-6-0-22-8?
+DATE: 11/01/2023
+STAFF: lec
+wts2-1316/fl2-610/Lit Triage module status history search problem
+wts2-1298/fl2-592/assay module double label feature: add reminder message if you forget to Process
+
+TAG: pwi-6-0-22-83
 DATE: 10/18/2023
 STAFF: jer
 wts2-1299/fl2-586/P-WI Cell Type Browser - definition search function
