@@ -317,10 +317,10 @@
 		function modify() {
 			console.log("modify() -> AssayUpdateAPI()");
 
-		        if (vm.activatedProcessDL == false) {
-				alert("Double Label info has been entered, but Process button has not been clicked.");
-                                return;
-                        }
+		        //if (vm.activatedProcessDL == false) {
+				//alert("Double Label info has been entered, but Process button has not been clicked.");
+                                //return;
+                        //}
 
 			// verify if record selected
                         if (vm.selectedIndex < 0) {

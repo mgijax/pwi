@@ -2,6 +2,12 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-22-86
+DATE: 11/02/2023
+STAFF: lec
+removed: not working for Gel
+wts2-1298/fl2-592/assay module double label feature: add reminder message if you forget to Process
+
 TAG: pwi-6-0-22-85
 TAG: pwi-6-0-22-84
 DATE: 11/01/2023
