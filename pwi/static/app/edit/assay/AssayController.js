@@ -88,7 +88,6 @@
 		vm.dlHeader = {};
 		vm.selectedDLIndex = 0;
 		vm.allowProcessDL = false;
-		vm.activatedProcessDL = false;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -316,11 +315,6 @@
         	// modify
 		function modify() {
 			console.log("modify() -> AssayUpdateAPI()");
-
-		        //if (vm.activatedProcessDL == false) {
-				//alert("Double Label info has been entered, but Process button has not been clicked.");
-                                //return;
-                        //}
 
 			// verify if record selected
                         if (vm.selectedIndex < 0) {
@@ -578,7 +572,6 @@
                         resetBoolean();
 
 		        vm.allowProcessDL = false;
-		        vm.activatedProcessDL = false;
 
                         // use current assay type
                         if (vm.apiDomain.isInSitu != null) {
@@ -3527,7 +3520,6 @@
 			var setLabel = "";
 			var numberOfColors = 1;
 			vm.allowProcessDL = true;
-		        vm.activatedProcessDL = false;
 
 			for(var i=0;i<Object.keys(vm.dlProcess).length; i++) {
 
@@ -3665,7 +3657,6 @@
 					) {
 						alert("No Color Selected For Gene")
 						vm.allowProcessDL = false;
-		                                vm.activatedProcessDL = false;
 						return;
 					}
 					if (vm.dlProcess[i].otherGene[j].attachColor == true) {
@@ -3679,7 +3670,6 @@
 					) {
 						alert("No Color Selected For Text")
 						vm.allowProcessDL = false;
-		                                vm.activatedProcessDL = false;
 						return;
 					}
 					if (vm.dlProcess[i].otherText[j].attachColor == true) {
@@ -3719,7 +3709,6 @@
 			previewDL(true);
 
 			if (vm.allowProcessDL == false) {
-		                vm.activatedProcessDL = false;
 				return;
 			}
 
@@ -3751,13 +3740,10 @@
 			}
 
 			// call Modify()
-		        vm.activatedProcessDL = true;
 			modify();
 			
 			// turn off double label tab
-                        if (vm.activatedProcessDL == true) {
-			        vm.activeDoubleLabel = !vm.activeDoubleLabel;
-                        }
+			vm.activeDoubleLabel = !vm.activeDoubleLabel;
 
 		}
 
