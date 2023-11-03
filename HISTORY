@@ -2,6 +2,12 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-22-87
+DATE: 11/03/2023
+STAFF: lec
+wts2-1311/fl2-615/improve lib_py_postgres/PWI-EMAPS issue/wrong terms
+EmapaClipboardController.js
+
 TAG: pwi-6-0-22-86
 DATE: 11/02/2023
 STAFF: lec
