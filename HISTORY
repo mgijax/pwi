@@ -2,6 +2,11 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-22-88
+DATE: 11/04/2023
+STAFF: lec
+fl2-618/Reference error on PWI marker module
+
 TAG: pwi-6-0-22-87
 DATE: 11/03/2023
 STAFF: lec
