@@ -409,7 +409,7 @@
 			vm.activeTab=tabIndex;			
 			
 			// if reference tab, we need to load reference objects separately
-			if (tabIndex==2 && vm.apiDomain.markerKey != null) {
+			if (tabIndex==2 && vm.apiDomain.markerKey != null && vm.apiDomain.markerKey !="") {
 				loadRefsForMarker();
 			}
 		}
@@ -821,7 +821,7 @@
 		function changeRefRow(index) {
                         console.log("changeRefRow: " + index);
 
-                        if (vm.apiDomain.refAssocs[index] == null) {
+                        if (vm.apiDomain.refAssocs[index] == null || vm.apiDomain.refAssocs[index] == "") {
                                 return;
                         }
 
