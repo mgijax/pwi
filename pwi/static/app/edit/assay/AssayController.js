@@ -87,7 +87,7 @@
 		vm.dlAssay = {};
 		vm.dlHeader = {};
 		vm.selectedDLIndex = 0;
-		vm.allowProcessDL = true;
+		vm.allowProcessDL = false;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -570,6 +570,8 @@
 		        vm.selectedGelLaneIndex = 0;
                         vm.gelBandIncomplete = false;
                         resetBoolean();
+
+		        vm.allowProcessDL = false;
 
                         // use current assay type
                         if (vm.apiDomain.isInSitu != null) {
@@ -3742,6 +3744,7 @@
 			
 			// turn off double label tab
 			vm.activeDoubleLabel = !vm.activeDoubleLabel;
+
 		}
 
                 //
