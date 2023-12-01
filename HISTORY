@@ -2,6 +2,11 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-22-89
+DATE: 11/08/2023
+STAFF: jer
+wts2-1317/fl2-613 prism enhancements
+
 TAG: pwi-6-0-22-88
 DATE: 11/04/2023
 STAFF: lec

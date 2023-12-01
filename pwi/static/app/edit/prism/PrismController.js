@@ -98,6 +98,11 @@
                 }
 
                 function saveImage (callback) {
+                    if (panesWithoutCoordinates()) {
+                        if (!window.confirm("Some image panes have no coordinates. Click 'OK' to Save, or 'Cancel' to go back.")) {
+                            return
+                        }
+                    }
                     pageScope.loadingStart();
                     // revove 'selected' field that was added to image panes
                     vm.currImage.imagePanes.forEach(p => { delete p.selected })
@@ -136,6 +141,20 @@
                     return vm.prism
                 }
 
+                /* Scrolls the figure + imagepanes table so that the currently selected figure is in view */
+                function scrollTableToSelectedFigure () {
+                    const figTable = document.querySelector('#prism-image-list')
+                    if (!figTable) return
+                    const tblBb = figTable.getBoundingClientRect()
+                    console.log("Table bb=", tblBb)
+                    const figEntry = figTable.querySelector('.prism-image-entry.selected')
+                    if (!figEntry) return
+                    const entryBb = figEntry.getBoundingClientRect()
+                    console.log("Entry bb=", entryBb)
+                    figTable.scrollTop += entryBb.top - tblBb.top
+                    console.log("scrolltop=", figTable.scrollTop)
+                }
+
                 function prismInit() {
                     const data = vm.currImage
                     const pdata = clearPrismData()
@@ -161,6 +180,9 @@
                         initDragNDrop()
                         vm.dndInitialized = true
                     }
+
+                    window.setTimeout(scrollTableToSelectedFigure, 100)
+
                 }
 
                 function reload () {
@@ -248,7 +270,10 @@
                     DragifyService.dragify(imageList, {
                         dragstart: (e,d) => {
                             const pdiv = e.target.closest(".prism-pane-entry")
-                            if (!pdiv) return
+                            if (!pdiv) {
+                                d.cancel()
+                                return
+                            }
                             const pi = parseInt(pdiv.id.replace("pane-entry-",""))
                             d.panes = vm.prism.imagePanes.filter((p,i) => p.selected || i === pi)
                             if (d.panes.length === 0) return false
@@ -275,7 +300,7 @@
                             }
                         },
                         dragcancel: (d) => {
-                            d.dragAvatar.style.display = 'none'
+                            if (d.dragAvatar) d.dragAvatar.style.display = 'none'
                         }
                     }, prism, this)
                 }
@@ -535,6 +560,15 @@
                     }
                     return false
                 }
+                //
+                function panesWithoutCoordinates () {
+                    if (!vm.prism || !vm.prism.imagePanes) return false
+                    if (USERNAME === 'None' || USERNAME === '') return false
+                    for (let p of vm.prism.imagePanes) {
+                        if (p.x === null) return true
+                    }
+                    return false
+                }
 
                 // Checks if save is needed before proceeding with an action (a function call).
                 function checkSaveProceed(action) {
@@ -769,6 +803,7 @@
                 $scope.onePane = onePane
 
                 $scope.saveNeeded = saveNeeded
+                $scope.panesWithoutCoordinates = panesWithoutCoordinates
                 $scope.dialogChoice = dialogChoice
 
 		var globalShortcuts = Mousetrap($document[0].body);

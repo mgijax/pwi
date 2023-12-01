@@ -69,6 +69,11 @@ textarea {
 .bottomPadding {
 	padding-bottom: 8px;
 }
+.deemphasized { 
+    font-weight: normal;
+    font-size: 12px;
+    color: gray;
+}
 
 /*
  * If classes are used as overrides of oddResultRow, they must be defined
@@ -88,23 +93,51 @@ textarea {
 #prism-toolbar {
 }
 #prism-image-list {
-    max-height: 600px;
     overflow: scroll;
 }
+#prism-figure-count {
+    background-color: #dfffef;
+}
+/* scrollbar styling */
+/* firefox */
+#prism-image-list {
+    scrollbar-width: 15px;
+    scrollbar-color: #7dbeff #ddd;
+}
+/* webkit */
+#prism-image-list::-webkit-scrollbar {
+    width: 15px;
+    height: 0px;
+}
+#prism-image-list::-webkit-scrollbar-thumb {
+  background: #7dbeff;
+  border-radius: 5px;
+}
+#prism-image-list::-webkit-scrollbar-track {
+  background-color: #ddd;
+  border: 1px solid #ccc;
+}
+#prism-image-list table {
+    table-layout: auto;
+    width: 100%;
+}
+
 .prism-image-entry {
     cursor: pointer;
     border: thin solid white;
     font-weight: bold;
-}
-.prism-image-entry:hover {
-    background-color: white;
+    background-color: #eee;
 }
 .prism-image-entry.selected {
     background-color: white;
 }
+.prism-image-entry:hover {
+    background-color: lightgray;
+}
 .prism-pane-entry {
     padding-left: 16px;
     font-weight: normal;
+    background-color: white;
 }
 .prism-pane-entry.updated {
    background-image: url("/pwi/static/images/updated.gif");
@@ -116,8 +149,12 @@ textarea {
 .prism-pane-entry.selected {
    background-color: #dfe8f7;
 }
-.prism-image-entry > span,
-.prism-pane-entry > span > span {
+.prism-image-entry > span:first-child {
+    font-weight: normal;
+    color: gray;
+    margin-right: 4px;
+}
+.prism-image-entry span.right {
    float: right;
    font-size: 11px;
 }

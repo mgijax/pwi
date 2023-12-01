@@ -40,28 +40,32 @@
                 </span>
             </div>
 
-            <div id="prism-image-list" class="col-sm-3">
-                <div ng-repeat="img in vm.imageList"
-                    ng-click="imageEntryClicked(img)"
-                    class="prism-image-entry"
-                    ng-class="{ selected : img.imageKey === vm.currImage.imageKey }"
-                    >Figure: {{img.figureLabel}}
-                    <span>({{img.imageType}}; {{ img.numPanes }} pane{{ img.numPanes === 1 ? '' : 's' }})</span>
-                    <div ng-if="img.imageKey === vm.currImage.imageKey && !vm.hidePaneList" >
-                        <div ng-repeat="pane in vm.currImage.imagePanes"
-                            ng-click="paneEntryClicked($event,$index)"
-                            class="prism-pane-entry"
-                            ng-class="{updated : pane.processStatus === 'u', selected: pane.selected }"
-                            id="pane-entry-{{$index}}"
-                            >
-                            <span ng-if="pane.imagePaneKey">
-                                {{pane.paneLabel || '*'}}
-                                <span>(x:{{pane.x}} y:{{pane.y}} w:{{pane.width}} h:{{pane.height}})</span>
-                            </span>
-                        </div>
-                    </div>
-                    
-                </div>
+            <div class="col-sm-3">
+            <div id="prism-figure-count">{{vm.imageList.length}} figures</div>
+            <div id="prism-image-list" ng-style="{ 'max-height' : vm.prism.ydim +  'px'}">
+                <table>
+                <tbody ng-repeat="img in vm.imageList" >
+                    <tr class="prism-image-entry" ng-click="imageEntryClicked(img)" ng-class="{ selected : img.imageKey === vm.currImage.imageKey }">
+                        <td class="deemphasized" >{{$index+1}}</td>
+                        <td>Figure: {{img.figureLabel}}</td>
+                        <td class="deemphasized" style="text-align:right;">({{img.imageType}}; {{ img.numPanes }} pane{{ img.numPanes === 1 ? '' : 's' }})</td>
+                    </tr>
+                    <tr ng-if="img.imageKey === vm.currImage.imageKey && !vm.hidePaneList"> 
+                      <td colspan="3">
+                        <table>
+                        <tbody>
+                            <tr ng-repeat="pane in vm.currImage.imagePanes" class="prism-pane-entry" ng-class="{updated : pane.processStatus === 'u', selected: pane.selected }" id="pane-entry-{{$index}}" ng-click="paneEntryClicked($event,$index)">
+                                <td style="width:20px;"></td>
+                                <td>{{pane.paneLabel || '*'}}</td>
+                                <td class="deemphasized" style="text-align:right;">(x:{{pane.x}} y:{{pane.y}} w:{{pane.width}} h:{{pane.height}})</td>
+                            </tr>
+                          </tbody>
+                          </table>
+                        </td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
             </div>
 
             <div id="prism-image-div" ng-click="clickedBackground($event)" class="col-sm-9">
