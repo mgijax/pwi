@@ -24,7 +24,8 @@
 			VariantKeySearchAPI,
 			VariantCreateAPI,
 			VariantUpdateAPI,
-			VariantDeleteAPI
+			VariantDeleteAPI,
+			VariantHGVSAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -1039,6 +1040,26 @@
 			vm.variantData = {};
 		}
 		
+                // copy HGVS
+		function copyHGVS() {
+			console.log('copyHGVS()');
+
+			var hgvsParams = "chr" + vm.variant.allele.chromosome + ":" + vm.variant.curatedGenomic.startCoordinate + vm.variant.curatedGenomic.referenceSequence + ">" + vm.variant.curatedGenomic.variantSequence;
+			
+                        pageScope.loadingStart();
+
+			// call API to gather hgvs
+			VariantHGVSAPI.search(hgvsParams, function(data) {
+				if (data.length > 0) {
+                                        vm.variant.description = data[0];
+                                }
+                                pageScope.loadingEnd();
+			}, function(err) {
+				handleError("Error retrieving hgvs.");
+                                pageScope.loadingEnd();
+			});
+		}
+		
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -1058,6 +1079,7 @@
 		$scope.copyVariant = copyVariant;
 	 	$scope.sequenceLink = sequenceLink;
 	 	$scope.trust = $sce.trustAsHtml;
+	 	$scope.copyHGVS = copyHGVS;
 
 		// call to initialize the page, and start the ball rolling...
 		init();

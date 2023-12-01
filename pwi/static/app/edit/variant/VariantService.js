@@ -9,7 +9,9 @@
 		.factory('VariantKeySearchAPI', VariantKeySearchAPIResource)
 		.factory('VariantCreateAPI', VariantCreateAPIResource)
 		.factory('VariantUpdateAPI', VariantUpdateAPIResource)
-		.factory('VariantDeleteAPI', VariantDeleteAPIResource);
+		.factory('VariantDeleteAPI', VariantDeleteAPIResource)
+		.factory('VariantHGVSAPI', VariantHGVSAPIResource)
+                ;
 
 
 	// search only for alleles with variants
@@ -73,5 +75,11 @@
 		});
 	}	
 	
+	function VariantHGVSAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'allelevariant/getHGVS', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
 })();
 
