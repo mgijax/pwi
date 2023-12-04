@@ -74,7 +74,10 @@ vt.getEmptyPwiVariant = function() {
 		soEffects : null,
 		curatedGenomic : {
 			sequenceType : "DNA",
-			sequenceTypeKey : vt.typeKey("DNA")
+			sequenceTypeKey : vt.typeKey("DNA"),
+                        startCoordinate : null,
+                        referenceSequence : null,
+                        variantSequence : null
 		},
 		curatedTranscript : {
 			sequenceType : "RNA",

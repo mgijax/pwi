@@ -1044,6 +1044,20 @@
 		function copyHGVS() {
 			console.log('copyHGVS()');
 
+                        if (
+                                vm.variant.allele.chromosome == null
+                                || vm.variant.curatedGenomic.startCoordinate == null
+                                || vm.variant.curatedGenomic.referenceSequence  == null
+                                || vm.variant.curatedGenomic.variantSequence == null
+                                || vm.variant.allele.chromosome == ''
+                                || vm.variant.curatedGenomic.startCoordinate == ''
+                                || vm.variant.curatedGenomic.referenceSequence  == ''
+                                || vm.variant.curatedGenomic.variantSequence == ''
+                                ) {
+                                alert("HGVS requires:\nChromosome\nCurated Genomic Start Coordinate\nCuratored Genomic Referencce Sequence\nCuratoed Genomic Variant Allele\n");
+                                return;
+                        }
+
 			var hgvsParams = "chr" + vm.variant.allele.chromosome + ":" + vm.variant.curatedGenomic.startCoordinate + vm.variant.curatedGenomic.referenceSequence + ">" + vm.variant.curatedGenomic.variantSequence;
 			
                         pageScope.loadingStart();
@@ -1051,11 +1065,12 @@
 			// call API to gather hgvs
 			VariantHGVSAPI.search(hgvsParams, function(data) {
 				if (data.length > 0) {
-                                        vm.variant.description = data[0];
+                                        const tokens = data[0].split('\t');
+                                        vm.variant.description = tokens[5];
                                 }
                                 pageScope.loadingEnd();
 			}, function(err) {
-				handleError("Error retrieving hgvs.");
+				handleError("Error running  copyHGVS.");
                                 pageScope.loadingEnd();
 			});
 		}
