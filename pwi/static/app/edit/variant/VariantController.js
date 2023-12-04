@@ -1054,7 +1054,7 @@
                                 || vm.variant.curatedGenomic.referenceSequence  == ''
                                 || vm.variant.curatedGenomic.variantSequence == ''
                                 ) {
-                                alert("HGVS requires:\n\nChromosome\nCurated Genomic Start Coordinate\nCuratored Genomic Reference Allele\nCurated Genomic Variant Allele\n");
+                                alert("HGVS requires:\n\nChromosome\nCurated Genomic Start Coordinate\nCurated Genomic Reference Allele\nCurated Genomic Variant Allele\n");
                                 return;
                         }
 
