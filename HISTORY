@@ -2,6 +2,11 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-22-90
+DATE: 12/04/2023
+STAFF: lec
+wts2-511/flr-540/Variant Module: automate HGVS string creation/analysis
+
 TAG: pwi-6-0-22-89
 DATE: 11/08/2023
 STAFF: jer

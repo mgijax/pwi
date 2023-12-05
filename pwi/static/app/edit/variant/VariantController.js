@@ -1058,6 +1058,9 @@
                                 return;
                         }
 
+                        vm.variant.curatedGenomic.referenceSequence = vm.variant.curatedGenomic.referenceSequence.toUpperCase();
+                        vm.variant.curatedGenomic.variantSequence = vm.variant.curatedGenomic.variantSequence.toUpperCase();
+
 			var hgvsParams = "chr" + vm.variant.allele.chromosome + ":" + vm.variant.curatedGenomic.startCoordinate + vm.variant.curatedGenomic.referenceSequence + ">" + vm.variant.curatedGenomic.variantSequence;
 			
                         pageScope.loadingStart();
@@ -1067,6 +1070,7 @@
 				if (data.length > 0) {
                                         const tokens = data[0].split('\t');
                                         vm.variant.description = tokens[5];
+                                        alert(tokens[0] + " " + tokens[1] + " " + tokens[2] + " " + tokens[3] + " " + tokens[4]);
                                 }
                                 pageScope.loadingEnd();
 			}, function(err) {
