@@ -1070,7 +1070,9 @@
 				if (data.length > 0) {
                                         const tokens = data[0].split('\t');
                                         vm.variant.description = tokens[5];
+                                        setTimeout(function() {
                                         alert(tokens[0] + " " + tokens[1] + " " + tokens[2] + " " + tokens[3] + " " + tokens[4]);
+                                        }, (200));
                                 }
                                 pageScope.loadingEnd();
 			}, function(err) {
