@@ -247,7 +247,8 @@
 						vm.variant.allele.chromosome = data[0].chromosome;
 						vm.variant.allele.strand = data[0].strand;
 						vm.variant.allele.accID = data[0].accID;
-						vm.variant.allele.alleleStatus = data[0].alleleStatus
+						vm.variant.allele.alleleStatus = data[0].alleleStatus;
+						vm.variant.allele.alleleStatusKey = data[0].alleleStatusKey;
 						vm.variant.allele.references = vt.collectRefIDs(data[0].refAssocs);
 						cacheExistingVariants(vm.variant.allele.alleleKey);
 						log("found allele");

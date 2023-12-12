@@ -15,10 +15,11 @@
 			</div><!-- row -->
 			</div>
 		
-			<div class="col-sm-2" style="">
-			<label class="label label-view-only">Allele Status</label>
-			<!-- readonly makes it so you can't click in the box. In lieu of the 'label' above one could use placeholder="Allele Status" but it would be replaced by the status when the  allele was validated-->
-			<textarea id="alleleStatus" name="alleleStatus" rows="1" cols="10" readonly="readonly" ng-model="vm.variant.allele.alleleStatus"></textarea>
+                        <div class="col-sm-2" style="">
+                                <label class="label label-view-only">Allele Status</label><br>
+                                <input type="text" class="form-control" id="alleleStatus" tabindex="-1" readonly
+                                        ng-model="vm.variant.allele.alleleStatus"
+                                        ></input>
                         </div>
 	
 			<div class="col-sm-3" style="">
