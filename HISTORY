@@ -2,6 +2,11 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-23-1
+DATE: 01/11/2024
+STAFF: lec
+fl2-627/Java 17 upgrade: Java API
+
 TAG: pwi-6-0-22-90
 DATE: 12/05/2023
 STAFF: lec
