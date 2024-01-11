@@ -921,10 +921,6 @@
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
 			});
-
-                        setTimeout(function() {
-                                document.getElementById(vm.saveActiveId).focus({preventScroll:false});
-                        }, (300));
 		}	
 		
 		// when an object is deleted, remove it from the results
