@@ -1684,6 +1684,7 @@
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
 		$scope.KclearInfo = function() { $scope.clearInfo(); $scope.$apply(); }
+		$scope.KclearPartial = function() { $scope.clearPartial(); $scope.$apply(); }
 		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
 		$scope.Kfirst = function() { $scope.firstSummaryObject(); $scope.$apply(); }
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
@@ -1696,6 +1697,7 @@
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
 		globalShortcuts.bind(['ctrl+alt+i'], $scope.KclearInfo);
+		globalShortcuts.bind(['ctrl+alt+t'], $scope.KclearPartial);
 		globalShortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
 		globalShortcuts.bind(['ctrl+alt+f'], $scope.Kfirst);
 		globalShortcuts.bind(['ctrl+alt+p'], $scope.Kprev);
