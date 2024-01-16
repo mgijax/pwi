@@ -2,6 +2,11 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-23-2
+DATE: 01/16/2024
+STAFF: lec
+wts2-1367/flr-696/Adding a shortcut for 'Clear Partial' in probe module
+
 TAG: pwi-6-0-23-1
 DATE: 01/11/2024
 STAFF: lec
