@@ -1268,6 +1268,25 @@
 			}
 		}		
 
+		// autopopulate primer name
+		function autoPrimerName() {
+			console.log("autoPrimerName");
+
+                        if (vm.apiDomain.segmentTypeKey != "63473") {
+                                return;
+                        }
+
+			if (vm.apiDomain.markers[0].markerSymbol == "") {
+				return;
+			}
+
+			if (vm.apiDomain.name != "") {
+				return;
+			}
+
+			vm.apiDomain.name = vm.apiDomain.markers[0].markerSymbol + "-pF, " + vm.apiDomain.markers[0].markerSymbol + "-pR";
+		}		
+
 		/////////////////////////////////////////////////////////////////////
 		// references
 		/////////////////////////////////////////////////////////////////////		
@@ -1641,6 +1660,7 @@
 		$scope.changeGeneralNote = changeGeneralNote;
 		$scope.changeMarkerRow = changeMarkerRow;
 		$scope.addMarkerRow = addMarkerRow;
+		$scope.autoPrimerName = autoPrimerName;
 		$scope.changeRefRow = changeRefRow;
 		$scope.addRefRow = addRefRow;
 		$scope.changeAccRow = changeAccRow;
