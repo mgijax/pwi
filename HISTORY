@@ -2,6 +2,11 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-23-4
+DATE: 01/19/2024
+STAFF: lec
+wts2-1373/fl2-706/CL browser: make links open in separate tab
+
 TAG: pwi-6-0-23-3
 DATE: 01/17/2024
 STAFF: lec

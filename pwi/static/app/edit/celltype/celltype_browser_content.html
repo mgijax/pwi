@@ -155,10 +155,11 @@
                                 <a href="{{ url_for('pwi.resultsummary', {celltype_id:vm.selectedTerm.primaryid} ) }}">{{vm.selectedTerm.annotCount}}</a>
 		  	direct annotations 
                             <span class="resultsLink">
-                                <a class="external" href=" https://bioportal.bioontology.org/ontologies/CL?p=classes&conceptid={{vm.selectedTerm.primaryid}}">BioPortal</a>
+                                <a class="external" target="_blank" href=" https://bioportal.bioontology.org/ontologies/CL?p=classes&conceptid={{vm.selectedTerm.primaryid}}">BioPortal</a>
                             </span>
                             <span class="resultsLink">
-                                <a class="external" href=" http://www.ontobee.org/ontology/CL?iri=http://purl.obolibrary.org/obo/{{vm.selectedTerm.ontobeeid}}">Ontobee</a>
+                                <a class="external" target="_blank" href=" http://www.ontobee.org/ontology/CL?iri=http://purl.obolibrary.org/obo/{{vm.selectedTerm.ontobeeid}}">Ontobee</a>
+                        dagC
                             </span>
                         </div>
 			
