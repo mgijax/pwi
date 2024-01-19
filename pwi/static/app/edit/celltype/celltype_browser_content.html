@@ -152,7 +152,7 @@
             </dl>
                         <div id="detailLinks">
                             <span class="resultsLink">
-                                <a href="{{ url_for('pwi.resultsummary', {celltype_id:vm.selectedTerm.primaryid} ) }}">{{vm.selectedTerm.annotCount}}</a>
+                                <a target="_blank href="{{ url_for('pwi.resultsummary', {celltype_id:vm.selectedTerm.primaryid} ) }}">{{vm.selectedTerm.annotCount}}</a>
 		  	direct annotations 
                             <span class="resultsLink">
                                 <a class="external" target="_blank" href=" https://bioportal.bioontology.org/ontologies/CL?p=classes&conceptid={{vm.selectedTerm.primaryid}}">BioPortal</a>
