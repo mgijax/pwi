@@ -91,6 +91,10 @@
 		function search() {				
 			console.log(vm.apiDomain);
 		
+			if (vm.results.length > 0) {
+                                return;
+                        }
+
 			pageScope.loadingStart();
 			
 			MPAnnotSearchAPI.search(vm.apiDomain, function(data) {
