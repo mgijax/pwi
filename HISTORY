@@ -2,6 +2,11 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-23-5
+DATE: 01/22/2024
+STAFF: lec
+wts2-485/fl2-707/Feature request Variant module: batch query (TR13246)
+
 TAG: pwi-6-0-23-4
 DATE: 01/19/2024
 STAFF: lec
