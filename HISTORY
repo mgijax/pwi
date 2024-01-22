@@ -2,6 +2,7 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-23-6
 TAG: pwi-6-0-23-5
 DATE: 01/22/2024
 STAFF: lec
