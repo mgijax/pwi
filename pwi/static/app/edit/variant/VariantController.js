@@ -279,6 +279,7 @@
 			
 			// pull search fields into an allele-compliant data structure
 			vm.alleleParams = {};
+
 			if (vm.variant.allele.symbol) {
 				vm.alleleParams.symbol = vm.variant.allele.symbol;
 			}
@@ -316,12 +317,18 @@
                                 vm.alleleParams.modification_date = vm.variantData.modification_date;
                         }
 
+                        // if multiSymbols contains search text
+                        if (vm.variant.allele.multiSymbols != "") {
+                                var saveMultiSymbols = vm.variant.allele.multiSymbols;
+                                vm.alleleParams = {};
+                                vm.alleleParams.multiSymbols = saveMultiSymbols
+                        }
+
 			// save off old request
 			vm.oldRequest = vm.alleleParams;
 
 			// call API to search; pass query params (vm.selected)
 			AlleleSearchAPI.search(vm.alleleParams, function(data) {
-				
 				vm.results = data;
 				vm.hideLoadingHeader = true;
 				vm.selectedIndex = 0;

@@ -20,6 +20,7 @@
  * 	allele : {
  * 		alleleKey : string key,
  * 		symbol : string symbol,
+ * 		multiSymbols : string,
  * 		chromosome : string,
  * 		strand : string,
  * 		references : string (containing space delimited-J#),
@@ -102,6 +103,7 @@ vt.getEmptyPwiVariant = function() {
 		allele : {
 			alleleKey : null,
 			symbol : null,
+			multiSymbols : null,
 			alleleStatus : null,
 			alleleStatusKey : null,
 			chromosome : null,
@@ -158,6 +160,7 @@ vt.apiToPwiVariant = function(apiVariant) {
 	if ((apiVariant.allele != undefined) && (apiVariant.allele != null)) {
 		pwiVariant.allele.alleleKey = apiVariant.allele.alleleKey;
 		pwiVariant.allele.symbol = apiVariant.allele.symbol;
+		pwiVariant.allele.multiSymbols = apiVariant.allele.multiSymbols;
 		pwiVariant.allele.alleleStatus = apiVariant.allele.alleleStatus;
 		pwiVariant.allele.alleleStatusKey = apiVariant.allele.alleleStatusKey;
 		pwiVariant.allele.chromosome = apiVariant.allele.chromosome;
@@ -211,6 +214,7 @@ vt.applyAlleleChanges = function(pwiVariant, apiVariant) {
 	}
 	apiVariant.allele.accID = pwiVariant.allele.accID;
 	apiVariant.allele.symbol = pwiVariant.allele.symbol;
+	apiVariant.allele.multiSymbols = pwiVariant.allelemultiSymbols;
 	apiVariant.allele.alleleKey = pwiVariant.allele.alleleKey;
 	apiVariant.allele.alleleStatus = pwiVariant.allele.alleleStatus;
 	apiVariant.allele.alleleStatusKey = pwiVariant.allele.alleleStatusKey;

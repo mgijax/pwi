@@ -97,6 +97,13 @@
 		
 			pageScope.loadingStart();
 			
+                        // if multiSymbols contains search text
+                        if (vm.apiDomain.multiSymbols != "") {
+                                var saveMultiSymbols = vm.apiDomain.multiSymbols;
+                                resetData();
+                                vm.apiDomain.multiSymbols = saveMultiSymbols
+                        }
+                        
 			AlleleSearchAPI.search(vm.apiDomain, function(data) {
 				vm.results = data;
 				vm.selectedIndex = 0;
@@ -113,40 +120,6 @@
 				pageScope.loadingEnd();
 				setFocus();
 			});
-		}		
-
-                // search by multiple symbols
-		function searchBySymbols() {				
-			console.log("searchBySymbols()");
-		
-			pageScope.loadingStart();
-			
-                        // skip if nothing in the multiSymbols
-                        if (vm.apiDomain.multiSymbols == "" || vm.apiDomain.multiSymbols == null) {
-                                return;
-                        }
-
-                        // set all vm.apiDomain to empty, except for vm.apiDomain.multiSymbols
-                        saveMultiSymbols = vm.apiDomain.multiSymbols;
-                        resetData();
-                        vm.apiDomain.multiSymbols = saveMultiSymbols
-
-			AlleleSearchAPI.search(vm.apiDomain, function(data) {
-			        vm.results = data;
-			        vm.selectedIndex = 0;
-			        if (vm.results.length > 0) {
-				        loadObject();
-			        }
-			        else {
-				        clear();
-			        }
-		                pageScope.loadingEnd();
-		                setFocus();
-		        }, function(err) {
-			        pageScope.handleError(vm, "API ERROR: AlleleSearchAPI.search");
-		                pageScope.loadingEnd();
-		                setFocus();
-		        });
 		}		
 
 		/////////////////////////////////////////////////////////////////////
