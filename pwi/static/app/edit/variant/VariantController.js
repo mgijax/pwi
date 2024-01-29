@@ -318,7 +318,7 @@
                         }
 
                         // if multiSymbols contains search text
-                        if (vm.variant.allele.multiSymbols != "") {
+                        if (vm.variant.allele.multiSymbols != "" && vm.variant.allele.multiSymbols != null) {
                                 var saveMultiSymbols = vm.variant.allele.multiSymbols;
                                 vm.alleleParams = {};
                                 vm.alleleParams.multiSymbols = saveMultiSymbols

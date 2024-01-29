@@ -214,7 +214,7 @@ vt.applyAlleleChanges = function(pwiVariant, apiVariant) {
 	}
 	apiVariant.allele.accID = pwiVariant.allele.accID;
 	apiVariant.allele.symbol = pwiVariant.allele.symbol;
-	apiVariant.allele.multiSymbols = pwiVariant.allelemultiSymbols;
+	apiVariant.allele.multiSymbols = pwiVariant.allele.multiSymbols;
 	apiVariant.allele.alleleKey = pwiVariant.allele.alleleKey;
 	apiVariant.allele.alleleStatus = pwiVariant.allele.alleleStatus;
 	apiVariant.allele.alleleStatusKey = pwiVariant.allele.alleleStatusKey;
