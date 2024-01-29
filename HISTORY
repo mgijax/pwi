@@ -2,6 +2,11 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-23-8
+DATE: 01/29/2024
+STAFF: lec
+issue on Allele Variant module?
+
 TAG: pwi-6-0-23-7
 DATE: 01/24/2024
 STAFF: lec
