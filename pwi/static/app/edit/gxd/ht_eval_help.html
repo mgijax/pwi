@@ -33,9 +33,11 @@
 
 <h5>ID Fields for an Experiment</h5>
 <ul>
-    <li>ArrayExp = experiment ID from ArrayExpress; you may link to the repository entry for this experiment using the icon to the right of the input box.</li>
-    <li>GEO = experiment ID from GEO; you may link to the repository entry for this experiment using the icon to the right of the input box.</li>
-    <li>PubMed = publication ID; you may click on this ID to link to PubMed; there may be 0-n PubMed IDs and this count is displayed next to the label. "Pub Med: n".  To add (or remove) ids, click on the X, make changes and then modify; multiples can be separated by any white space delimiter (space/tab/carriage return).  Click on link to PubMed to verify id correctly entered.
+<li>GEO = experiment ID from GEO; you may link to the repository entry for this experiment using the icon to the right of the input box.
+<li>ArrayExp = experiment ID from ArrayExpress; you may link to the repository entry for this experiment using the icon to the right of the input box.
+<li>Source = repository experiment was downloaded from. Note: some of the oldest curated GEO experiments may have been downloaded from ArrayExpress.
+<li>PubMed = publication ID; you may click on this ID to link to PubMed; there may be 0-n
+<li>PubMed IDs and this count is displayed next to the label. "Pub Med: n". To add (or remove) ids, click on the X, make changes and then modify; multiples can be separated by any white space delimiter (space/tab/carriage return). Click on link to PubMed to verify id correctly entered.
 </ul>
 
 <h5>Experiment Fields (Green)</h5>
@@ -43,16 +45,18 @@
     <li>Title = A Curator may modify the Title.</li>
     <li>Description = A Curator may modify the Description.</li>
     <li>Experiment Note = A text field used at the discretion of the Curator.  This text is displayed in the WI when curated samples are present; otherwise, it is used as a private notes field.</li>
-    <li>Experiment Type = A Curator may modify the Experiment Type.  The initial value displayed in the "Green" Experiment Type is set by the Load.  The value(s) displayed in the "Grey" Experiment Type are downloaded from ArrayExpress. (The "gray" field is not present in GEO).</li>
+    <li>Experiment Type = The value displayed in the "Green" Experiment Type field is set by the Load using mappings of repository (“raw”) assay types to GXD assay types. The curator may modify the value if needed.</li>
     <li>Study Type = A Curator selects the appropriate Study Type of the Experiment when curating the sample Data.  The load sets this field to "Not Curated".</li>
-    <li>Experimental Variables = The items listed are defined in a Simple Vocabulary, the abbreviations are used to save space.  A Curator may select 0-to-many terms.  The load sets this field to "Not Curated".</li>
+    <li>Experimental Variables = The items listed are defined in a Simple Vocabulary, the abbreviations are used
+    to save space. A Curator may select 1-to-many terms. The load sets this field to "Not Curated".
 </ul>
 
 <h5>Experiment Fields (Blue)</h5> 
 <ul>
 <li>Experimental Factor = as determined by ArrayExpress curators; not present in GEO.</li>
-<li>Experiment Type = raw value(s) as downloaded from ArrayExpress or GEO. Field can be searched using the pWI Custom Report: GXD HT Experiment Properties Search. </li>
+<li>Experiment Type = raw value(s) as downloaded from ArrayExpress or GEO. Field can be searched using the pWI Custom Report: GXD HT Experiment Properties Search.</li>
 <li>Providers = name(s) of those who submitted the experiment to ArrayExpress. This information can be found in GEO but is not easily parsed (so we omitted it).</li>
+<li>Raw Sample Count = derived from the GEO experiment file
 </ul>
 
 <h5>Date Fields</h5>
@@ -89,6 +93,13 @@
     <li>You may append or prepend the wildcard (%) to your search text.</li>
     <li>A wildcard may be used in text, date, and ID searches.</li>
 </ul>
+
+<h5>Confidence Value</h5>
+<li>Value assigned by the HT index classifier. All newly loaded experiments are assigned evaluation
+state = Not Evaluated. The classifier will process evaluation state = Not Evaluated experiments if
+they have raw sample data, assigning them a Confidence Value that is used to set a Predicted Yes or
+Predicted No evaluation state. GEO experiments lacking sample data are usually updated the
+following week, at which time they will also be processed by the classifier.</li>
 
 <h5>RNA-Seq Load?</h5>
 <ul>
