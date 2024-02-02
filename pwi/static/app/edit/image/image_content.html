@@ -62,50 +62,50 @@
 
 		<div class="row topMargin">
 			<div class="col-sm-12" style="">
-				<label class="label label-edit">Caption</label>
-                                <img id="clearCaptionButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.apiDomain.captionNote)"><br>
-				<textarea class="form-control" rows=9 ng-model="vm.apiDomain.captionNote.noteChunk" 
-					id="captionID" placeholder="" tab-to="paneLabelID"></textarea>
-				<button type="button" id="addSuperscriptTagButton" 
-						ng-click="addSuperscriptTag()" >Superscript</button>
-				<button type="button" id="addAlleleTagButton" 
-						ng-click="addAlleleTag()" >Allele Tag</button>
-			</div>
-		</div>
-
-		<div class="row topMargin">
-			<div class="col-sm-12" style="">
-				<label class="label label-edit">Copyright</label>
-                                <img id="clearCopyrightButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.apiDomain.copyrightNote)">
-		                <label class="label label-alert" ng-if="vm.journalLicenses.length>1">Journal Licenses</label>
-                                <select type=dropdown size="1" id="journalLicenses" tabindex="-1" ng-if="vm.journalLicenses.length>1"
-			             ng-options="choice.termKey as choice.note for choice in vm.journalLicenses"
-                                     ng-model="vm.selectedJournalLicense"
-                                     ng-change="selectJournalLicense()"
-                                     >
-                                <option value="">Choose</option>
-                                </select>
-                                <br>
-				<textarea class="form-control" rows=2 ng-model="vm.apiDomain.copyrightNote.noteChunk" 
-					id="copyrightID" placeholder="" >
-                                </textarea>
-			</div>
-		</div>
-
-		<div class="row topMargin" ng-if="vm.isMgd==true">
-			<div class="col-sm-12" style="">
-				<label class="label label-edit">Private Curatorial Notes</label>
-                                <img id="clearPrivateCuratorialButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.apiDomain.privateCuratorialNote)"><br>
-				<textarea class="form-control" rows=2 ng-model="vm.apiDomain.privateCuratorialNote.noteChunk" 
-					id="privateCuratorialID" placeholder="" ></textarea>
-			</div>
-		</div>
-
-		<div class="row topMargin">
-			<div class="col-sm-12" style="">
 
 				<div class="col-sm-6" style="">
 	
+		                        <div class="row topMargin">
+					<div class="col-sm-12" style="padding-left: 0px;">
+				                 <label class="label label-edit">Caption</label>
+                                                 <img id="clearCaptionButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.apiDomain.captionNote)"><br>
+				                 <textarea class="form-control" rows=9 ng-model="vm.apiDomain.captionNote.noteChunk" 
+					         id="captionID" placeholder="" tab-to="paneLabelID"></textarea>
+				                 <button type="button" id="addSuperscriptTagButton" 
+						 ng-click="addSuperscriptTag()" >Superscript</button>
+				                 <button type="button" id="addAlleleTagButton" 
+						        ng-click="addAlleleTag()" >Allele Tag</button>
+			                </div>
+		                        </div>
+
+		                        <div class="row topMargin">
+					<div class="col-sm-12" style="padding-left: 0px;">
+				                <label class="label label-edit">Copyright</label>
+                                                <img id="clearCopyrightButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.apiDomain.copyrightNote)">
+		                                <label class="label label-alert" ng-if="vm.journalLicenses.length>1">Journal Licenses</label>
+                                                <select type=dropdown size="1" id="journalLicenses" tabindex="-1" ng-if="vm.journalLicenses.length>1"
+			                        ng-options="choice.termKey as choice.note for choice in vm.journalLicenses"
+                                                ng-model="vm.selectedJournalLicense"
+                                                ng-change="selectJournalLicense()"
+                                                >
+                                                <option value="">Choose</option>
+                                                </select>
+                                                <br>
+				                <textarea class="form-control" rows=2 ng-model="vm.apiDomain.copyrightNote.noteChunk" 
+					        id="copyrightID" placeholder="" >
+                                                </textarea>
+			                 </div>
+		                        </div>
+
+		                        <div class="row topMargin" style="" ng-if="vm.isMgd==true">
+					<div class="col-sm-12" style="padding-left: 0px;">
+				                <label class="label label-edit">Private Curatorial Notes</label>
+                                                 <img id="clearPrivateCuratorialButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.apiDomain.privateCuratorialNote)"><br>
+				                <textarea class="form-control" rows=2 ng-model="vm.apiDomain.privateCuratorialNote.noteChunk" 
+					                id="privateCuratorialID" placeholder="" ></textarea>
+			                </div>
+		                        </div>
+
 					<div class="row" style="">
 					<div class="col-sm-6" style="padding-left: 0px;">
 						<label class="label label-edit">MGI Image/PIX</label>
