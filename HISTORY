@@ -2,7 +2,7 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
-TAG: pwi-6-0-23-?
+TAG: pwi-6-0-23-9
 DATE: 02/02/2024
 STAFF: lec
 wts2-1380/fl2-722/move Add Pane up next to Caption
