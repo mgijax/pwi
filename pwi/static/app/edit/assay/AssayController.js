@@ -448,9 +448,9 @@
                                 //setFocus();
 			});
 
-                        setTimeout(function() {
-			        pageScope.loadingEnd();
-                        }, (500));
+                        //setTimeout(function() {
+			        //pageScope.loadingEnd();
+                        //}, (500));
                         vm.saveReminder = false;
 		}		
 		
