@@ -448,6 +448,10 @@
                                 setFocus();
 			});
 
+                        setTimeout(function() {
+				pageScope.loadingEnd();
+                        }, (300));
+
                         vm.saveReminder = false;
 		}		
 		
