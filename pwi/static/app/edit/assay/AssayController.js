@@ -440,17 +440,17 @@
 				else {
 				        loadObject();
 				}
+                                setTimeout(function() {
 				pageScope.loadingEnd();
+                                }, (300));
                                 setFocus();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayUpdateAPI.update");
+                                setTimeout(function() {
 				pageScope.loadingEnd();
+                                }, (300));
                                 setFocus();
 			});
-
-                        setTimeout(function() {
-				pageScope.loadingEnd();
-                        }, (300));
 
                         vm.saveReminder = false;
 		}		
