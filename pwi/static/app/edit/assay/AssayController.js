@@ -440,15 +440,14 @@
 				else {
 				        loadObject();
 				}
-				//pageScope.loadingEnd();
-                                //setFocus();
+				pageScope.loadingEnd();
+                                setFocus();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayUpdateAPI.update");
-				//pageScope.loadingEnd();
-                                //setFocus();
+				pageScope.loadingEnd();
+                                setFocus();
 			});
 
-			pageScope.loadingEnd();
                         vm.saveReminder = false;
 		}		
 		
