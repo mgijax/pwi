@@ -430,7 +430,7 @@
                                 }
                         }
 
-			//pageScope.loadingStart();
+			pageScope.loadingStart();
 
 			AssayUpdateAPI.update(vm.apiDomain, function(data) {
 				if (data.error != null) {
@@ -448,6 +448,7 @@
                                 //setFocus();
 			});
 
+			pageScope.loadingEnd();
                         vm.saveReminder = false;
 		}		
 		
