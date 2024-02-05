@@ -430,10 +430,8 @@
                                 }
                         }
 
-			pageScope.loadingStart();
-
 			AssayUpdateAPI.update(vm.apiDomain, function(data) {
-                                console.log("inside assayupdate");
+			        pageScope.loadingStart();
 				if (data.error != null) {
 				        alert("ERROR: " + data.error + " - " + data.message);
 				        loadObject();
@@ -446,11 +444,9 @@
                                 console.log("end assayupdate");
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayUpdateAPI.update");
-				pageScope.loadingEnd();
                                 //setFocus();
 			});
 
-			pageScope.loadingEnd();
                         vm.saveReminder = false;
 		}		
 		
