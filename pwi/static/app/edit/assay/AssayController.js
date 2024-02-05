@@ -431,6 +431,7 @@
                         }
 
 			AssayUpdateAPI.update(vm.apiDomain, function(data) {
+			        console.log("starting AssayUpdateAPI.update:");
 			        pageScope.loadingStart();
 				if (data.error != null) {
 				        alert("ERROR: " + data.error + " - " + data.message);
