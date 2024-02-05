@@ -433,6 +433,7 @@
 			pageScope.loadingStart();
 
 			AssayUpdateAPI.update(vm.apiDomain, function(data) {
+                                console.log("inside assayupdate");
 				if (data.error != null) {
 				        alert("ERROR: " + data.error + " - " + data.message);
 				        loadObject();
@@ -440,18 +441,16 @@
 				else {
 				        loadObject();
 				}
-                                setTimeout(function() {
 				pageScope.loadingEnd();
-                                }, (300));
-                                setFocus();
+                                //setFocus();
+                                console.log("end assayupdate");
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayUpdateAPI.update");
-                                setTimeout(function() {
 				pageScope.loadingEnd();
-                                }, (300));
-                                setFocus();
+                                //setFocus();
 			});
 
+			pageScope.loadingEnd();
                         vm.saveReminder = false;
 		}		
 		
