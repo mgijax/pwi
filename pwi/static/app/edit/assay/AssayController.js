@@ -450,7 +450,7 @@
 
                         setTimeout(function() {
                                 pageScope.loadingEnd();
-                        }, (500));
+                        }, (1000));
                         vm.saveReminder = false;
 		}		
 		
