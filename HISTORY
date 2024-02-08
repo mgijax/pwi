@@ -2,6 +2,11 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-23-12
+DATE: 02/08/2024
+STAFF: lec
+wts2-826/fl2-738/Change Marker Module search result sort order
+
 TAG: pwi-6-0-23-11
 TAG: pwi-6-0-23-10
 DATE: 02/06/2024
