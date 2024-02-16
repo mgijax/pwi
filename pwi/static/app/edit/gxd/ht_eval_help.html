@@ -204,8 +204,7 @@ A few experiments are loaded into the database from ArrayExpress using a curator
 <ul>
 <li> Even if specified by the curator, only experiments for Mus and select assay types will be loaded.
 <li> This load has two modes: Add and Update.
-<li> Add mode will load an experiment with the experimental prefix E-MTAB-### and its raw samples
-<li> GXD. The Curator Run QC prevents the creation of duplicates.
+<li> Add mode will load an experiment with the experimental prefix E-MTAB-### and its raw samples GXD. The Curator Run QC prevents the creation of duplicates.
 <li> Update mode will add raw samples to an existing experiment in GXD that lacks them, but it will not overwrite existing raw samples. These will be reported on the Curator Run QC, and the load will not be allowed to run if these errors persist.
 <li> The relevance classifier is not run as part of this load; all newly added experiments will be given the status Not Evaluated.
 </ul>
