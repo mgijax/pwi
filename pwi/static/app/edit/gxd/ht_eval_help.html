@@ -23,8 +23,11 @@
 
 <h5>Curation Status Fields</h5>
 <ul>
-    <li>Evaluation = The relevance classifier flags experiments as Predicted Yes or Predicted No. Experiments lacking raw samples are entered into GXD as Not Evaluated. The GXD Curator flags an Experiment for later curation (Yes, Maybe) or as inappropriate for GXD (No).  
-        This field is not displayed on Public and does not determine whether Experiments are moved to Public.</li>
+<li>Evaluation = The relevance classifier flags experiments as Predicted Yes or Predicted No.
+Experiments from GEO lacking raw samples and all experiments from ArrayExpress are entered into
+GXD as Not Evaluated. The GXD Curator flags an Experiment for later curation (Yes, Maybe) or as out
+of scope for GXD (No). This field is not displayed on Public and does not determine whether
+Experiments are moved to Public.</li>
     <li>Curation State =  This field is set by the software and not the Curator.  
         Once an Experiment has curated samples, the Curation State is updated to Done.  
         Experiments with a Curation State = Done are moved to the Public WI. When the curated sample table is deleted, the Curation State reverts to Not Done. Experiments with an Evaluation status = No have a Curation State = Not Applicable.    
@@ -56,7 +59,8 @@
 <li>Experimental Factor = as determined by ArrayExpress curators; not present in GEO.</li>
 <li>Experiment Type = raw value(s) as downloaded from ArrayExpress or GEO. Field can be searched using the pWI Custom Report: GXD HT Experiment Properties Search.</li>
 <li>Providers = name(s) of those who submitted the experiment to ArrayExpress. This information can be found in GEO but is not easily parsed (so we omitted it).</li>
-<li>Raw Sample Count = derived from the GEO experiment file
+<li>Raw Sample Count = derived from the experiment file. In rare instances it will differ from the actual
+sample count, ie the number of samples actually loaded into the database.</li>
 </ul>
 
 <h5>Date Fields</h5>
@@ -111,10 +115,16 @@ following week, at which time they will also be processed by the classifier.</li
 <h5>Raw Samples:</h5>
 
 <ul>
-   <li>These fields and values are downloaded from GEO and stored in the database.</li>
+   <li>These fields and values are downloaded from GEO using a weekly load and from ArrayExpress using
+   a curator-driven load.</li>
    <li>Clicking on the Download sample metadata link will display them.</li>
    <li>The fields and values vary between experiments; there is no standardization.</li>
-   <li>The raw sample data for experiments from ArrayExpress is not stored in the database.</li>
+   <li>The raw sample data for experiments loaded from ArrayExpress prior to January 29, 2022, is not
+   generally stored in the database.</li>
+   <li>When viewing the raw data alongside curated samples, the sample name must be the same in both
+   tables or else the raw data will not download into the pwi. Similarly, if additional raw samples are
+   added after curation, these additional samples will not download into the pwi. If you delete the
+   curated data, you will be able to download all raw samples.</li>
 </ul>
 
 <h5>Sample Summary</h5>
@@ -146,7 +156,12 @@ following week, at which time they will also be processed by the classifier.</li
 
 <h5>Sample Fields & Validation</h5>
 <ul>
-    <li>Name: for experiments from GEO, the GSM number will be used. For experiments from ArrayExpress, the system chose Source Name, followed by Assay Name or Extract Name if the Source Name did not exist. The curator cannot modify this field.</li>
+    <li>Name: the curator cannot modify this field. For experiments loaded from GEO, the GEO sample
+    id (GSM number) will be used; all samples have one. For the curator-driven load from
+    ArrayExpress, the preferred name is ENA Sample ID, followed by BioStudies (BioSD) Sample ID
+    and then Source Name if there is no ENA Sample ID. For the original, weekly load from
+    ArrayExpress, the preferred name was Source Name, followed by Assay Name and then Extract
+    Name if the Source Name did not exist.</li>
     <li>Organism:  selection from pull-down list of controlled vocabulary. New choices are added using the Organism module.</li>
     <li>GXD Relevant?:  selection from pull-down of controlled vocabulary. By default this column is hidden.</li>
     <li>Genotype: Genotype ID entered with or without "MGI:"; validation and display of genotype when clicking or tabbing out.</li>
@@ -171,17 +186,37 @@ following week, at which time they will also be processed by the classifier.</li
 
 <h4>GXD HT Experiment Load Overview</h4>
 <p>
-This is an incremental load of high-throughput experiments from GEO.  These are being loaded for the purpose
-of indexing some of them using standard vocabularies for the meta data of the experiment and samples.  It is expected that users will query GXD to 
-find interesting experiments, but will go to the source for the details of the expression data generated by the experiment itself. 
+Currently most experiments are loaded into the database using an incremental load from GEO. This load
+was released February 2, 2022. The goal is to allow GXD curators to use standardized vocabularies to
+index the metadata of the experiments and samples within GXD’s scope. It is expected that users will
+query GXD to find experiments of interest but will go to the source repository for the details of the
+expression data generated by the experiment itself.
 </p>
 <ul>
     <li>Only experiments for Mus and select assay types are loaded.</li>
     <li>The load runs on a weekly schedule.</li>
     <li>The load includes a relevance classifier which sets experiments to a status of "Predicted Yes" or "Predicted No".</li> 
     <li>GXD Curators will triage the newly loaded experiments to determine if the samples should be indexed (Yes, No, Maybe).</li>
-    <li>Once loaded into the MGI database experiments are not updated via the Experiment Load with one exception:  the PubMed ID field may be updated if new values are detected at ArrayExpress or GEO.</li>
+    <li>Once loaded into the MGI database experiments are not updated via the Experiment Load with
+    one exception: the PubMed ID field may be updated if new values are detected.</li>
 </ul>
+A few experiments are loaded into the database from ArrayExpress using a curator-driven load.
+<ul>
+<li> Even if specified by the curator, only experiments for Mus and select assay types will be loaded.
+<li> This load has two modes: Add and Update.
+<li> Add mode will load an experiment with the experimental prefix E-MTAB-### and its raw samples
+<li> GXD. The Curator Run QC prevents the creation of duplicates.
+<li> Update mode will add raw samples to an existing experiment in GXD that lacks them, but it will not overwrite existing raw samples. These will be reported on the Curator Run QC, and the load will not be allowed to run if these errors persist.
+<li> The relevance classifier is not run as part of this load; all newly added experiments will be given the status Not Evaluated.
+</ul>
+Prior to January 29, 2022, we used a weekly, incremental load from ArrayExpress to load HT
+experiments into GXD. That load did not import raw sample data; that was downloaded into the pwi on
+demand during curation but was not stored. When we switched to the weekly GEO load, we “back
+filled” the raw sample data for experiments that had been imported into ArrayExpress from GEO (ie the
+E-GEOD-### ones). Experiments submitted directly to ArrayExpress (ie all other experimental prefixes)
+generally lack raw sample data. Exception: the curator can use the curator-driven load to import raw
+sample data for these experiments when needed.
+
 <h4>More Documentation</h4>
 <a href="http://mgiwiki/mediawiki/index.php/sw:Gxdhtload">GXD HT Load</a><br>
 <a href="http://mgiwiki/mediawiki/index.php/GXD:HT_Indexing">GXD HT Indexing</a><br>
