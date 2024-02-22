@@ -2,6 +2,11 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-23-15
+DATE: 02/22/2024
+STAFF: lec
+wts2-1415/fl2-754/Saving Problem in Assay Module
+
 TAG: pwi-6-0-23-14
 DATE: 02/19/2024
 STAFF: lec
