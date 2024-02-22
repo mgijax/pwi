@@ -448,7 +448,7 @@
 
                         setTimeout(function() {
                                 pageScope.loadingEnd();
-                        }, (1000));
+                        }, (2000));
 
                         vm.saveReminder = false;
 		}		
