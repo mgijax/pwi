@@ -15,5 +15,13 @@ printf "\nsourcing the new virtual environment."
 printf "\nTo use this installation in the future, you will need to call source bin/activate\n"
 
 source bin/activate
+
+# pip hangs up sometimes, so remove the cached pip folder
+case `uname -n` in
+bhmgipwi01lp|bhmgipwi01lt)
+        rm -rf /home/mgiadmin/.cache/pip
+        ;;
+esac
+
 pip install -r requirements.txt
 

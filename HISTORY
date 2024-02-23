@@ -2,6 +2,11 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-23-16
+DATE: 02/23/2024
+STAFF: lec
+add cache/pip removal to Install for bhmgipwi01lp, bhmgipwi01lt
+
 TAG: pwi-6-0-23-15
 DATE: 02/22/2024
 STAFF: lec
