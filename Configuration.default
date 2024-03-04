@@ -85,7 +85,7 @@ export PG_PASS
 #
 if [ "${JAVA_API_URL}" = "" ]
 then
-    JAVA_API_URL=http://scrumdogdev.informatics.jax.org:8099/api/
+    JAVA_API_URL=http://prodwww.informatics.jax.org/pwi/
     export JAVA_API_URL
 fi
 
