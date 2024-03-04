@@ -57,7 +57,7 @@ export DEV_SERVER_PORT
 APP_PREFIX="/pwi"
 export APP_PREFIX
 
-# default database values
+# default database values; use mgiconfig
 PG_SERVER=${MGD_DBSERVER}
 PG_DBNAME=${MGD_DBNAME}
 PG_USER=${MGD_DBUSER}
@@ -70,11 +70,7 @@ else
     echo "Missing MGD_DBPASSWORDFILE -- Set environment, or configure manually"
     exit 1
 fi
-# Optionally Override MGICONFIG
-#PG_SERVER=mgi-testdb4.jax.org
-#PG_DBNAME=pub_dev
-#PG_USER=dbo user
-#PG_PASS=dev password
+
 export PG_SERVER
 export PG_DBNAME
 export PG_USER
