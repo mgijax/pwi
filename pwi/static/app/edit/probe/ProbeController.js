@@ -610,11 +610,9 @@
 			vm.apiDomain.references = [];
                         addRefRow();
 
-			for(var i=0;i<vm.apiDomain.generalNote.length; i++) {
-                                vm.apiDomain.markers[i].processStatus = "c";
-                                vm.apiDomain.markers[i].noteKey = "";
-                                vm.apiDomain.markers[i].probeKey = "";
-                        }
+                        vm.apiDomain.generalNote.processStatus = "c";
+                        vm.apiDomain.generalNote.noteKey = "";
+                        vm.apiDomain.generalNote.probeKey = "";
 		}
 
 		// reset booleans
