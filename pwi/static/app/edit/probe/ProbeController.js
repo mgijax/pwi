@@ -612,6 +612,8 @@
 
 			for(var i=0;i<vm.apiDomain.generalNote.length; i++) {
                                 vm.apiDomain.markers[i].processStatus = "c";
+                                vm.apiDomain.markers[i].noteKey = "";
+                                vm.apiDomain.markers[i].probeKey = "";
                         }
 		}
 
