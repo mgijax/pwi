@@ -193,10 +193,8 @@
  		// Deselect current item from the searchResults.
  		function deselectObject() {
 			console.log("deselectObject()");
-			var newObject = angular.copy(vm.apiDomain);
-                        vm.apiDomain = newObject;
-			vm.selectedIndex = -1;
 			resetDataDeselect();
+			vm.selectedIndex = -1;
 			setFocus();
 		}
 	
@@ -562,27 +560,59 @@
 			console.log("resetDataDeselect()");
 
                         resetBoolean();
+                        var saveDomain = vm.apiDomain;
+
 			vm.apiDomain.probeKey = "";	
 			vm.apiDomain.name = "";	
-			vm.apiDomain.segmentTypeKey = "";	
-			vm.apiDomain.segmentType = "";	
+			vm.apiDomain.segmentTypeKey = saveDomain.segmentTypeKey;
+			vm.apiDomain.segmentType = saveDomain.segmentType;
 			vm.apiDomain.derivedFromKey = "";	
 			vm.apiDomain.derivedFromName = "";	
 			vm.apiDomain.derivedFromAccID = "";	
+                        vm.apiDomain.ampPrimerAccID = "";
+                        vm.apiDomain.ampPrimerName = "";
+                        vm.apiDomain.ampPrimerKey = "";
 			vm.apiDomain.vectorTypeKey = "";	
 			vm.apiDomain.vectorType = "";	
 			vm.apiDomain.primer1sequence = "";	
 			vm.apiDomain.primer2sequence = "";	
-			vm.apiDomain.productSize = "";	
 			vm.apiDomain.regionCovered = "";	
 			vm.apiDomain.insertSite = "";	
 			vm.apiDomain.insertSize = "";	
+			vm.apiDomain.productSize = "";	
 			vm.apiDomain.accID = "";
+			vm.apiDomain.createdByKey = "";
+			vm.apiDomain.createdBy = "";
+			vm.apiDomain.modifiedByKey = "";
+			vm.apiDomain.modifiedBy = "";
+			vm.apiDomain.creation_date = "";
+			vm.apiDomain.modification_date = "";
+			vm.apiDomain.hasExpression = "0";
+
+			for(var i=0;i<vm.apiDomain.markers.length; i++) {
+                                vm.apiDomain.markers[i].processStatus = "c";
+                                vm.apiDomain.markers[i].assocKey = "";
+                                vm.apiDomain.markers[i].refsKey = "";
+                                vm.apiDomain.markers[i].jnumid = "";
+                                vm.apiDomain.markers[i].jnum = null;
+                                vm.apiDomain.markers[i].short_citation = "";
+			        vm.apiDomain.markers[i].createdByKey = "";
+			        vm.apiDomain.markers[i].createdBy = "";
+			        vm.apiDomain.markers[i].modifiedByKey = "";
+			        vm.apiDomain.markers[i].modifiedBy = "";
+			        vm.apiDomain.markers[i].creation_date = "";
+			        vm.apiDomain.markers[i].modification_date = "";
+                        }
+
+			vm.apiDomain.probeSource = [];
                         addSourceRow();
-			addMarkerRow();
-			addRefRow();
-			addRefRow();
-                        addNotes();
+
+			vm.apiDomain.references = [];
+                        addRefRow();
+
+			for(var i=0;i<vm.apiDomain.generalNote.length; i++) {
+                                vm.apiDomain.markers[i].processStatus = "c";
+                        }
 		}
 
 		// reset booleans
