@@ -2,6 +2,13 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-23-18
+DATE: 03/14/2024
+STAFF: lec
+wts2-1439/fl2-784/HT/remove Raw Sample Count from PWI & QC
+undo:
+wts2-1368/fl2-724/HT index module: display raw sample count
+
 TAG: pwi-6-0-23-17
 DATE: 03/13/2024
 STAFF: lec
