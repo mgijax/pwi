@@ -2,6 +2,11 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-23-19
+DATE: 04/08/2024
+STAFF: lec
+wts2-1456/fl2-818/Add Duplicate Note logic to PWI/Genotype module
+
 TAG: pwi-6-0-23-18
 DATE: 03/14/2024
 STAFF: lec
