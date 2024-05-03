@@ -70,6 +70,14 @@
 					ng-model="vm.apiDomain.name"
 				>
                         </div>
+		        <div class="col-sm-1">
+		                <label class="label label-search">Order By</label><br>
+		                <select id="orderBy" ng-model="vm.apiDomain.orderBy" size="1">
+		                  <option value="1">Old order (default)</option>
+		                  <option value="2">New order</option>
+		                </option>
+		                </select>
+		        </div>
 		</div>
 
 		<div class="spacer"></div>

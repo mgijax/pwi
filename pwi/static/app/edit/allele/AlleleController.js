@@ -696,6 +696,7 @@
 			vm.apiDomain.symbol = "";	
 			vm.apiDomain.multiSymbols = "";	
 			vm.apiDomain.name = "";	
+			vm.apiDomain.orderBy = "1";	
 			vm.apiDomain.accID = "";
 			vm.apiDomain.alleleTypeKey = "";
 			vm.apiDomain.alleleType = "";
