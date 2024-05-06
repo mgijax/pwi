@@ -45,6 +45,7 @@
 
 		// api/json input/output
 		vm.apiDomain = {};
+                vm.orderBy = "1";
 
                 // default booleans for page functionality
 		vm.hideApiDomain = true;       // JSON package
@@ -104,6 +105,8 @@
                                 vm.apiDomain.multiSymbols = saveMultiSymbols
                         }
                         
+                        vm.apiDomain.orderBy = vm.orderBy;
+
 			AlleleSearchAPI.search(vm.apiDomain, function(data) {
 				vm.results = data;
 				vm.selectedIndex = 0;
@@ -645,10 +648,11 @@
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 			resetBoolean();
-                        var saveDomain = vm.apiDomain;
+                        var saveDomain = angular.copy(vm.apiDomain);
                         resetAllele();
                         vm.apiDomain.symbol = saveDomain.symbol;
                         vm.apiDomain.name = saveDomain.name;
+                        vm.apiDomain.orderBy = saveDomain.orderBy;
 			vm.apiDomain.alleleTypeKey = saveDomain.alleleTypeKey;
 			vm.apiDomain.alleleType = saveDomain.alleleType;
 			vm.apiDomain.alleleStatusKey = saveDomain.alleleStatusKey;
@@ -696,7 +700,6 @@
 			vm.apiDomain.symbol = "";	
 			vm.apiDomain.multiSymbols = "";	
 			vm.apiDomain.name = "";	
-			vm.apiDomain.orderBy = "1";	
 			vm.apiDomain.accID = "";
 			vm.apiDomain.alleleTypeKey = "";
 			vm.apiDomain.alleleType = "";
@@ -713,6 +716,9 @@
 			vm.apiDomain.isWildType = "";
 			vm.apiDomain.isExtinct = "";
 			vm.apiDomain.isMixed = "";
+
+                        vm.orderBy = "1";
+			vm.apiDomain.orderBy = vm.orderBy;
 
 			vm.apiDomain.markerKey = "";
 			vm.apiDomain.markerSymbol = "";
@@ -859,6 +865,7 @@
                                 addDetailClip();
 				addNotes();
                                 vm.changedMCLParentSOO = false;
+                                vm.apiDomain.orderBy = vm.orderBy;
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleGetAPI.get");
 			});
