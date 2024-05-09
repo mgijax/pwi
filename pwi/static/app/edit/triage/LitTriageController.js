@@ -28,6 +28,7 @@
 			ReferenceDOIDAssocAPI,
 			JournalAPI,
 			ActualDbGetAPI,
+                        StrainToolSearchAPI,
 			// global resource APIs
 			MGIRefAssocTypeSearchAPI,
 			ValidateAlleleAPI,
@@ -62,6 +63,9 @@
 		// list of journals to use in auto-complete
 		vm.journals = {}
 		
+                // already loaded
+                vm.alleleAssocsLoaded = false;
+                
 		// set hidden query form and controls 
 		vm.isFullSearch = isFullSearch;
 		vm.queryForm = false;
@@ -228,8 +232,7 @@
                         vm.selected.strainAssocs = vm.refData.strainAssocs;
                         vm.selected.doidAssocs = vm.refData.doidAssocs;
                         
-			// ensure the query form has been touched before submission
-			// or the accession id exists
+			// ensure the query form has been touched before submission or the accession id exists
 			if (
                                 vm.litTriageQueryForm.$dirty || 
                                 vm.selected.accids != null || 
@@ -415,6 +418,7 @@
 			  	"workflowTag": ""
 			};		
 
+                        addStrainTool();
 		}
 
 		// reset QFs
@@ -666,8 +670,11 @@
 		
 		// setting focus
 		function setFocusAcc() {
-			document.getElementById("accids").focus();
+                        setTimeout(function() {
+			        document.getElementById("accids").focus();
+                        }, (500));
 		}
+
 		function setFocusAuthor() {
 			document.getElementById("editTabAuthors").focus();
 		}
@@ -698,6 +705,7 @@
 			ReferenceGetAPI.get({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
 				vm.refData = data;
 				vm.disableDeleteDiscard = false;
+                                vm.alleleAssocsLoaded = false;
 				setActiveTab(vm.activeTab);
                                 addBook(vm.refData);
                                 addNote(vm.refData);
@@ -942,6 +950,7 @@
 			}
 			else if (tabIndex==4) {
 				loadStrainAssoc();
+				loadAlleleAssoc();
 			}
 			else if (tabIndex==5) {
 				loadDOIDAssoc();
@@ -995,6 +1004,10 @@
                                 return;
                         }
 
+                        if (vm.alleleAssocsLoaded == true) {
+                                return;
+                        }
+
 			pageScope.loadingStart();
 
                         ReferenceAlleleAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
@@ -1007,6 +1020,7 @@
                                 } else {
 					vm.refData.alleleAssocs = data;
 				        addAlleleAssocRow();
+                                        vm.alleleAssocsLoaded = true;
 				        pageScope.loadingEnd();
                                 }
                         }, function(err) {     
@@ -1446,6 +1460,149 @@
 			}
 		}
 
+                // strain tool
+                
+                // using vm.strainTool, search for strains
+		function searchStrainTool() {
+			console.log("searchStrainTool()");
+
+                        if (vm.strainTool == null) {
+                                addStrainTool();
+                                return;
+                        }
+
+                        if (vm.strainTool[0].searchAccID == "") {
+                                return;
+                        }
+
+                        // example: RBRC09372
+                        var params = {}
+                        params.searchAccID = vm.strainTool[0].searchAccID;
+                        
+			pageScope.loadingStart();
+
+			StrainToolSearchAPI.search(params, function(data) {
+				if (data.length > 0) {
+                                        vm.strainTool = data;
+                                        vm.strainTool[0].searchAccID = params.searchAccID;
+			                pageScope.loadingEnd();
+                                }
+                                else {
+				        alert("Invalid Accession Id");
+                                        clearStrainTool();
+			                document.getElementById("strainToolAccId").focus();
+                                }
+			        pageScope.loadingEnd();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: StrainToolSearchAPI.search");
+			        pageScope.loadingEnd();
+			});
+		}
+
+                // add vm.strainTool, vm.strainTool
+		function addStrainTool() {
+			console.log("addStrainTool()");
+
+			if (vm.strainTool == undefined) {
+				vm.strainTool = [];
+			}
+
+			vm.strainTool[0] = {
+			        "searchAccID": "",
+			        "accID": "",
+                                "strain": "",
+                                "isPrivate": "",
+                                "isPrivateString": "",
+                                "markers": [],
+                                "alleleString": ""
+                        }
+                }
+
+                // clear vm.strainTool
+		function clearStrainTool() {
+			console.log("clearStrainTool()");
+                        addStrainTool();
+                }
+
+                // add vm.strainTool to first empty Strain Assoc row
+		function addStrainToolAssoc(option) {
+			console.log("addStrainToolAssoc(" + option + ")");
+
+			if (
+                               vm.strainTool == null
+                               || vm.strainTool[0].strainKey == null
+                               || vm.strainTool[0].strainKey == ""
+                           ) {
+                                alert("Add To Strain and/or Allele Assoc Required Fields: Strain");
+				document.getElementById("strainToolAccID").focus();
+				return;
+			}
+
+                        if (vm.strainTool.length == 0) {
+                                alert("Add To Strain and/or Allele Assoc Required:  No Strain found");
+				document.getElementById("strainToolAccID").focus();
+				return;
+                        }
+
+                        // always add to Strain Assoc
+                        var newStrainAssoc = vm.refData.strainAssocs.length;
+
+                        for(var i=0;i<vm.refData.strainAssocs.length; i++) { 
+                                if (vm.refData.strainAssocs[i].processStatus == "c") {
+                                        newStrainAssoc = i;
+                                        break;
+                                }
+                        }
+
+			vm.refData.strainAssocs[newStrainAssoc] = {
+			        "processStatus": "c",
+				"assocKey": "",
+				"objectKey": vm.strainTool[0].strainKey,
+				"mgiTypeKey": "10",
+				"refAssocTypeKey": "1031",
+				//"refAssocType": "Indexed",
+				"refsKey": vm.refData.refsKey,
+				"strainSymbol": vm.strainTool[0].strain,
+				"strainAccID": vm.strainTool[0].accID
+			};
+
+                        newStrainAssoc = newStrainAssoc + 1;
+
+                        // add to Allele Assoc
+                        if (option == 2) {
+
+                                var newAlleleAssoc = vm.refData.alleleAssocs.length;
+
+                                for(var i=0;i<vm.refData.alleleAssocs.length; i++) { 
+                                        if (vm.refData.alleleAssocs[i].processStatus == "c") {
+                                                newAlleleAssoc = i;
+                                                break;
+                                        }
+                                }
+
+                                for(var i=0;i<vm.strainTool[0].markers.length; i++) { 
+			                vm.refData.alleleAssocs[newAlleleAssoc] = {
+				                "processStatus": "c", 
+				                "assocKey": "",
+				                "objectKey": vm.strainTool[0].markers[i].alleleKey,
+				                "mgiTypeKey": "11",
+				                "refAssocTypeKey": "1013",
+				                //"refAssocType": "Indexed",
+				                "refsKey": vm.refData.refsKey,
+				                "alleleSymbol": vm.strainTool[0].markers[i].alleleSymbol,
+				                "alleleAccID": vm.strainTool[0].markers[i].alleleAccID,
+				                "alleleMarkerSymbol": vm.strainTool[0].markers[i].markerSymbol
+			                };
+        
+                                        newAlleleAssoc = newAlleleAssoc + 1;
+                                }
+                        }
+
+                        clearStrainTool();
+                        modifyEditTab();
+			document.getElementById("strainToolAccId").focus();
+                }
+
 		//Expose functions on controller scope
 		$scope.search = search;
 		$scope.searchSummary = searchSummary;
@@ -1487,6 +1644,11 @@
 		$scope.validateStrain = validateStrain;
 		$scope.addDOIDAssocRow = addDOIDAssocRow;
 		$scope.validateDOID = validateDOID;
+
+                // strain tool
+		$scope.searchStrainTool = searchStrainTool;
+		$scope.addStrainToolAssoc = addStrainToolAssoc;
+		$scope.clearStrainTool = clearStrainTool;
 
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clearAll(); $scope.$apply(); }

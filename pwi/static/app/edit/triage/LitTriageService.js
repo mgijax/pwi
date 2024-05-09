@@ -13,6 +13,7 @@
 		.factory('ReferenceDOIDAssocAPI', ReferenceDOIDAssocAPIResource)
 		.factory('JournalAPI', JournalAPIResource)
 		.factory('ActualDbGetAPI', ActualDbGetAPIResource)
+                .factory('StrainToolSearchAPI', StrainToolSearchAPIResource)
 		;
 
 
@@ -94,5 +95,11 @@
 		return $resource(JAVA_API_URL + 'reference/getJournalList', {}, {} );
 	}
 
+        function StrainToolSearchAPIResource($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'strain/searchStrainTool', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+        }
+        
 })();
 
