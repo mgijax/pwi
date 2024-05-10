@@ -1571,6 +1571,10 @@
                         // add to Allele Assoc
                         if (option == 2) {
 
+                                if (vm.refData.alleleAssocs == null || vm.refData.alleleAssocs.length == 0) {
+				        addAlleleAssocRow();
+                                }
+
                                 var newAlleleAssoc = vm.refData.alleleAssocs.length;
 
                                 for(var i=0;i<vm.refData.alleleAssocs.length; i++) { 
