@@ -14,6 +14,7 @@
 		.factory('JournalAPI', JournalAPIResource)
 		.factory('ActualDbGetAPI', ActualDbGetAPIResource)
                 .factory('StrainToolSearchAPI', StrainToolSearchAPIResource)
+		.factory('LogicalDBSearchAPI',	LogicalDBSearchAPIResource)
 		;
 
 
@@ -100,6 +101,13 @@
                         'search': { method: 'POST', isArray: true }
                 });
         }
+
+	// logical db for strain set
+	function LogicalDBSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'logicaldb/searchProbeStrainSet', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
         
 })();
 

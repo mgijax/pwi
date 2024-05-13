@@ -1490,8 +1490,8 @@
 				if (data.length > 0) {
                                         vm.strainTool = data;
                                         vm.strainTool[0].searchAccID = params.searchAccID;
-                                        vm.strainTool[0].searchLogicaldbKey = params.searchsearchLogicaldbKey;
-                                        vm.strainTool[0].searchLogicaldb = params.searchsearchLogicaldb;
+                                        vm.strainTool[0].searchLogicaldbKey = params.searchLogicaldbKey;
+                                        vm.strainTool[0].searchLogicaldb = params.searchLogicaldb;
 			                pageScope.loadingEnd();
                                 }
                                 else {

@@ -1434,7 +1434,7 @@
 		<div class="row">
 			<div class="col-sm-1" style="">
 				<label class="label label-other">Accession Type</label><br>
-                                <select type=dropdown size="1" id="strainToolAccType"
+                                <select type=dropdown size="1" id="strainToolAccType" tabindex="-1"
 			                ng-options="choice.logicalDBKey as choice.name for choice in vm.logicaldbLookup"
                        	                ng-model="vm.strainTool[0].searchLogicaldbKey"
 				        >
