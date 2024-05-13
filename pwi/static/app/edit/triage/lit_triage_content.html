@@ -1432,6 +1432,15 @@
 
 		<div class="spacer"></div>
 		<div class="row">
+			<div class="col-sm-1" style="">
+				<label class="label label-other">Accession Type</label><br>
+                                <select type=dropdown size="1" id="strainToolAccType"
+			                ng-options="choice.logicalDBKey as choice.name for choice in vm.logicaldbLookup"
+                       	                ng-model="vm.strainTool[0].searchLogicaldbKey"
+				        >
+                                </select>
+                        </div>
+
 			<div class="col-sm-2" style="">
 				<label class="label label-other">Accession Id</label><br>
 		   		<input class="form-control" id="strainToolAccId" ng-model="vm.strainTool[0].searchAccID"

@@ -29,6 +29,7 @@
 			JournalAPI,
 			ActualDbGetAPI,
                         StrainToolSearchAPI,
+                        LogicalDBSearchAPI,
 			// global resource APIs
 			MGIRefAssocTypeSearchAPI,
 			ValidateAlleleAPI,
@@ -157,6 +158,8 @@
 				vm.doidAssocType_choices = data.items;
 			});
 
+			vm.logicaldbLookup = [];
+			LogicalDBSearchAPI.search({}, function(data) { vm.logicaldbLookup = data});;
 		}
 
 		// set the auto-complete attachments
@@ -1478,6 +1481,8 @@
                         // example: RBRC09372
                         var params = {}
                         params.searchAccID = vm.strainTool[0].searchAccID;
+                        params.searchLogicaldbKey = vm.strainTool[0].searchLogicaldbKey;
+                        params.searchLogicaldb = vm.strainTool[0].searchLogicaldb;
                         
 			pageScope.loadingStart();
 
@@ -1485,6 +1490,8 @@
 				if (data.length > 0) {
                                         vm.strainTool = data;
                                         vm.strainTool[0].searchAccID = params.searchAccID;
+                                        vm.strainTool[0].searchLogicaldbKey = params.searchsearchLogicaldbKey;
+                                        vm.strainTool[0].searchLogicaldb = params.searchsearchLogicaldb;
 			                pageScope.loadingEnd();
                                 }
                                 else {
@@ -1509,6 +1516,8 @@
 
 			vm.strainTool[0] = {
 			        "searchAccID": "",
+			        "searchLogicaldbKey": "",
+			        "searchLogicaldb": "",
 			        "accID": "",
                                 "strain": "",
                                 "isPrivate": "",
