@@ -1478,6 +1478,11 @@
                                 return;
                         }
 
+                        if (vm.strainTool[0].searchLogicaldbKey == "") {
+                                alert("Must select an Accession Type.");
+                                return;
+                        }
+
                         // example: RBRC09372
                         var params = {}
                         params.searchAccID = vm.strainTool[0].searchAccID;
