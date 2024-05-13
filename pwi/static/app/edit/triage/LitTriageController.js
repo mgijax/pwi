@@ -1544,6 +1544,19 @@
 				return;
                         }
 
+                        if (vm.strainTool[0].isPrivateString == "Yes") {
+                                if ($window.confirm("This strain is private. Do you want to add it anyway? Click OK to add the strain.")) {
+                                        addStrainToolAssocOK(option);
+                                }
+                        }
+                        else {
+                                addStrainToolAssocOK(option);
+                        }
+                }
+
+                function addStrainToolAssocOK(option) {
+			console.log("addStrainToolAssocOK(" + option + ")");
+
                         // always add to Strain Assoc
                         var newStrainAssoc = vm.refData.strainAssocs.length;
 
