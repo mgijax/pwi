@@ -1521,7 +1521,7 @@
 
 			vm.strainTool[0] = {
 			        "searchAccID": "",
-			        "searchLogicaldbKey": "",
+			        "searchLogicaldbKey": "22",
 			        "searchLogicaldb": "",
 			        "accID": "",
                                 "strain": "",
