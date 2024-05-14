@@ -1502,6 +1502,8 @@
                                 else {
 				        alert("Invalid Accession Id");
                                         clearStrainTool();
+                                        vm.strainTool[0].searchLogicaldbKey = params.searchLogicaldbKey;
+                                        vm.strainTool[0].searchLogicaldb = params.searchLogicaldb;
 			                document.getElementById("strainToolAccId").focus();
                                 }
 			        pageScope.loadingEnd();
