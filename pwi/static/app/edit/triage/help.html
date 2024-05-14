@@ -373,29 +373,6 @@ For a new reference coming into the database:
 	<li>To remove a strain association, click on the check mark that is to the left of Type, this will highlight the row in orange. Click Modify to delete the Strain association.</li>
 </ul>
 
-<h4>Curatorial Literature Documentation</h4>
-<ul>
-<li><a tabindex="-1" href="http://mgiwiki/mediawiki/index.php/cur:Literature">Literature Acquisition and Triage</a></li>
-<li><a tabindex="-1" href="http://mgiwiki/mediawiki/index.php/sw:LitTriage_PWI_auto-relevance">SW:LitTriage_PWI_auto-relevance</a></li>
-</ul>
-
-<h4>Reference Loader Overview</h4>
-
-<a tabindex="-1" href="http://wts.informatics.jax.org/wts_projects/12200/12250/Lit_Triage_Loader/Lit_Triage_Req_flowchart.pdf">Flowchart for Literature Triage Process</a>
-
-<ul>
-	<li>The loader runs daily and processes PDFs that have been copied to curators' folders in the New-New directory.</li>
-	<li>DOI IDs are extracted from the PDFs and these are used to get the Medline formatted citation information from PubMed.</li>
-	<li>Sanity and QC checks are performed by the Load. PDFs not loaded are included in reports that curators monitor.</li>
-	<li>If a PDF passes the checks then a Reference is created in the MGI database and the PDF is moved to the Master PDF directory.</li>
-	<li>The reference in the database is assigned an MGI ID and the PDF is renamed using that same ID.</li>
-	<li>The status is set to "New" for all the Workflow groups (AP, GO, GXD, PRO, QTL, Tumor). The relevance is Not Specified.</li>
-        <li>The Relevance Classifier sets relevance value to Keep or Discard. Status remains unchanged.</li>
-        <li>Workflow group secondary triage loads and Pubmed 2 gene loads set group status to Not Routed/Routed (and Indexed for GO).</li>
-	<li>These loaded references are then available via the PWI Literature Triage module for review and modification by the Curators.</li>
-</ul>
-
-<h4>SECTION 4: Strain Associations Tab</h4>
 <h4>Strain tools</h4>
 <p>
 The strain tool allows a strain or strain + allele(s) to be added based on repository ID
@@ -418,3 +395,26 @@ The strain tool allows a strain or strain + allele(s) to be added based on repos
         <li>MMRC - format MMRRC:######-Repository</li>
         </ul>
 </ul>
+
+<h4>Curatorial Literature Documentation</h4>
+<ul>
+<li><a tabindex="-1" href="http://mgiwiki/mediawiki/index.php/cur:Literature">Literature Acquisition and Triage</a></li>
+<li><a tabindex="-1" href="http://mgiwiki/mediawiki/index.php/sw:LitTriage_PWI_auto-relevance">SW:LitTriage_PWI_auto-relevance</a></li>
+</ul>
+
+<h4>Reference Loader Overview</h4>
+
+<a tabindex="-1" href="http://wts.informatics.jax.org/wts_projects/12200/12250/Lit_Triage_Loader/Lit_Triage_Req_flowchart.pdf">Flowchart for Literature Triage Process</a>
+
+<ul>
+	<li>The loader runs daily and processes PDFs that have been copied to curators' folders in the New-New directory.</li>
+	<li>DOI IDs are extracted from the PDFs and these are used to get the Medline formatted citation information from PubMed.</li>
+	<li>Sanity and QC checks are performed by the Load. PDFs not loaded are included in reports that curators monitor.</li>
+	<li>If a PDF passes the checks then a Reference is created in the MGI database and the PDF is moved to the Master PDF directory.</li>
+	<li>The reference in the database is assigned an MGI ID and the PDF is renamed using that same ID.</li>
+	<li>The status is set to "New" for all the Workflow groups (AP, GO, GXD, PRO, QTL, Tumor). The relevance is Not Specified.</li>
+        <li>The Relevance Classifier sets relevance value to Keep or Discard. Status remains unchanged.</li>
+        <li>Workflow group secondary triage loads and Pubmed 2 gene loads set group status to Not Routed/Routed (and Indexed for GO).</li>
+	<li>These loaded references are then available via the PWI Literature Triage module for review and modification by the Curators.</li>
+</ul>
+
