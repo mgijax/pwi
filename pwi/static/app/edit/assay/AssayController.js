@@ -4949,6 +4949,10 @@
                         newAssay.assayNote.processStatus = "c";
                         newAssay.assayNote.assayKey = "";
 
+                        if (duplicateType == 3) {
+                                newAssay.imagePane.imagePaneKey = "";
+                        }
+
                         if (duplicateType == 1 || duplicateType == 2) {
 
                                 // specimen
