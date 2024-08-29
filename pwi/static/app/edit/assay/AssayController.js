@@ -4944,7 +4944,6 @@
                         newAssay.assayDisplay = newAssay.jnumid + "; " + newAssay.assayTypeAbbrev + "; " + newAssay.markerSymbol;
                         newAssay.imagePane.processStatus = "c";
                         newAssay.imagePane.imageKey = "";
-                        newAssay.imagePane.imagePaneKey = "";
                         newAssay.antibodyPrep.processStatus = "c";
                         newAssay.probePrep.processStatus = "c";
                         newAssay.assayNote.processStatus = "c";
