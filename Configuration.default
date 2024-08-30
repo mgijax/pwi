@@ -113,15 +113,6 @@ then
 fi
 
 #
-# If the PRISM_URL is not defined in mgiconfig, use the prod setting.
-#
-if [ "${PRISM_URL}" = "" ]
-then
-    PRISM_URL=http://bhmgiei01.jax.org/prism
-    export PRISM_URL
-fi
-
-#
 # If the WEBSHARE_URL is not defined in mgiconfig, use the prod setting.
 #
 if [ "${WEBSHARE_URL}" = "" ]
