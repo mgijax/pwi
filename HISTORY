@@ -2,7 +2,7 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
-TAG: pwi-6-0-24-1
+TAG: pwi-6-0-24-2
 DATE: 09/16/2024
 STAFF: lec
 wts2-1549/fl2-968/adding sequence ontology term 36 matrix_attachment_site to Feature Type menu in Marker module
