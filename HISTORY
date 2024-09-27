@@ -2,6 +2,11 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-24-3
+DATE: 09/27/2024
+STAFF: lec
+wts2-1554/e4g-10/move PWI/API products to APP servers
+
 TAG: pwi-6-0-24-2
 DATE: 09/16/2024
 STAFF: lec

@@ -18,7 +18,7 @@ source bin/activate
 
 # pip hangs up sometimes, so remove the cached pip folder
 case `uname -n` in
-bhmgipwi01lp|bhmgipwi01lt)
+bhmgiapp01|bhmgidevapp01)
         rm -rf /home/mgiadmin/.cache/pip
         ;;
 esac
