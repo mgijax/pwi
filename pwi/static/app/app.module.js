@@ -35,6 +35,7 @@
     'pwi.mappingsummary',
     'pwi.marker',
     'pwi.markerdetail',
+    'pwi.markerfear',
     'pwi.markersummary',
     'pwi.mpannot',
     'pwi.mutantcellline',
@@ -98,6 +99,7 @@
   angular.module('pwi.mappingsummary', ['ngResource','ngSanitize']);
   angular.module('pwi.marker', ['ngResource']);
   angular.module('pwi.markerdetail', ['ngResource','ngSanitize']);
+  angular.module('pwi.markerfear', ['ngResource']);
   angular.module('pwi.markersummary', ['ngResource','ngSanitize']);
   angular.module('pwi.mgi', ['ngResource']);
   angular.module('pwi.mpannot', ['ngResource']);

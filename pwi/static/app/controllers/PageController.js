@@ -198,6 +198,7 @@
                     'pwi.mappingsummary' :              $scope.PWI_BASE_URL + 'edit/mappingsummary',
                     'pwi.marker' :                      $scope.PWI_BASE_URL + 'edit/marker',
                     'pwi.markerdetail' :                $scope.PWI_BASE_URL + 'edit/markerdetail',
+                    'pwi.markerfear' :                  $scope.PWI_BASE_URL + 'edit/markerfear',
                     'pwi.markersummary' :               $scope.PWI_BASE_URL + 'edit/markersummary',
                     'pwi.mgi' :                         $scope.PWI_BASE_URL + 'edit/mgi',
                     'pwi.mpannot' :                     $scope.PWI_BASE_URL + 'edit/mpannot',
