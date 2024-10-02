@@ -1,0 +1,345 @@
+<title>Marker Relationship Module</title>
+<div ng-hide="vm.hideErrorContents">
+	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
+</div>
+
+<form id="goannotForm" class="form-horizontal mousetrap">
+
+<div class="container-fluid" style='min-width:1200px'>
+<div class="row ">
+
+	<!-- main left panel -->
+	<div class="col-sm-9 section" style="min-height:960px;" >
+
+		<div class="row topMargin">
+			<div class="col-sm-2" style="">
+				<label class="label label-search">MGI ID</label><br>
+				<input type="text" class="form-control"  
+					ng-blur="searchAccId()"
+					ng-model="vm.apiDomain.accID" id="markerAccID"
+				></input>
+			</div>
+
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Marker</label><br>
+				<input type="text" class="form-control"  
+					ng-blur="searchDisplay()"
+					ng-model="vm.apiDomain.markerSymbol" id="markerSymbol"
+				></input>
+			</div>
+
+		</div>
+
+		<div class="spacer"></div>
+                <div class="sectionDivider"></div>
+		<div class="spacer"></div>
+                <label>Cluster Has Member</label>
+
+		<div class="spacer"></div>
+		<div class="row">
+        		<div class="col-sm-12" style="">
+                	<div id="relationshipTableWrapper" overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="relationshipTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style="width:5px;"></th>
+                        <th style="width:50px;">Relationship Type</th>
+                	<th style="width:60px;">J:</th>
+                	<th style="width:100px;">Citation</th>
+                	<th style="width:80px;">Marker Acc ID</th>
+                	<th style="width:80px;">Marker</th>
+                        <th style="width:80px;">Note</th>
+                        <th style="width:80px;">Modified</th>
+                        <th style="width:60px;">Date</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in vm.apiDomain.clusterHasMember track by $index"
+				ng-click="selectCMRow($index)"
+                                ng-class="{selectedCMRow:$index==vm.selectedCMIndex, deleteRow:row.processStatus == 'd'}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td style="width:5px;">
+                	<span ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                        	<img src="/pwi/static/images/remove.png"
+                        	style="width:12px; height: 12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+
+                        <td style="width:50px;">
+                        <select type=dropdown size="1" id="CMrelationshipTerm-{{$index}}"
+                                ng-options="choice.termKey as choice.term for choice in vm.cmLookup"
+                                ng-model="row.relationshipTermKey"
+                                ng-change="changeClusterHasMemberRow($index)"
+                                >
+                                <option value="">Search All</option>
+                        </select>
+                        </td>
+
+			<td style="width:60px;">
+			<input class="form-control" type="text" id="CMjnumID-{{$index}}"
+				ng-model="row.jnumid"
+				ng-change="changeClusterHasMemberRow($index)"
+				ng-blur="validateJnum(row, $index, 'jnumID-')"
+				></input>
+			</td>
+
+                	<td class="short_citation" style="width:100px;">{{row.short_citation}} </td>
+
+			<td style="width:80px;">
+			<input class="form-control" type="text" id="CMmarkerAccID2-{{$index}}" 
+				ng-model="row.markerAccID2"
+				ng-change="changeClusterHasMemberRow($index)"
+				ng-blur="validateMarker(row, $index, 'markerAccID2-')"
+				>
+			</td>
+
+			<td style="width:80px;">
+			<input class="form-control" type="text" id="CMmarkerSymbol2-{{$index}}" 
+				ng-model="row.markerSymbol2"
+				ng-change="changeClusterHasMemberRow($index)"
+				ng-blur="validateMarker(row, $index, 'markerSymbol2-')"
+				>
+			</td>
+
+			<td style="width:80px;">
+			<textarea class="form-control" type="text" id="CMnote-{{$index}}" rows="1"
+				ng-model="row.note.noteChunk"
+				ng-change="changeClusterHasMemberRow($index)"
+				></textarea>
+			</td>
+
+			<td style="width:80px;">
+			<input class="form-control" type="text" id="CMmodifiedBy-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" ></input>
+			</td>
+			<td style="width:60px;">
+			<input class="form-control" type="text" id="CMmodifiedDate-{{$index}}" tabindex="-1" ng-model="row.modification_date" ></input>
+			</td>
+
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-10 -->
+		</div>
+		<!-- end row -->
+
+		<div class="row">
+			<div class="col-sm-12" style="">
+			<button type="button" style="float:right;" tabindex="-1" id="addClusterHasMemberButton" ng-class=""
+				ng-click="addClusterHasMemberRow()" >Add Row</button>
+			</div>
+		</div>
+		<!-- relationship buttons -->
+
+		<div class="spacer"></div>
+                <div class="sectionDivider"></div>
+		<div class="spacer"></div>
+                <label>Regulates Expression</label>
+
+		<div class="spacer"></div>
+		<div class="row">
+        		<div class="col-sm-12" style="">
+                	<div id="relationshipTableWrapper" overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="relationshipTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style="width:5px;"></th>
+                	<th style="width:60px;">J:</th>
+                	<th style="width:100px;">Citation</th>
+                	<th style="width:80px;">Marker Acc ID</th>
+                	<th style="width:80px;">Marker</th>
+                        <th style="width:80px;">Note</th>
+                        <th style="width:80px;">Modified</th>
+                        <th style="width:60px;">Date</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in vm.apiDomain.regulatesExpression track by $index"
+				ng-click="selectRERow($index)"
+                                ng-class="{selectedRERow:$index==vm.selectedREIndex, deleteRow:row.processStatus == 'd'}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td style="width:5px;">
+                	<span ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                        	<img src="/pwi/static/images/remove.png"
+                        	style="width:12px; height: 12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+			<td style="width:60px;">
+			<input class="form-control" type="text" id="REjnumID-{{$index}}"
+				ng-model="row.jnumid"
+				ng-change="changeClusterHasMemberRow($index)"
+				ng-blur="validateJnum(row, $index, 'jnumID-')"
+				></input>
+			</td>
+
+                	<td class="short_citation" style="width:100px;">{{row.short_citation}} </td>
+
+			<td style="width:80px;">
+			<input class="form-control" type="text" id="REmarkerAccID2-{{$index}}" 
+				ng-model="row.markerAccID2"
+				ng-change="changeClusterHasMemberRow($index)"
+				ng-blur="validateMarker(row, $index, 'markerAccID2-')"
+				>
+			</td>
+
+			<td style="width:80px;">
+			<input class="form-control" type="text" id="REmarkerSymbol2-{{$index}}" 
+				ng-model="row.markerSymbol2"
+				ng-change="changeClusterHasMemberRow($index)"
+				ng-blur="validateMarker(row, $index, 'markerSymbol2-')"
+				>
+			</td>
+
+			<td style="width:80px;">
+			<textarea class="form-control" type="text" id="REnote-{{$index}}" rows="1"
+				ng-model="row.note.noteChunk"
+				ng-change="changeClusterHasMemberRow($index)"
+				></textarea>
+			</td>
+
+			<td style="width:80px;">
+			<input class="form-control" type="text" id="REmodifiedBy-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" ></input>
+			</td>
+			<td style="width:60px;">
+			<input class="form-control" type="text" id="REmodifiedDate-{{$index}}" tabindex="-1" ng-model="row.modification_date" ></input>
+			</td>
+
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-10 -->
+		</div>
+		<!-- end row -->
+
+		<div class="row">
+			<div class="col-sm-12" style="">
+			<button type="button" style="float:right;" tabindex="-1" id="addClusterHasMemberButton" ng-class=""
+				ng-click="addClusterHasMemberRow()" >Add Row</button>
+			</div>
+		</div>
+		<!-- relationship buttons -->
+	</div>
+	<!-- main class -->
+
+	<!-- main right panel -->
+	<div class="col-sm-3 section" style="min-height:960px;">
+
+		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
+		<button type="button" id="clearButton" tabindex="-1" ng-click="clear()" >Clear</button>
+		</br>
+		<button type="button" id="saveRelationshipButton" tabindex="-1" ng-click="modifyRelationship()" >Save Relationships</button>
+		<div class="row ">
+		<div class="col-sm-12" style="">
+			<div class="spacer"></div>
+			<div id="totalCount"># of records: {{vm.total_count}}</div>
+			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
+			<button type="button" id="firstButton" tabindex="-1" ng-click="firstSummaryObject()" >First</button>
+			<button type="button" id="nextButton"  tabindex="-1" ng-click="nextSummaryObject()" >Next</button>
+			<button type="button" id="prevButton"  tabindex="-1" ng-click="prevSummaryObject()" >Prev</button>
+			<button type="button" id="lastButton"  tabindex="-1" ng-click="lastSummaryObject()" >Last</button>
+			<div id="resultTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
+    			<tbody>
+				<tr ng-repeat="result in vm.results" 
+                                        ng-click="selectResult($index)"
+                                        ng-class="($index==vm.selectedIndex) ? 'selectedCMRow' : ''"
+					ng-class-odd="'oddRow'">
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.markerSymbol}}</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+
+			<div class="spacer"></div>
+			<hr/>
+			<div id="resultsCountCM">CM Clipboard Items: {{vm.clipboardCM.length}} result(s)</div>
+			<div id="resultTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="clipboardTable" style="">
+    			<tbody>
+				<tr ng-repeat="row in vm.clipboardCM" 
+					ng-click="selectClipboardCM($index)" 
+					ng-class="($index==vm.selectedClipboardCMIndex) ? 'selectedCMRow' : ''"
+					ng-class-odd="'oddRow'"
+					>
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.item}}</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+			<div class="spacer"></div>
+			<button type="submit" id="addClipboardCM" tabindex="-1" ng-click="addClipboardCM(vm.selectedCMIndex)" >Copy Selected CM To Clipboard</button><br>
+			<button type="submit" id="addAllClipboardCM" tabindex="-1" ng-click="addAllClipboardCM()" >Copy All CM To Clipboard</button><br>
+			<button type="submit" id="pasteClipboardCM" tabindex="-1" ng-click="pasteClipboardCM()" >Paste Clipboard CM To Table</button><br>
+			<div class="spacer"></div>
+			<button type="submit" id="deleteClipboardCM" tabindex="-1" ng-click="deleteClipboardCM(vm.selectedClipboardCMIndex)" >Delete</button>
+			<button type="submit" id="clearClipboardCM" tabindex="-1" ng-click="clearClipboardCM()" >Clear</button><br>
+
+			<div class="spacer"></div>
+			<hr/>
+			<div id="resultsCountRE">RE Clipboard Items: {{vm.clipboardRE.length}} result(s)</div>
+			<div id="resultTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="clipboardTable" style="">
+    			<tbody>
+				<tr ng-repeat="row in vm.clipboardRE" 
+					ng-click="selectClipboardRE($index)" 
+					ng-class="($index==vm.selectedClipboardREIndex) ? 'selectedRERow' : ''"
+					ng-class-odd="'oddRow'"
+					>
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.item}}</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+			<div class="spacer"></div>
+			<button type="submit" id="addClipboardRE" tabindex="-1" ng-click="addClipboardRE(vm.selectedREIndex)" >Copy Selected RE To Clipboard</button><br>
+			<button type="submit" id="addAllClipboardRE" tabindex="-1" ng-click="addAllClipboardRE()" >Copy All RE To Clipboard</button><br>
+			<button type="submit" id="pasteClipboardRE" tabindex="-1" ng-click="pasteClipboardRE()" >Paste Clipboard RE To Table</button><br>
+			<div class="spacer"></div>
+			<button type="submit" id="deleteClipboardRE" tabindex="-1" ng-click="deleteClipboardRE(vm.selectedClipboardREIndex)" >Delete</button>
+			<button type="submit" id="clearClipboardRE" tabindex="-1" ng-click="clearClipboardRE()" >Clear</button><br>
+		</div>
+		</div>
+		
+	</div>
+
+</div>
+</div>
+</form>
+
+<!-- Java API JSON data dump -->
+<show-model vm="vm" />
+
+<script type="text/javascript">
+	document.getElementById("markerSymbol").focus();
+</script>
+
+<ng-include src="PAGE_HELP_URL" />

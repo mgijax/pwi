@@ -1,0 +1,130 @@
+<div id="helpSectionWrapper">
+
+<h2>P-WI Marker Relationship Editor Interface functionality</h2>
+
+<h4>General Description</h4>
+<p>
+The Marker Relationship module is a search, display and edit page all in one. A user must be logged in to edit but can search without logging in.
+</p>
+<h4>Keyboard Short-cuts</h4>
+There are reported issues using these short-cuts with Mac/Firefox. 
+<ul>
+	<li>Search = Ctrl-Alt-S</li>
+	<li>Clear = Ctrl-Alt-C</li>
+	<li>Modify = Ctrl-Alt-M</li>
+	<li>Previous = Ctrl-Alt-P</li>
+	<li>Next = Ctrl-Alt-N</li>
+</ul>
+
+<h4>Color-coded Labels</h4>
+<ul>
+        <li>Thistle = search only</li>
+        <li>Green = search &amp; edit</li>
+        <li>Blue = read-only</li>
+        <li>Yellow = current row</li>
+        <li>Orange = Marker Region Tool</li>
+</ul>
+
+<h4>Supported Browsers</h4>
+<ul>
+	<li>Chrome and FireFox are supported on both PC and Mac computers.</li>
+	<li>Safari is NOT supported for the PWI. There are features that do not work.</li>
+</ul>
+<h3>Pulldown Menus</h3>
+<p>
+Relationship type: descendants of Cluster Has Relationship<br>
+</p>
+<h3>Searching</h3>
+<ul>
+<li>All fields that have labels highlighted in blue/green may be used for searching. </li>
+<li>They may be searched individually or in combination. To include data in a tab in a search: click on the tab to expand it and enter text to be searched. </li>
+<li>When more than one field is used in a search, it is treated as an AND search. </li>
+<li>Only the first gene or relationship entered for each category (CM) will be searched. </li>
+</ul>
+
+<h4>Wildcards</h4>
+<ul>
+	<li>Wildcards (%) may be used for most fields. </li>
+	<li>A wildcard may be used at the beginning, middle and/or end of your search text: e.g. %paired%, casein% or AK32%43%.</li>
+</ul> 
+ 
+<h4>Search by Dates</h4>
+<ul>
+	<li>Valid date formats for searching are:
+		<ul>
+			<li>mm/dd/yyyy or mm-dd-yyyy</li>
+			<li>mm/dd/yy or mm-dd-yy</li>
+			<li>yyyy/mm/dd or yyyy-mm-dd</li>
+		</ul>
+	</li>
+	<li>Searching for a range of dates:
+		<ul>
+			<li>equal to: enter a single date</li>
+			<li>greater than: &gt; mm/dd/yyyy</li>
+			<li>greater than or equal to: &gt;= mm/dd/yyyy</li>
+			<li>less than: &lt; mm/dd/yyyy</li>
+			<li>less than or equal to: &lt;= mm/dd/yyyy</li>
+			<li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
+			</ul>
+	</li>
+</ul> 
+<h4>Search Data</h4>
+<p>When you click on the Search button:</p>
+	<ul>
+	<li>the results are displayed in a table with each row representing a single marker.</li>
+	<li>Results are displayed by status (in progress, deleted, and reserved prior to approved or autoloaded) and in alpha-numeric order.</li>
+	</ul>
+<h3>Search by Marker</h3>
+<p>
+Entering an marker symbol alone or marker ID and tabbing out will automatically search for that marker. If you put a % after the marker symbol, you need to click search to start the search.
+</p>
+<h3>Add New Cluster Has Member Relationship</h3>
+<ul>
+	<li>Fields required to add a new relationship:
+		<ul>
+			<li>Must have an marker selected</li>
+			<li>Relationship type</li>
+			<li>J#</li>
+			<li>Marker Acc ID</li>
+			<li>Marker</li>
+		</ul>
+</ul>
+<ul>
+	<li>Autofill behavior:
+		<ul>
+			<li>Entering a Marker ID or Marker symbol will autofill the converse field</li>
+			<li>Entering a J# autofills Citation</li>
+			<li>If you want to change the marker once a marker has been entered you need to enter the MGI ID of the new marker. The ID field has precedence over the symbol field</li>
+		</ul>
+</ul>
+<ul>
+	<li>Duplicates:
+		<ul>
+			<li>The PWI will not enter duplicate &#40;identical marker and relationship type pair&#41;</li>
+			<li>If you attempt to manually enter a duplicate and save the relationships the duplicate will not be entered and currently no warning is given</li>
+		</ul>
+</ul>
+
+<li>Duplicates:</li>
+<ul>
+<li>The PWI will not enter duplicate (identical marker and relationship type pair)</li>
+<li>If you attempt to manually enter a duplicate and save the relationships the duplicate will not be entered and currently no warning is given</li>
+</ul>
+
+<h3>Deleting a relationship</h3>
+<p>
+Click on the ‘x’ next to a row to delete the selected relationship. Relationships need to have been saved for deletion to work.
+</p>
+
+<h3>Dialogue warning boxes &#40;pop ups&#41; behavior</h3>
+<p>
+Attempting to save a relationship without all of the required fields will trigger an error message listing the full set of required fields.
+</p>
+<p>
+Attempting to save relationships without an marker selected will trigger an error message “Cannot modify if a record is not selected”.
+</p>
+<p>
+Entering an invalid MGI marker ID or symbol or J# will trigger an error message.
+</p>
+
+</div> <!-- helpSectionWrapper -->

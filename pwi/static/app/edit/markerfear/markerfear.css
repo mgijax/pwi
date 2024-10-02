@@ -1,0 +1,120 @@
+/*
+ * overrides and generic classes
+ */
+main {
+	background-color: #eeeeee;
+	margin-left: 0px;
+}
+button {
+	background-color: rgb(252,251,186);
+	margin: 3px 2px;
+	font-size: 12px;
+}
+button:disabled {
+	opacity: 0.5;
+}
+.form-control {
+	height: 22px;
+	padding: 2px 3px;
+	font-size: 12px;
+}
+.label { 
+	color: #000; 
+	padding: .1em .6em;
+}
+.label-static { 
+	background-color: rgb(203,232,248); 
+}
+.ui-widget {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+.spacer { 
+	height:6px;
+}
+.section {
+	border-style: ridge;
+	border-color:lightgray;
+}
+.sectionDivider {
+	border-top: 2px ridge lightgray;
+}
+form select, form input, form textarea {
+	margin-top: 1px;
+}
+textarea {
+	max-width:100%;
+}
+
+/*
+ * page-specific styles 
+ */
+
+.externalLink {
+        cursor: pointer;
+}
+.topMargin {
+	margin-top: 8px;
+}
+.bottomMargin {
+	margin-bottom: 8px;
+}
+.topPadding {
+	padding-top: 8px;
+}
+.bottomPadding {
+	padding-bottom: 8px;
+}
+
+#loadingHeader {
+	color: red;
+	text-align: center;
+}
+
+#resultsCount {
+	margin-top: 8px;
+	margin-bottom:8px;
+}
+
+#resultTableWrapper {
+	overflow: auto;
+	max-height: 400px;
+	min-width: 200px;
+	border-style: solid;
+	border-top-width: 0px;
+	border-bottom-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-color: #ddd;
+}
+
+#relationshipTable th {
+	position: sticky;
+	top: -3px;
+        padding: 3px;
+        font-size: 10.5px;
+        background-color: rgb(195,246,190);
+}
+
+#relationshipTable td {
+        padding: 3px;
+        font-size: .8em;
+}
+
+#relationshipTableWrapper {
+        overflow-y: auto;
+        max-height: 300px;
+        min-width: 500px;
+        border-style: solid;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-color: #ddd;
+}
+
+.hasNoteButton {background-color: lime;}
+.oddRow {background-color: #ddd;}
+.selectedCMRow {background-color: rgb(252,251,186);}
+.selectedPropertyRow {background-color: rgb(252,251,186);}
+.deleteRow {background-color: orange;}
+
