@@ -46,7 +46,9 @@
 		vm.results = [];
 		vm.selectedIndex = -1;
 		vm.selectedCMIndex = 0;
+		vm.selectedREIndex = 0;
                 vm.selectedClipboardCMIndex = 0;
+                vm.selectedClipboardREIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -56,6 +58,7 @@
 		function init() {
 			resetData();
                         resetClipboardCM();
+                        resetClipboardRE();
 			refreshTotalCount();
 			loadVocabs();
                         for(var i=0;i<5; i++) { addClusterHasMemberRow(); }
@@ -734,7 +737,7 @@
                                         "short_citation": vm.apiDomain.clusterHasMember[row].short_citation,
                                         "note": vm.apiDomain.clusterHasMember[row].note,
                                         "item": vm.apiDomain.clusterHasMember[row].relationshipTerm + ","
-						+ vm.apiDomain.clusterHasMember[row].markerSymbol
+						+ vm.apiDomain.clusterHasMember[row].markerSymbol1
                                 }
 
                                 newItem.note.processStatus = "c";
@@ -809,6 +812,121 @@
 			resetClipboardCM();
 		}
 		
+		// reset clipboard
+		function resetClipboardRE() {
+			console.log("resetClipboardRE()");
+			vm.clipboardRE = [];
+		}
+
+		// selected clipboard row
+		function selectClipboardRE(index) {
+			console.log("selectClipboardRE(): " + index);
+			vm.selectedClipboardREIndex = index;
+		}		
+
+		// add selected table row to clipboard
+		function addClipboardRE(row) {
+			console.log("addClipboardRE():" + row);
+
+                        // note:  cloning the vm.apiDomain.regulatesExpression properly
+                        //
+			if (vm.apiDomain.regulatesExpression[row].markerKey2 != "") {
+				var newItem = {
+                                        "processStatus": "c",
+                                        "relationshipKey": "",
+                                        "markerKey1": vm.apiDomain.regulatesExpression[row].markerKey1,
+                                        "markerSymbol1": vm.apiDomain.regulatesExpression[row].markerSymbol1,
+                                        "markerKey2": vm.apiDomain.regulatesExpression[row].markerKey2,
+                                        "markerSymbol2": vm.apiDomain.regulatesExpression[row].markerSymbol2,
+                                        "markerAccID2": vm.apiDomain.regulatesExpression[row].markerAccID2,
+                                        "categoryKey": vm.apiDomain.regulatesExpression[row].categoryKey,
+                                        "categoryTerm": vm.apiDomain.regulatesExpression[row].categoryTerm,
+                                        "relationshipTermKey": vm.apiDomain.regulatesExpression[row].relationshipTermKey,
+                                        "relationshipTerm": vm.apiDomain.regulatesExpression[row].relationshipTerm,
+                                        "qualifierKey": vm.apiDomain.regulatesExpression[row].qualifierKey,
+                                        "qualifierTerm": vm.apiDomain.regulatesExpression[row].qualifierTerm,
+                                        "evidenceKey": vm.apiDomain.regulatesExpression[row].evidenceKey,
+                                        "evidenceTerm": vm.apiDomain.regulatesExpression[row].evidenceTerm,
+                                        "refsKey": vm.apiDomain.regulatesExpression[row].refsKey,
+                                        "jnumid": vm.apiDomain.regulatesExpression[row].jnumid,
+                                        "short_citation": vm.apiDomain.regulatesExpression[row].short_citation,
+                                        "note": vm.apiDomain.regulatesExpression[row].note,
+                                        "item": vm.apiDomain.regulatesExpression[row].relationshipTerm + ","
+						+ vm.apiDomain.regulatesExpression[row].markerSymbol1
+                                }
+
+                                newItem.note.processStatus = "c";
+                                newItem.note.noteKey = "";
+                                newItem.note.objectKey = "";
+				vm.clipboardRE.push(newItem);
+			}
+		}
+		
+		// add all table rows to clipboard
+		function addAllClipboardRE() {
+			console.log("addAllClipboardRE()");
+
+                        for(var i=0;i<vm.apiDomain.regulatesExpression.length; i++) {
+				addClipboardRE(i);
+			}
+		}
+
+		// paste all clipboard items to table
+		function pasteClipboardRE() {
+			console.log("pasteClipboardRE()");
+
+			var emptyRow = 0;
+
+			// find next available empty row
+                        for(var i=0;i<vm.apiDomain.regulatesExpression.length; i++) {
+				if ((vm.apiDomain.regulatesExpression[i].processStatus == "c")
+					&& (vm.apiDomain.regulatesExpression[i].markerKey2 == "")
+					) {
+					emptyRow = i;
+					break;
+				}
+			}
+
+                        for(var i=0;i<vm.clipboardRE.length; i++) {
+				// add new empty annot row if needed
+				if (emptyRow == 0 || emptyRow == vm.apiDomain.regulatesExpression.length) {
+					addClusterHasMemberRow();
+				}
+                                vm.apiDomain.regulatesExpression[emptyRow].processStatus = vm.clipboardRE[i].processStatus;
+                                vm.apiDomain.regulatesExpression[emptyRow].relationshipKey = vm.clipboardRE[i].relationshipKey;
+                                vm.apiDomain.regulatesExpression[emptyRow].markerKey1 = vm.clipboardRE[i].markerKey1;
+                                vm.apiDomain.regulatesExpression[emptyRow].markerSymbol1 = vm.clipboardRE[i].markerSymbol1;
+                                vm.apiDomain.regulatesExpression[emptyRow].markerKey2 = vm.clipboardRE[i].markerKey2;
+                                vm.apiDomain.regulatesExpression[emptyRow].markerSymbol2 = vm.clipboardRE[i].markerSymbol2;
+                                vm.apiDomain.regulatesExpression[emptyRow].markerAccID2 = vm.clipboardRE[i].markerAccID2;
+                                vm.apiDomain.regulatesExpression[emptyRow].categoryKey = vm.clipboardRE[i].categoryKey;
+                                vm.apiDomain.regulatesExpression[emptyRow].categoryTerm = vm.clipboardRE[i].categoryTerm;
+                                vm.apiDomain.regulatesExpression[emptyRow].relationshipTermKey = vm.clipboardRE[i].relationshipTermKey;
+                                vm.apiDomain.regulatesExpression[emptyRow].relationshipTerm = vm.clipboardRE[i].relationshipTerm;
+                                vm.apiDomain.regulatesExpression[emptyRow].qualifierKey = vm.clipboardRE[i].qualifierKey;
+                                vm.apiDomain.regulatesExpression[emptyRow].qualifierTerm = vm.clipboardRE[i].qualifierTerm;
+                                vm.apiDomain.regulatesExpression[emptyRow].evidenceKey = vm.clipboardRE[i].evidenceKey;
+                                vm.apiDomain.regulatesExpression[emptyRow].evidenceTerm = vm.clipboardRE[i].evidenceTerm;
+                                vm.apiDomain.regulatesExpression[emptyRow].refsKey = vm.clipboardRE[i].refsKey;
+                                vm.apiDomain.regulatesExpression[emptyRow].jnumid = vm.clipboardRE[i].jnumid;
+                                vm.apiDomain.regulatesExpression[emptyRow].short_citation = vm.clipboardRE[i].short_citation;
+                                vm.apiDomain.regulatesExpression[emptyRow].note = vm.clipboardRE[i].note;
+				emptyRow = emptyRow + 1;
+			}
+		}
+
+		// delete one clipboard item
+		function deleteClipboardRE(row) {
+			console.log("deleteClipboardRE(): " + row);
+			vm.clipboardRE.splice(row,1)
+		}
+		
+		// clear all clipboard items
+		function clearClipboardRE() {
+			console.log("clearClipboardRE()");
+			resetClipboardRE();
+		}
+		
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -844,6 +962,12 @@
 		$scope.pasteClipboardCM = pasteClipboardCM;
 		$scope.deleteClipboardCM = deleteClipboardCM;
 		$scope.clearClipboardCM = clearClipboardCM;
+		$scope.selectClipboardRE = selectClipboardRE;
+		$scope.addClipboardRE = addClipboardRE;
+		$scope.addAllClipboardRE = addAllClipboardRE;
+		$scope.pasteClipboardRE = pasteClipboardRE;
+		$scope.deleteClipboardRE = deleteClipboardRE;
+		$scope.clearClipboardRE = clearClipboardRE;
 
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
