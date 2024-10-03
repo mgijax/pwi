@@ -426,7 +426,7 @@
 			}
 
 			var params = {};
-                        if (row.markerAccID != undefined && row.markerAccID != "") {
+                        if (row.markerAccID2 != undefined && row.markerAccID2 != "") {
 			        params.symbol = "";
 			        params.accID = row.markerAccID2;;
                                 params.organismKey = 1;
