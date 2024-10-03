@@ -161,7 +161,7 @@
                 	<tr>
                 	<th style="width:5px;"></th>
                 	<th style="width:60px;">J:</th>
-                	<th style="width:100px;">Citation</th>
+                	<th style="width:200px;">Citation</th>
                 	<th style="width:80px;">Marker Acc ID</th>
                 	<th style="width:80px;">Marker</th>
                         <th style="width:80px;">Note</th>
@@ -193,17 +193,17 @@
 			<td style="width:60px;">
 			<input class="form-control" type="text" id="REjnumID-{{$index}}"
 				ng-model="row.jnumid"
-				ng-change="changeClusterHasMemberRow($index)"
+				ng-change="changeRequiresExpressionRow($index)"
 				ng-blur="validateJnum(row, $index, 'jnumID-')"
 				></input>
 			</td>
 
-                	<td class="short_citation" style="width:100px;">{{row.short_citation}} </td>
+                	<td class="short_citation" style="width:200px;">{{row.short_citation}} </td>
 
 			<td style="width:80px;">
 			<input class="form-control" type="text" id="REmarkerAccID2-{{$index}}" 
 				ng-model="row.markerAccID2"
-				ng-change="changeClusterHasMemberRow($index)"
+				ng-change="RequiresExpressionRow($index)"
 				ng-blur="validateMarker(row, $index, 'markerAccID2-')"
 				>
 			</td>
@@ -211,7 +211,7 @@
 			<td style="width:80px;">
 			<input class="form-control" type="text" id="REmarkerSymbol2-{{$index}}" 
 				ng-model="row.markerSymbol2"
-				ng-change="changeClusterHasMemberRow($index)"
+				ng-change="RequiresExpressionRow($index)"
 				ng-blur="validateMarker(row, $index, 'markerSymbol2-')"
 				>
 			</td>
@@ -219,7 +219,7 @@
 			<td style="width:80px;">
 			<textarea class="form-control" type="text" id="REnote-{{$index}}" rows="1"
 				ng-model="row.note.noteChunk"
-				ng-change="changeClusterHasMemberRow($index)"
+				ng-change="RequiresExpressionRow($index)"
 				></textarea>
 			</td>
 
