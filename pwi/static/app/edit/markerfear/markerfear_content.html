@@ -203,7 +203,7 @@
 			<td style="width:80px;">
 			<input class="form-control" type="text" id="REmarkerAccID2-{{$index}}" 
 				ng-model="row.markerAccID2"
-				ng-change="RequiresExpressionRow($index)"
+				ng-change="changeRegulatesExpressionRow($index)"
 				ng-blur="validateMarker(row, $index, 'markerAccID2-')"
 				>
 			</td>
@@ -211,7 +211,7 @@
 			<td style="width:80px;">
 			<input class="form-control" type="text" id="REmarkerSymbol2-{{$index}}" 
 				ng-model="row.markerSymbol2"
-				ng-change="RequiresExpressionRow($index)"
+				ng-change="changeRegulatesExpressionRow($index)"
 				ng-blur="validateMarker(row, $index, 'markerSymbol2-')"
 				>
 			</td>
@@ -219,7 +219,7 @@
 			<td style="width:80px;">
 			<textarea class="form-control" type="text" id="REnote-{{$index}}" rows="1"
 				ng-model="row.note.noteChunk"
-				ng-change="RequiresExpressionRow($index)"
+				ng-change="changeRegulatesExpressionRow($index)"
 				></textarea>
 			</td>
 
