@@ -737,7 +737,7 @@
                                         "short_citation": vm.apiDomain.clusterHasMember[row].short_citation,
                                         "note": vm.apiDomain.clusterHasMember[row].note,
                                         "item": vm.apiDomain.clusterHasMember[row].relationshipTerm + ","
-						+ vm.apiDomain.clusterHasMember[row].markerSymbol1
+						+ vm.apiDomain.clusterHasMember[row].markerSymbol2
                                 }
 
                                 newItem.note.processStatus = "c";
@@ -852,7 +852,7 @@
                                         "short_citation": vm.apiDomain.regulatesExpression[row].short_citation,
                                         "note": vm.apiDomain.regulatesExpression[row].note,
                                         "item": vm.apiDomain.regulatesExpression[row].relationshipTerm + ","
-						+ vm.apiDomain.regulatesExpression[row].markerSymbol1
+						+ vm.apiDomain.regulatesExpression[row].markerSymbol2
                                 }
 
                                 newItem.note.processStatus = "c";
