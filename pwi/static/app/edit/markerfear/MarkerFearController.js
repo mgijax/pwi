@@ -654,7 +654,7 @@
                                 "organism": "",
 			       	"categoryKey": "1013",
 			       	"categoryTerm": "",
-			       	"relationshipTermKey": "",
+			       	"relationshipTermKey": "114756169",
 			       	"relationshipTerm": "",
 			       	"qualifierKey": "11391898",
 			       	"qualifierTerm": "",
