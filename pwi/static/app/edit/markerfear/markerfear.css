@@ -115,6 +115,7 @@ textarea {
 .hasNoteButton {background-color: lime;}
 .oddRow {background-color: #ddd;}
 .selectedCMRow {background-color: rgb(252,251,186);}
+.selectedRERow {background-color: rgb(252,251,186);}
 .selectedPropertyRow {background-color: rgb(252,251,186);}
 .deleteRow {background-color: orange;}
 
