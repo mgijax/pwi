@@ -271,7 +271,7 @@
     			<tbody>
 				<tr ng-repeat="result in vm.results" 
                                         ng-click="selectResult($index)"
-                                        ng-class="($index==vm.selectedIndex) ? 'selectedRERow' : ''"
+					ng-class="($index==vm.selectedClipboardREIndex) ? 'selectedRERow' : ''"
 					ng-class-odd="'oddRow'">
 			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.markerSymbol}}</td>
 				</tr>
