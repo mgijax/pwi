@@ -2,6 +2,11 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-24-4
+DATE: 10/06/2024
+STAFF: lec
+wts2-419/Regulatory region and cluster member to marker relationship (TR12804)
+
 TAG: pwi-6-0-24-3
 DATE: 09/27/2024
 STAFF: lec
