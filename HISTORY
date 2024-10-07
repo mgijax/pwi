@@ -2,6 +2,7 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-24-8
 TAG: pwi-6-0-24-7
 TAG: pwi-6-0-24-6
 TAG: pwi-6-0-24-5
