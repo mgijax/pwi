@@ -783,6 +783,7 @@
                                         	vm.results[vm.selectedIndex].ap_status = vm.refData.ap_status;
                                         	vm.results[vm.selectedIndex].go_status = vm.refData.go_status;
                                         	vm.results[vm.selectedIndex].gxd_status = vm.refData.gxd_status;
+                                        	vm.results[vm.selectedIndex].gxdht_status = vm.refData.gxdht_status;
                                         	vm.results[vm.selectedIndex].pro_status = vm.refData.pro_status;
                                         	vm.results[vm.selectedIndex].qtl_status = vm.refData.qtl_status;
                                         	vm.results[vm.selectedIndex].tumor_status = vm.refData.tumor_status;
@@ -810,18 +811,21 @@
 					vm.refData.ap_status == "Chosen" ||
 					vm.refData.go_status == "Chosen" ||
 					vm.refData.gxd_status == "Chosen" ||
+					vm.refData.gxdht_status == "Chosen" ||
 					vm.refData.pro_status == "Chosen" ||
 					vm.refData.qtl_status == "Chosen" ||
 					vm.refData.tumor_status == "Chosen" ||
 					vm.refData.ap_status == "Indexed" ||
 					vm.refData.go_status == "Indexed" ||
 					vm.refData.gxd_status == "Indexed" ||
+					vm.refData.gxdht_status == "Indexed" ||
 					vm.refData.pro_status == "Indexed" ||
 					vm.refData.qtl_status == "Indexed" ||
 					vm.refData.tumor_status == "Indexed" ||
 					vm.refData.ap_status == "Full-coded" ||
 					vm.refData.go_status == "Full-coded" ||
 					vm.refData.gxd_status == "Full-coded" ||
+					vm.refData.gxdht_status == "Full-coded" ||
 					vm.refData.pro_status == "Full-coded" ||
 					vm.refData.qtl_status == "Full-coded" ||
 					vm.refData.tumor_status == "Full-coded"

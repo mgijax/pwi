@@ -260,6 +260,45 @@
 					</tr>
 
 					<tr>
+						<td> GXDHT </td> 
+						<td>  
+							<input type="checkbox" id="status_GXDHT_New"
+							ng-model="vm.selected.status_GXDHT_New"
+							ng-true-value="1" ng-false-value="">
+						</td>
+						<td>  
+							<input type="checkbox" id="status_GXDHT_Not_Routed"
+							ng-model="vm.selected.status_GXDHT_Not_Routed"
+							ng-true-value="1" ng-false-value="">
+						</td>
+						<td>  
+							<input type="checkbox" id="status_GXDHT_Routed"
+							ng-model="vm.selected.status_GXDHT_Routed"
+							ng-true-value="1" ng-false-value="">
+						</td>
+						<td>  
+							<input type="checkbox" id="status_GXDHT_Chosen"
+							ng-model="vm.selected.status_GXDHT_Chosen"
+							ng-true-value="1" ng-false-value="">
+						</td>
+						<td>  
+							<input type="checkbox" id="status_GXDHT_Indexed"
+							ng-model="vm.selected.status_GXDHT_Indexed"
+							ng-true-value="1" ng-false-value="">
+						</td>
+						<td>  
+							<input type="checkbox" id="status_GXDHT_Full_coded"
+							ng-model="vm.selected.status_GXDHT_Full_coded"
+							ng-true-value="1" ng-false-value="">
+						</td>
+						<td>  
+							<input type="checkbox" id="status_GXDHT_Rejected"
+							ng-model="vm.selected.status_GXDHT_Rejected"
+							ng-true-value="1" ng-false-value="">
+						</td>
+					</tr>
+
+					<tr>
 						<td> PRO </td> 
 						<td>  
 							<input type="checkbox" id="status_PRO_New"
@@ -498,6 +537,7 @@
 						<option value="AP">AP</option>
 						<option value="GO">GO</option>
 						<option value="GXD">GXD</option>
+						<option value="GXDHT">GXD</option>
 						<option value="PRO">PRO</option>
 						<option value="QTL">QTL</option>
 						<option value="Tumor">Tumor</option>
@@ -637,6 +677,7 @@
            		<th style="width: 60px;">  AP </th>
            		<th style="width: 60px;">  GO </th>
            		<th style="width: 60px;">  GXD </th>
+           		<th style="width: 60px;">  GXDHT </th>
            		<th style="width: 60px;">  PRO </th>
            		<th style="width: 60px;">  QTL </th>
            		<th style="width: 60px;">  Tumor </th>
@@ -658,7 +699,8 @@
 				<th style="width: 60px;">  AP </th>
 				<th style="width: 60px;">  GO </th>
 				<th style="width: 60px;">  GXD </th>
-           		<th style="width: 60px;">  PRO </th>
+				<th style="width: 60px;">  GXDHT </th>
+           		        <th style="width: 60px;">  PRO </th>
 				<th style="width: 60px;">  QTL </th>
 				<th style="width: 60px;">  Tumor </th>
 				</tr>
@@ -702,6 +744,7 @@
 			    	<td style="width: 60px;">  {{ ref.ap_status }} </td>
 			    	<td style="width: 60px;">  {{ ref.go_status }} </td>
 			    	<td style="width: 60px;">  {{ ref.gxd_status }} </td>
+			    	<td style="width: 60px;">  {{ ref.gxdht_status }} </td>
 			    	<td style="width: 60px;">  {{ ref.pro_status }} </td>
 			    	<td style="width: 60px;">  {{ ref.qtl_status }} </td>
 			    	<td style="width: 60px;">  {{ ref.tumor_status }} </td>
@@ -992,6 +1035,15 @@
 					<td><input type="radio" ng-model="vm.refData.gxd_status" ng-click="setRelevanceToKeep()" value="Full-coded"></td>
 					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Rejected"></td>
 					</tr>
+					<td>GXDHT</td>
+					<td><input type="radio" ng-model="vm.refData.gxdht_status" value="New"></td>
+					<td><input type="radio" ng-model="vm.refData.gxdht_status" value="Not Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.gxdht_status" ng-click="setRelevanceToKeep()" value="Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.gxdht_status" ng-click="setRelevanceToKeep()" value="Chosen"></td>
+					<td><input type="radio" ng-model="vm.refData.gxdht_status" ng-click="setRelevanceToKeep()" value="Indexed"></td>
+					<td><input type="radio" ng-model="vm.refData.gxdht_status" ng-click="setRelevanceToKeep()" value="Full-coded"></td>
+					<td><input type="radio" ng-model="vm.refData.gxdht_status" value="Rejected"></td>
+					</tr>
 					<tr class='oddTableRow'>
 					<td>PRO</td>
 					<td><input type="radio" ng-model="vm.refData.pro_status" value="New"></td>
@@ -1113,6 +1165,8 @@
                                                 <a target='_blank' href="{{url_for('pwi.goannot', {refs_key:vm.refData.refsKey})}}"> GO Annotations </a>
                                                 </div>
 		
+						<div ng-if="vm.refData.associated_data.indexOf('GXDHT') > -1"> GXD HT Experiment</div>
+
 						<div ng-if="vm.refData.associated_data.indexOf('GXD Index') > -1">
                                                 <a target='_blank' href="{{url_for('pwi.gxdindexsummary', {refs_id:vm.refData.jnumid})}}"> Lit Index </a>
 						</div>
