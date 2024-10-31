@@ -88,6 +88,7 @@
 			{ "column_name": "sex", "display_name": "Sex", "sort_name": "_sex_key"},
 			{ "column_name": "emapa", "display_name": "EMAPS", "sort_name": "_emapa_key"},
 			{ "column_name": "celltype", "display_name": "Cell Type", "sort_name": "_celltype_term_key"},
+			{ "column_name": "rnaseqtype", "display_name": "RNA-Seq Type", "sort_name": "_rnaseqtype_key"},
 			{ "column_name": "notes", "display_name": "Note", "sort_name": "notesort"},
 		];
 
@@ -239,6 +240,11 @@
 
                 $scope.getRelevance = function (key) {
                     const o = vocabs.relevances.filter(g => g._term_key === key)[0]
+                    return o ? o.term : ''
+                }
+
+                $scope.getRNASeqType = function (key) {
+                    const o = vocabs.rnaseqtypes.filter(g => g._term_key === key)[0]
                     return o ? o.term : ''
                 }
 
@@ -549,6 +555,7 @@
                                 dst.cl_object = src._celltype_term_key ? src.cl_object : null
                                 dst.celltype_id = dst.cl_object ? dst.cl_object.primaryid : ''
                         }
+			if(field == "rnaseqtype") dst._rnaseqtype_key = src._rnaseqtype_key;
 			if(field == "emapa") {
 				dst._emapa_key = src._emapa_key;
 				dst.emaps_object = src._emapa_key ? src.emaps_object : null
@@ -920,10 +927,16 @@
                                 if (selectedClone.samples[i]._organism_key == null) {
                                         selectedClone.samples[i]._organism_key = 1;
                                 }
+
                                 // GXD Relevance
                                 if (selectedClone.samples[i]._relevance_key == null) {
                                         selectedClone.samples[i]._relevance_key = 20475450;
                                 }
+
+                                // RNASeqType
+                                //if (selectedClone.samples[i]._rnaseqtype_key == null) {
+                                        //selectedClone.samples[i]._rnaseqtype_key = ?;
+                                //}
 
                                 // other fields, dependant upon GXD relevance
                                 if (selectedClone.samples[i]._relevance_key == 20475450) {
@@ -1113,6 +1126,7 @@
                     vocabs.celltypes.forEach(c => vm.key2celltype[c._term_key] = c)
                 });
 		VocTermSearchAPI.search({name:"GXD HT Relevance"}, function(data) { vocabs.relevances = data.items[0].terms; });
+		VocTermSearchAPI.search({name:"GXD HT RNA-Seq Type"}, function(data) { vocabs.rnaseqtypes = data.items[0].terms; });
 		GxdHTSampleOrganismSearchAPI.search({name:"GXD HT Sample"}, function(data) { vocabs.organisms = data; });
 		GxdExperimentTotalCountAPI.get(function(data) { vm.total_records = data.total_count; });
 

@@ -15,6 +15,7 @@
 					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['sex']">&nbsp;Sex</label></div>
 					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['emapa']">&nbsp;EMAPS</label></div>
 					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['celltype']">&nbsp;Cell Type {{ vm.selected.clCount > 0 ? ' (' + vm.selected.clCount + ')' : '' }}</label></div>
+					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['rnaseqtype']">&nbsp;RNA-Seq Type</label></div>
 					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['notes']">&nbsp;Note {{ vm.selected.noteCount > 0 ? ' (' + vm.selected.noteCount + ')' : '' }}</label></div>
 				</div>
 			</div>
@@ -221,6 +222,15 @@
 										/>
 										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" tabindex="-1" ng-click="copyUpColumn($index, displayedCollection, 'celltype')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" tabindex="-1" ng-click="copyDownColumn($index, displayedCollection, 'celltype')"></a></div>
 										<div ng-if="row.sample_domain.cl_object">{{ row.sample_domain.cl_object.term }}</div>
+									</td>
+                                                                        <!-- rna seq type column -->
+									<td ng-show="vm.checked_columns['rnaseqtype']">
+										<select 
+											ng-options="rnaseqtype._term_key as rnaseqtype.abbreviation for rnaseqtype in vocabs.rnaseqtypes" 
+											ng-change="setSampleStatus(row.row_num-1)"
+											ng-model="row.sample_domain._rnaseqtype_key">
+										</select>
+										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" tabindex="-1" ng-click="copyUpColumn($index, displayedCollection, 'rnaseqtype')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" tabindex="-1" ng-click="copyDownColumn($index, displayedCollection, 'rnaseqtype')"></a></div>
 									</td>
                                                                         <!-- notes column -->
 									<td ng-show="vm.checked_columns['notes']">
