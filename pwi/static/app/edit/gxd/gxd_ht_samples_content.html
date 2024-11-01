@@ -68,8 +68,8 @@
                                                       <td ng-if="row.sample_domain._relevance_key === 20475450">{{row.sample_domain.genotype_object.geneticbackground}}</td>
                                                       <td ng-if="row.sample_domain._relevance_key === 20475450" ng-bind-html="row.sample_domain.genotype_object.combination1_cache | handleSubscript | htmlnobr"></td>
                                                       <td ng-if="row.sample_domain._relevance_key === 20475450">{{getSex(row.sample_domain._sex_key)}}</td>
-                                                      <td>{{row.sample_domain.rnaseqtype}}</td>
-                                                      <td ng-if="row.sample_domain._relevance_key !== 20475450" colspan="6" style="text-align:center;">{{getRelevance(row.sample_domain._relevance_key)}}</td>
+                                                      <td ng-if="row.sample_domain._relevance_key === 20475450">{{row.sample_domain.rnaseqtype}}</td>
+                                                      <td ng-if="row.sample_domain._relevance_key !== 20475450" colspan="7" style="text-align:center;">{{getRelevance(row.sample_domain._relevance_key)}}</td>
                                                       <td ng-bind-html="getNotes(row.sample_domain) | handleSubscript"></td>
                                                     </tr>
                                                   </tbody>
