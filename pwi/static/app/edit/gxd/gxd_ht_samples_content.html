@@ -49,10 +49,10 @@
                                                       <th>Age</th>
                                                       <th>Structure</th>
                                                       <th>Cell Type</th>
-                                                      <th>RNA-Seq Type</th>
                                                       <th>Genetic Background</th>
                                                       <th>Mutant Alleles</th>
                                                       <th>Sex</th>
+                                                      <th>RNA-Seq Type</th>
                                                       <th>Note</th>
                                                     </tr>
                                                   </thead>
@@ -65,10 +65,10 @@
                                                       <td ng-if="row.sample_domain._relevance_key === 20475450">{{getAge(row.sample_domain.ageunit,row.sample_domain.agerange)}}</td>
                                                       <td ng-if="row.sample_domain._relevance_key === 20475450">TS{{row.sample_domain.emaps_object._stage_key}}: {{row.sample_domain.emaps_object.emapa_term.term}}</td>
                                                       <td ng-if="row.sample_domain._relevance_key === 20475450">{{row.sample_domain.cl_object ? row.sample_domain.cl_object.term : ''}}</td>
-                                                      <td>{{row.sample_domain.rnaseqtype}}</td>
                                                       <td ng-if="row.sample_domain._relevance_key === 20475450">{{row.sample_domain.genotype_object.geneticbackground}}</td>
                                                       <td ng-if="row.sample_domain._relevance_key === 20475450" ng-bind-html="row.sample_domain.genotype_object.combination1_cache | handleSubscript | htmlnobr"></td>
                                                       <td ng-if="row.sample_domain._relevance_key === 20475450">{{getSex(row.sample_domain._sex_key)}}</td>
+                                                      <td>{{row.sample_domain.rnaseqtype}}</td>
                                                       <td ng-if="row.sample_domain._relevance_key !== 20475450" colspan="6" style="text-align:center;">{{getRelevance(row.sample_domain._relevance_key)}}</td>
                                                       <td ng-bind-html="getNotes(row.sample_domain) | handleSubscript"></td>
                                                     </tr>
