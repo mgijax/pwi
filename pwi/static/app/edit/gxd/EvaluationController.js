@@ -555,7 +555,10 @@
                                 dst.cl_object = src._celltype_term_key ? src.cl_object : null
                                 dst.celltype_id = dst.cl_object ? dst.cl_object.primaryid : ''
                         }
-			if(field == "rnaseqtype") dst._rnaseqtype_key = src._rnaseqtype_key;
+			if(field == "rnaseqtype") {
+                                dst._rnaseqtype_key = src._rnaseqtype_key;
+                                dst.rnaseqtype = src.rnaseqtype;
+                        }
 			if(field == "emapa") {
 				dst._emapa_key = src._emapa_key;
 				dst.emaps_object = src._emapa_key ? src.emaps_object : null
