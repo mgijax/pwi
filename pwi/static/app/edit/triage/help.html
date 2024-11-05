@@ -260,7 +260,7 @@ When not logged in the Modify button is greyed out.
 <li>Pubmed2gene load (GO) change the GO status to Indexed. J# is assigned. </li>
 <li>Setting a group’s status to Chosen, Indexed, Full-coded assigns a J#.</li>
 <li>GO littriage load folder changes the GO status to Full-coded. </li>
-<li>GXDHT littriage load folder changes the GXDHT status to Indexed. (This status is only changed by loading from this folder, not by curation.)</li>
+<li>GXDHT littriage load folder changes the GXDHT status to Indexed. (The GXDHT workflow status is set either by loading from this folder or manually by a curator; it does not change due to experiment curation.)</li>
 <li>Curators can set another group’s status to Routed. </li>
 <li>All changes to the workflow status are saved to a history table. </li>
 </ol>
@@ -414,5 +414,6 @@ The strain tool allows a strain or strain + allele(s) to be added based on repos
         <li>The Relevance Classifier sets relevance value to Keep or Discard. Status remains unchanged.</li>
         <li>Workflow group secondary triage loads and Pubmed 2 gene loads set group status to Not Routed/Routed (and Indexed for GO).</li>
 	<li>These loaded references are then available via the PWI Literature Triage module for review and modification by the Curators.</li>
+        <li>The GXDHT status remains as New because it is not part of a secondary load.</li>
 </ul>
 
