@@ -36,10 +36,14 @@ MGIPYTHONLIB=${PWI}
 export MGIPYTHONLIB
 
 # only sends on error when not in debug mode
-ERROR_EMAIL=pete.frost@jax.org
+ERROR_EMAIL=mgiadmin@jax.org
 export ERROR_EMAIL
 
-LOG_DIR=/data/pwi/logs/
+if [ "${PWI_LOGDIR}" = "" ]
+then
+    LOG_DIR=/data/pwi/logs/
+else
+    LOG_DIR=${PWI_LOGDIR}
 export LOG_DIR
 
 # set to dev.config.py for development
@@ -49,10 +53,10 @@ export APP_CONFIG_FILE
 if [ "${SERVER_PORT}" = "" ]
 then
 	SERVER_PORT=5000
+else
+	SERVER_PORT=${PWI_SERVER_PORT}
 fi
 export SERVER_PORT
-DEV_SERVER_PORT=7000
-export DEV_SERVER_PORT
 
 APP_PREFIX="/pwi"
 export APP_PREFIX
