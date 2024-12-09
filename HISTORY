@@ -2,6 +2,13 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-24- no tag
+DATE: 12/09/2024
+STAFF: lec
+PWI_LOGDIR	/data/pwi/logs
+PWI_SERVER_PORT         5000
+#	modified:   Configuration.default
+
 TAG: pwi-6-0-24-14
 TAG: pwi-6-0-24-13
 DATE: 11/04/2024
