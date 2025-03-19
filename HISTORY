@@ -2,6 +2,12 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-25-?
+DATE: 03/20/2025
+STAFF: lec
+wts2-1630/e4g-194/GXD Assay Module Results note
+        modified:   pwi/static/app/edit/assay/AssayController.js
+
 TAG: pwi-6-0-25-1
 DATE: 03/12/2025
 STAFF: lec
