@@ -5129,7 +5129,7 @@
 					else {
 						partialText = value
 					}
-					alert("Non-Ascii character: " + message + "\n\n" + value[i] + "\n\nSee within this text:\n\n" + partialText)
+					alert("Non-Ascii characters: " + message + "\n\n" + partialText)
       					return false;
     				}
   			}
