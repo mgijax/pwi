@@ -225,25 +225,29 @@
 			}
 
                         if (vm.apiDomain.assayTypeKey == "") {
-				alert("Required Field:  Assay Type");
+				alert("Required Field: Assay Type");
                                 return;
 			}
                         if (vm.apiDomain.detectionKey == "2" && vm.apiDomain.antibodyPrep.antibodyKey == "") {
-				alert("Required Field:  Antibody Prep");
+				alert("Required Field: Antibody Prep");
                                 return;
 			}
                         if (vm.apiDomain.detectionKey == "1" && vm.apiDomain.probePrep.probeKey == "") {
-				alert("Required Field:  Probe Prep");
+				alert("Required Field: Probe Prep");
                                 return;
 			}
                         if (vm.apiDomain.detectionKey == "" || vm.apiDomain.detectionKey == null) {
-				alert("Required Field:  Detection Method");
+				alert("Required Field: Detection Method");
                                 return;
 			}
                         if (vm.apiDomain.isReporter == true && (vm.apiDomain.reporterGeneKey == "" || vm.apiDomain.reporterGeneKey == null)) {
-				alert("Required Field:  Reporter Gene");
+				alert("Required Field: Reporter Gene");
                                 return;
                         }
+			// check for any non-ascii characters
+			if (isASCII('Assay Note', vm.apiDomain.assayNote) == false) {
+				//return;
+			}
 
                         // remove extra/blank specimen rows
                         // verify agePrefix/ageStage
@@ -265,11 +269,25 @@
                                         else if (vm.apiDomain.specimens[i].agePrefix == "") {
                                                 vm.apiDomain.specimens[i].agePrefix = "embryonic day";
                                         }
+
+					// check for any non-ascii characters
+					if (isASCII('Age Note', vm.apiDomain.specimens[i].ageNote) == false) {
+						//return;
+					}
+					if (isASCII('Specimen Note', vm.apiDomain.specimens[i].specimenNote) == false) {
+						//return;
+					}
+                                	for(var j=0;j<vm.apiDomain.specimens[i].sresults.length;j++) {
+						if (isASCII('Result Note', vm.apiDomain.specimens[i].sresults[j].resultNote) == false) {
+							//return;
+						}
+					}
                                 }
                         }
                         else {
                                 for(var i=0;i<vm.apiDomain.gelLanes.length;i++) {
         
+                                        // remove extra/blank lane labels
                                         if (
                                                 vm.apiDomain.gelLanes[i].processStatus == "c" &&
                                                 vm.apiDomain.gelLanes[i].laneLabel == ""
@@ -285,6 +303,20 @@
                                         if (vm.apiDomain.gelLanes[i].agePrefix == "") {
                                                 vm.apiDomain.gelLanes[i].agePrefix = "embryonic day";
                                         }
+
+					// check for any non-ascii characters
+					if (isASCII('Age Note', vm.apiDomain.gelLanes[i].ageNote) == false) {
+						//return;
+					}
+					if (isASCII('Lane Note', vm.apiDomain.gelLanes[i].laneNote) == false) {
+						//return;
+					}
+                                }
+                                for(var i=0;i<vm.apiDomain.gelRows.length;i++) {
+					// check for any non-ascii characters
+					if (isASCII('Row Note', vm.apiDomain.gelRows[i].rowNote) == false) {
+						//return;
+					}
                                 }
                         }
 
@@ -323,25 +355,29 @@
 			}
 
                         if (vm.apiDomain.assayTypeKey == "") {
-				alert("Required Field:  Assay Type");
+				alert("Required Field: Assay Type");
                                 return;
 			}
                         if (vm.apiDomain.detectionKey == "2" && vm.apiDomain.antibodyPrep.antibodyKey == "") {
-				alert("Required Field:  Antibody Prep");
+				alert("Required Field: Antibody Prep");
                                 return;
 			}
                         if (vm.apiDomain.detectionKey == "1" && vm.apiDomain.probePrep.probeKey == "") {
-				alert("Required Field:  Probe Prep");
+				alert("Required Field: Probe Prep");
                                 return;
 			}
                         if (vm.apiDomain.detectionKey == "" || vm.apiDomain.detectionKey == null) {
-				alert("Required Field:  Detection Method");
+				alert("Required Field: Detection Method");
                                 return;
 			}
                         if (vm.apiDomain.isReporter == true && (vm.apiDomain.reporterGeneKey == "" || vm.apiDomain.reporterGeneKey == null)) {
-				alert("Required Field:  Reporter Gene");
+				alert("Required Field: Reporter Gene");
                                 return;
                         }
+			// check for any non-ascii characters
+			if (isASCII('Assay Note', vm.apiDomain.assayNote) == false) {
+				//return;
+			}
 
                         // remove extra/blank specimen rows
                         // verify agePrefix/ageStage
@@ -375,6 +411,19 @@
                                         else if (vm.apiDomain.specimens[i].agePrefix == "") {
                                                 vm.apiDomain.specimens[i].agePrefix = "embryonic day";
                                         }
+					
+					// check for any non-ascii characters
+					if (isASCII('Age Note', vm.apiDomain.specimens[i].ageNote) == false) {
+						//return;
+					}
+					if (isASCII('Specimen Note', vm.apiDomain.specimens[i].specimenNote) == false) {
+						//return;
+					}
+                                	for(var j=0;j<vm.apiDomain.specimens[i].sresults.length;j++) {
+						if (isASCII('Result Note', vm.apiDomain.specimens[i].sresults[j].resultNote) == false) {
+							//return;
+						}
+					}
                                 }
                         }
                         else {
@@ -396,6 +445,14 @@
                                         if (vm.apiDomain.gelLanes[i].agePrefix == "") {
                                                 vm.apiDomain.gelLanes[i].agePrefix = "embryonic day";
                                         }
+
+					// check for any non-ascii characters
+					if (isASCII('Age Note', vm.apiDomain.gelLanes[i].ageNote) == false) {
+						//return;
+					}
+					if (isASCII('Lane Note', vm.apiDomain.gelLanes[i].laneNote) == false) {
+						//return;
+					}
 
                                         // Gel Band defaults/checks
                                         if (vm.apiDomain.gelLanes[i].gelBands != null) {
@@ -427,6 +484,10 @@
                                                 vm.apiDomain.gelRows[i].gelUnitsKey = vm.gelUnitsNS;
                                                 changeGelRow(i);
                                         }
+					// check for any non-ascii characters
+					if (isASCII('Row Note', vm.apiDomain.gelRows[i].rowNote) == false) {
+						//return;
+					}
                                 }
                         }
 
@@ -5051,6 +5112,29 @@
 
                         window.open(assayUrl, '_blank');
                 }
+
+		// check if value contains non-ascii characters
+		function isASCII(message, value) {
+			var partialText
+
+                        if (value == "" || value == null) {
+				return true;
+			}
+
+  			for (let i = 0; i < value.length; i++) {
+    				if (value.charCodeAt(i) > 127) {
+					if (value.length > 25) {
+						partialText = value.substring(i-10,i+10)
+					}
+					else {
+						partialText = value
+					}
+					alert("Non-Ascii character: " + message + "\n\n" + value[i] + "\n\nSee within this text:\n\n" + partialText)
+      					return false;
+    				}
+  			}
+  			return true;
+		}
 
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
