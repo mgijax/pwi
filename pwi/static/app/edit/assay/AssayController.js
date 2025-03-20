@@ -245,7 +245,7 @@
                                 return;
                         }
 			// check for any non-ascii characters
-			if (isASCII('Assay Note', vm.apiDomain.assayNote) == false) {
+			if (isASCII('Assay Note', vm.apiDomain.assayNote.assayNote) == false) {
 				//return;
 			}
 
@@ -375,7 +375,7 @@
                                 return;
                         }
 			// check for any non-ascii characters
-			if (isASCII('Assay Note', vm.apiDomain.assayNote) == false) {
+			if (isASCII('Assay Note', vm.apiDomain.assayNote.assayNote) == false) {
 				//return;
 			}
 
