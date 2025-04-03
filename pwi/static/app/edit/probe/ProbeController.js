@@ -764,7 +764,7 @@
                         console.log("setFocus()");
                         // must pause for a bit...then it works
                         setTimeout(function() {
-                                document.getElementById("segmentType").focus();
+                                document.getElementById("markerSymbol-0").focus();
                         }, (500));
 		}
 
@@ -1302,19 +1302,15 @@
 		function autoDNA() {
 			console.log("autoDNA");
 
-                        if (vm.apiDomain.segmentTypeKey != "63468") {
-                                return;
-                        }
-
 			if (vm.apiDomain.markers[0].markerSymbol == "") {
 				return;
 			}
 
-			if (vm.apiDomain.name != "") {
-				return;
-			}
+                        vm.apiDomain.segmentTypeKey = "63468";
 
-			vm.apiDomain.name = vm.apiDomain.markers[0].markerSymbol + " cDNA";
+			if (vm.apiDomain.name == "") {
+				vm.apiDomain.name = vm.apiDomain.markers[0].markerSymbol + " cDNA";
+			}
 
 			if (vm.apiDomain.markers[0].jnumid != "") {
 				if (vm.apiDomain.markers[0].relationship == "H") {
@@ -1328,25 +1324,23 @@
 				vm.apiDomain.references[0].jnum = vm.apiDomain.markers[0].jnum;
 				vm.apiDomain.references[0].short_citation = vm.apiDomain.markers[0].short_citation;
 			}
+
+                        document.getElementById("regionCovered").focus();
 		}		
 
 		// autopopulate Not Specified
 		function autoNS() {
 			console.log("autoNS");
 
-                        if (vm.apiDomain.segmentTypeKey != "63474") {
-                                return;
-                        }
-
 			if (vm.apiDomain.markers[0].markerSymbol == "") {
 				return;
 			}
 
-			if (vm.apiDomain.name != "") {
-				return;
-			}
+                        vm.apiDomain.segmentTypeKey = "63474";
 
-			vm.apiDomain.name = vm.apiDomain.markers[0].markerSymbol + " probe";
+			if (vm.apiDomain.name == "") {
+				vm.apiDomain.name = vm.apiDomain.markers[0].markerSymbol + " probe";
+			}
 
 			if (vm.apiDomain.markers[0].jnumid != "") {
 				if (vm.apiDomain.markers[0].relationship == "H") {
@@ -1360,25 +1354,23 @@
 				vm.apiDomain.references[0].jnum = vm.apiDomain.markers[0].jnum;
 				vm.apiDomain.references[0].short_citation = vm.apiDomain.markers[0].short_citation;
 			}
+
+                        document.getElementById("regionCovered").focus();
 		}		
 
 		// autopopulate primer
 		function autoPrimer() {
 			console.log("autoPrimer");
 
-                        if (vm.apiDomain.segmentTypeKey != "63473") {
-                                return;
-                        }
-
 			if (vm.apiDomain.markers[0].markerSymbol == "") {
 				return;
 			}
 
-			if (vm.apiDomain.name != "") {
-				return;
-			}
+                        vm.apiDomain.segmentTypeKey = "63473";
 
-			vm.apiDomain.name = vm.apiDomain.markers[0].markerSymbol + "-pF, " + vm.apiDomain.markers[0].markerSymbol + "-pR";
+			if (vm.apiDomain.name == "") {
+				vm.apiDomain.name = vm.apiDomain.markers[0].markerSymbol + "-pF, " + vm.apiDomain.markers[0].markerSymbol + "-pR";
+			}
 
 			if (vm.apiDomain.markers[0].relationship == "A" && vm.apiDomain.markers[0].jnumid != "") {
 				vm.apiDomain.references[0].refsKey = vm.apiDomain.markers[0].refsKey;
@@ -1386,6 +1378,8 @@
 				vm.apiDomain.references[0].jnum = vm.apiDomain.markers[0].jnum;
 				vm.apiDomain.references[0].short_citation = vm.apiDomain.markers[0].short_citation;
 			}
+
+                        document.getElementById("regionCovered").focus();
 		}		
 
 		/////////////////////////////////////////////////////////////////////

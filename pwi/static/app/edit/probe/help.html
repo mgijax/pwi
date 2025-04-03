@@ -199,29 +199,143 @@ The Relationships for probes are:
 	<li>If a Cell Line is entered, then the Age default should be Not Applicable.</li>
 </ol>
 
-<h4>Tabbing behavior- probes</h4>
+<h4>Tabbing behavior probes</h4>
 <ol>
-	<li>Segment Type</li>
-	<li>Name</li>
-	<li>Region covered</li>
-	<li>Organism</li>
 	<li>Marker</li>
 	<li>R</li>
 	<li>J# (marker table)</li>
 	<li>J# (reference table)</li>
+	<li>Segment type</li>
+	<li>Name</li>
+	<li>Region covered</li>
+	<li>Organism</li>
+
 </ol>
 
-<h4>Tabbing behavior- primers</h4>
+<h4>Tabbing behavior primers</h4>
 <ol>
-	<li>Segment Type</li>
+	<li>Marker</li>
+	<li>R</li>
+	<li>J# (marker table)</li>
+	<li>J# (reference table)</li>
+	<li>Segment type</li>
 	<li>Name</li>
 	<li>Region covered</li>
 	<li>Sequence 1</li>
 	<li>Sequence 2</li>
-	<li>Marker</li>
-	<li>R</li>
-	<li>J# (marker table)</li>
-	<li>J# (reference table)</li>
+
+</ol>
+
+<h4>Autopopulate Buttons</h4>
+<ol>
+
+    <table border="1px">
+        <tr>
+            <th> </th>
+			<th colspan="3">Autopopulate cDNA</th>
+            <th colspan="3">Autopopulate Not Specified</th>
+			<th colspan="2">Autopopulate Primer</th>
+        </tr>
+        <tr>
+            <th>Fields</th>
+			<th>Curator Enters</th>
+            <th>Curator Enters</th>
+			<th>Curator Enters</th>
+			<th>Curator Enters</th>
+			<th>Curator Enters</th>
+			<th>Curator Enters</th>
+			<th>Curator Enters</th>
+			<th>Curator Enters</th>
+        </tr>
+        <tr>
+            <td>Marker</td>
+            <td><i>Marker</i></td>
+            <td><i>Marker</i></td>
+            <td><i>Marker</i></td>
+			<td><i>Marker</i></td>
+			<td><i>Marker</i></td>
+			<td><i>Marker</i></td>
+			<td><i>Marker</i></td>
+			<td><i>Marker</i></td>
+        </tr>
+		<tr>
+            <td>Relationship</td>
+            <td> </td>
+            <td>R = H</td>
+            <td>R = E</td>
+			<td> </td>
+            <td>R = H</td>
+            <td>R = E</td>
+			<td> </td>
+            <td>R = A</td>
+        </tr>
+        <tr>
+            <td>J# marker table</td>
+            <td> </td>
+            <td>J:123456 123456</td>
+            <td>J:123456 123456</td>
+			<td> </td>
+            <td>J:123456 123456</td>
+            <td>J:123456 123456</td>
+			<td> </td>
+            <td>J:123456 123456</td>
+        </tr>
+        <tr>
+            <th>Click Button enters</th>
+            <th>Expected Behavior</th>
+            <th>Expected Behavior</th>
+            <th>Expected Behavior</th>
+			<th>Expected Behavior</th>
+			<th>Expected Behavior</th>
+			<th>Expected Behavior</th>
+			<th>Expected Behavior</th>
+			<th>Expected Behavior</th>
+        </tr>
+		<tr>
+            <td>Segment Type</td>
+            <td>cDNA</td>
+            <td>cDNA</td>
+            <td>cDNA</td>
+			<td>Not Specified</td>
+			<td>Not Specified</td>
+			<td>Not Specified</td>
+			<td>Primer</td>
+			<td>Primer</td>
+        </tr>
+        <tr>
+            <td>Marker</td>
+            <td><i>Marker cDNA</i></td>
+            <td><i>Marker cDNA</i></td>
+            <td><i>Marker cDNA</i></td>
+			<td><i>Marker probe</i></td>
+			<td><i>Marker probe</i></td>
+			<td><i>Marker probe</i></td>
+			<td><i>Marker-pF, Marker-pR</i></td>
+			<td><i>Marker-pF, Marker-pR</i></td>
+        </tr>
+        <tr>
+            <td>Organism</td>
+            <td> </td>
+            <td>Not Specified</td>
+            <td>Mouse</td>
+			<td> </td>
+			<td>Not Specified</td>
+			<td>Mouse</td>
+			<td> </td>
+			<td> </td>
+        </tr>
+        <tr>
+            <td>J# reference table</td>
+            <td> </td>
+            <td>J:123456</td>
+            <td>J:123456</td>
+			<td> </td>
+            <td>J:123456</td>
+            <td>J:123456</td>
+			<td> </td>
+            <td>J:123456</td>
+        </tr>
+    </table>
 </ol>
 
 <h4>Linkouts</h4>
