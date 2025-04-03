@@ -1298,9 +1298,73 @@
 			}
 		}		
 
-		// autopopulate primer name
-		function autoPrimerName() {
-			console.log("autoPrimerName");
+		// autopopulate cDNA
+		function autoDNA() {
+			console.log("autoDNA");
+
+                        if (vm.apiDomain.segmentTypeKey != "63468") {
+                                return;
+                        }
+
+			if (vm.apiDomain.markers[0].markerSymbol == "") {
+				return;
+			}
+
+			if (vm.apiDomain.name != "") {
+				return;
+			}
+
+			vm.apiDomain.name = vm.apiDomain.markers[0].markerSymbol + " cDNA";
+
+			if (vm.apiDomain.markers[0].jnumid != "") {
+				if (vm.apiDomain.markers[0].relationship == "H") {
+                        		vm.apiDomain.probeSource.organismKey = "76";
+				}
+				if (vm.apiDomain.markers[0].relationship == "E") {
+                        		vm.apiDomain.probeSource.organismKey = "1";
+				}
+				vm.apiDomain.references[0].refsKey = vm.apiDomain.markers[0].refsKey;
+				vm.apiDomain.references[0].jnumid = vm.apiDomain.markers[0].jnumid;
+				vm.apiDomain.references[0].jnum = vm.apiDomain.markers[0].jnum;
+				vm.apiDomain.references[0].short_citation = vm.apiDomain.markers[0].short_citation;
+			}
+		}		
+
+		// autopopulate Not Specified
+		function autoNS() {
+			console.log("autoNS");
+
+                        if (vm.apiDomain.segmentTypeKey != "63474") {
+                                return;
+                        }
+
+			if (vm.apiDomain.markers[0].markerSymbol == "") {
+				return;
+			}
+
+			if (vm.apiDomain.name != "") {
+				return;
+			}
+
+			vm.apiDomain.name = vm.apiDomain.markers[0].markerSymbol + " probe";
+
+			if (vm.apiDomain.markers[0].jnumid != "") {
+				if (vm.apiDomain.markers[0].relationship == "H") {
+                        		vm.apiDomain.probeSource.organismKey = "76";
+				}
+				if (vm.apiDomain.markers[0].relationship == "E") {
+                        		vm.apiDomain.probeSource.organismKey = "1";
+				}
+				vm.apiDomain.references[0].refsKey = vm.apiDomain.markers[0].refsKey;
+				vm.apiDomain.references[0].jnumid = vm.apiDomain.markers[0].jnumid;
+				vm.apiDomain.references[0].jnum = vm.apiDomain.markers[0].jnum;
+				vm.apiDomain.references[0].short_citation = vm.apiDomain.markers[0].short_citation;
+			}
+		}		
+
+		// autopopulate primer
+		function autoPrimer() {
+			console.log("autoPrimer");
 
                         if (vm.apiDomain.segmentTypeKey != "63473") {
                                 return;
@@ -1315,6 +1379,13 @@
 			}
 
 			vm.apiDomain.name = vm.apiDomain.markers[0].markerSymbol + "-pF, " + vm.apiDomain.markers[0].markerSymbol + "-pR";
+
+			if (vm.apiDomain.markers[0].relationship == "A" && vm.apiDomain.markers[0].jnumid != "") {
+				vm.apiDomain.references[0].refsKey = vm.apiDomain.markers[0].refsKey;
+				vm.apiDomain.references[0].jnumid = vm.apiDomain.markers[0].jnumid;
+				vm.apiDomain.references[0].jnum = vm.apiDomain.markers[0].jnum;
+				vm.apiDomain.references[0].short_citation = vm.apiDomain.markers[0].short_citation;
+			}
 		}		
 
 		/////////////////////////////////////////////////////////////////////
@@ -1690,7 +1761,9 @@
 		$scope.changeGeneralNote = changeGeneralNote;
 		$scope.changeMarkerRow = changeMarkerRow;
 		$scope.addMarkerRow = addMarkerRow;
-		$scope.autoPrimerName = autoPrimerName;
+		$scope.autoDNA = autoDNA;
+		$scope.autoNS = autoNS;
+		$scope.autoPrimer = autoPrimer;
 		$scope.changeRefRow = changeRefRow;
 		$scope.addRefRow = addRefRow;
 		$scope.changeAccRow = changeAccRow;
