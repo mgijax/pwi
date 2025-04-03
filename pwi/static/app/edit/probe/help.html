@@ -123,16 +123,13 @@ The J# search field at the top of the page:
 	</li>
 </ul> 
 
-<h4>Entering probes</h4>
+<h4>Entering Probes</h4>
 <ul>
 	<li>Required fields: Segment Type, Name, Reference table J#. Other fields will fill in by default (see Defaults section).</li>
 	<li>Probes can have multiple markers and/or multiple references associated.</li>
 	<li>Each associated reference can have multiple Accession ID's and/or multiple Aliases.</li>
 	<li>Probes can be entered without a marker.</li>
-        <li>Amplification Primer—if the probe was created by amplification, enter the primer id; tabbing will verify that the id is a valid primer id.</li>
-        <li>Raw Sequences Notes are not displayed to the public. This field is for in house blatting, so its content should be limited to sequence only. If you want users to see the sequence, also enter it in the Probe Notes field (and include explanatory text).</li>
-        <li>Probe Aliases, unlike antibody ones, must have an associated J#.</li>
-
+	<li>Autopopulate cDNA and Autopopulate Not Specified Buttons can be used to fill out the form. See Autopopulate table).</li>
 </ul>
 
 <h4>Strain, tissue, and cell line fields</h4>
@@ -156,15 +153,8 @@ Cell Line: the list of existing cell lines can be found here: Existing Cell line
 
 <h4>Entering Primers</h4>
 <ul>
-<li>Spaces, tabs, and line breaks will be removed from the sequence fields. Non-printable characters (from space up to the tilde) are also removed.
-Slash, parentheses, hyphens and underscores can be used.</li>
-<li>Autopopulate Primer in format: GeneSymbol-pF, GeneSymbol-pR
-<ol>
-<li>Select Segment Type 'primer'</li>
-<li>Leave Name field blank</li>
-<li>Enter gene symbol in Marker field and tab out</li>
-<li>Click the Autopopulate Primer button</li>
-</ol>
+	<li>Spaces, tabs, and line breaks will be removed from the sequence fields. Non-printable characters (from space up to the tilde) are also removed. Slash, parentheses, hyphens and underscores can be used.</li>
+	<li>Autopopulate Primer Button can be used to fill out the form. See Autopopulate table.</li>
 </ul>
 
 <h4>Relationship 'R'</h4>
@@ -336,6 +326,12 @@ The Relationships for probes are:
             <td>J:123456</td>
         </tr>
     </table>
+</ol>
+<ol>
+	<li>Marker field must be filled in for the Autopopulate buttons to work; otherwise, nothing will happen.</li>
+	<li>After pressing the Autopopulate buttons, the cursor will move to the Region Covered field.</li>
+	<li>If you enter text in the Name field, the Autopopulate buttons will not overwrite. Other fields will be filled in, as in expected behavior.</li>
+
 </ol>
 
 <h4>Linkouts</h4>
