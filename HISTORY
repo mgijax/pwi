@@ -8,6 +8,7 @@ STAFF: lec
 wts2-1639/e4g-209/P-WI - Autopopulate buttons in Probes Module
         modified:   pwi/static/app/edit/probe/ProbeController.js
         modified:   pwi/static/app/edit/probe/probe_content.html
+	modified:   pwi/static/app/edit/probe/help.html
 
 TAG: pwi-6-0-25-2
 DATE: 03/20/2025
