@@ -245,6 +245,12 @@
                         // change marker
                         changeMarker();
 
+			// check for missing chromosome
+			if (vm.apiDomain.chromosome == "") {
+				alert("Missing chromosome.  Cannot Modify.");
+				vm.allowModify = false;
+			}
+			
 			// check for missing sequenceNum
 			var seqNums = [];
 			var isMissingSeqNum = false;
@@ -283,7 +289,11 @@
 				}
 			}
 
-			if (!vm.allowModify) { return; }
+			if (!vm.allowModify) { 
+				pageScope.loadingEnd();
+				setFocus();
+				return; 
+			}
 
 			MarkerUpdateAPI.update(vm.apiDomain, function(data) {
 				
