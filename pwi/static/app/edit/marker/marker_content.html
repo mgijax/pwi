@@ -616,7 +616,7 @@
 			<tr ng-repeat="row in vm.apiDomain.nonEditAccessionIds" 
 				ng-click=""
 				ng-class-odd="'oddResultRow'">
-				<td>{{row.logicaldb}}</td>
+				<td>{{row.logicaldb}} {{row.akaLogicaldb}}</td>
 				<td>{{row.accID}}</td>
 				<td>{{row.references[0].jnumid}}</td>
 				<td>{{row.references[0].short_citation}}</td>
