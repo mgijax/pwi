@@ -2,6 +2,12 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-25-5
+DATE: 05/21/2025
+STAFF: lec
+wts2-1666/e4g-261/Address Dependabot findings : PWI
+        modified:   requirements.txt
+
 TAG: pwi-6-0-25-4
 DATE: 04/27/2025
 STAFF: lec
