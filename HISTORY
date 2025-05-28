@@ -2,11 +2,17 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
-TAG: pwi-6-0-25-?
-DATE: 05/27/2025
+#TAG: pwi-6-0-25-?
+#DATE: 05/27/2025
+#STAFF: lec
+#wts2-1666/e4g-264/python 3.12 and cherryPy 18.10.0
+#        modified:   requirements.txt
+
+TAG: pwi-6-0-25-6
+DATE: 05/28/2025
 STAFF: lec
-wts2-1666/e4g-264/python 3.12 and cherryPy 18.10.0
-        modified:   requirements.txt
+e4g-270/HT Experiment PWI: Move Experimental Variables
+        modified:   pwi/static/app/edit/gxd/gxd_ht_results_content.html
 
 TAG: pwi-6-0-25-5
 DATE: 05/21/2025
