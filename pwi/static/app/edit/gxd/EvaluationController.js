@@ -724,6 +724,7 @@
 			vm.checked_columns = [];
 			vm.downloadError = "";
 			vm.counts = {};
+			vm.editing_pubmed = true;
 			vm.resettable = true;
 			vm.showing_raw = true;
 			vm.hasRawSamples = false;
