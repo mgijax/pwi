@@ -74,7 +74,7 @@
 		vm.total_records = 0;
 		vm.hasSampleDomain = false;
 		vm.hasRawSamples = false;
-		vm.editing_pubmed = false;
+		vm.editing_pubmed = true;
 		vm.showing_curated = false;
 		vm.showing_curatedSummary = false;
 		vm.showing_raw = true;
