@@ -96,7 +96,7 @@
 		function updateLoadedData(data, loadOldSamples = false) {
 
 				vm.showing_curatedSummary = false;
-				vm.editing_pubmed = true;
+				vm.editing_pubmed = false;
 				vm.selected = data;  // data is an HTDomain object
 
 				if(vm.selected.release_date) vm.selected.release_date = $filter('date')(new Date(vm.selected.release_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
