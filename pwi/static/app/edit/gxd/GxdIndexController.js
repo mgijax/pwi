@@ -421,6 +421,8 @@
 			    { term:"Ab/probe spec.", note: "The specificity of the antibody/probe used was not detailed; both/all family members have been annotated." },
 			    { term:"Ab/probe spec. MGI ID", note: "The antibody/probe specificity was not detailed and may recognize a related gene; (MGI:) has also been annotated." },
 			    { term:"microRNA", note: "The mature microRNA is encoded at multiple sites in the genome." },
+			    { term:"Xenium", note: "Xenium in situ data."},
+			    { term:"MERFISH", note: "MERFISH data."},
 			    { term:"Supplementary", note: "Results are in the supplementary material." },
 			    { term:"Section or WM", note: "Reference does not indicate whether specimen is a section or whole mount." },
 			    { term:"Range", note: "Authors state that expression was examined on dpc *-*; not all stages are detailed." },
