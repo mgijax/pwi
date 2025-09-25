@@ -559,7 +559,7 @@
 				"processStatus": "c",
 				"relationshipKey": "",
 			       	"markerKey1": vm.apiDomain.markerKey,
-                                "markerSymbol1": "",
+                                "markerSymbol1": vm.apiDomain.markerSymbol,
 			       	"markerKey2": "",
                                 "markerSymbol2": "",
                                 "markerAccID2": "",
@@ -646,7 +646,7 @@
 				"processStatus": "c",
 				"relationshipKey": "",
 			       	"markerKey1": vm.apiDomain.markerKey,
-                                "markerSymbol1": "",
+                                "markerSymbol1": vm.apiDomain.markerSymbol,
 			       	"markerKey2": "",
                                 "markerSymbol2": "",
                                 "markerAccID2": "",
@@ -715,12 +715,14 @@
 
                         // note:  cloning the vm.apiDomain.clusterHasMember properly
                         //
+                        //              "markerKey1": vm.apiDomain.clusterHasMember[row].markerKey1,
+                        //              "markerSymbol1": vm.apiDomain.clusterHasMember[row].markerSymbol1,
 			if (vm.apiDomain.clusterHasMember[row].markerKey2 != "") {
 				var newItem = {
                                         "processStatus": "c",
                                         "relationshipKey": "",
-                                        "markerKey1": vm.apiDomain.clusterHasMember[row].markerKey1,
-                                        "markerSymbol1": vm.apiDomain.clusterHasMember[row].markerSymbol1,
+                                        "markerKey1": vm.apiDomain.markerKey,
+                                        "markerSymbol1": vm.apiDomain.markerSymbol,
                                         "markerKey2": vm.apiDomain.clusterHasMember[row].markerKey2,
                                         "markerSymbol2": vm.apiDomain.clusterHasMember[row].markerSymbol2,
                                         "markerAccID2": vm.apiDomain.clusterHasMember[row].markerAccID2,
@@ -779,8 +781,8 @@
 				}
                                 vm.apiDomain.clusterHasMember[emptyRow].processStatus = vm.clipboardCM[i].processStatus;
                                 vm.apiDomain.clusterHasMember[emptyRow].relationshipKey = vm.clipboardCM[i].relationshipKey;
-                                vm.apiDomain.clusterHasMember[emptyRow].markerKey1 = vm.clipboardCM[i].markerKey1;
-                                vm.apiDomain.clusterHasMember[emptyRow].markerSymbol1 = vm.clipboardCM[i].markerSymbol1;
+                                vm.apiDomain.clusterHasMember[emptyRow].markerKey1 = vm.apiDomain.markerKey;
+                                vm.apiDomain.clusterHasMember[emptyRow].markerSymbol1 = vm.apiDomain.markerSymbol;
                                 vm.apiDomain.clusterHasMember[emptyRow].markerKey2 = vm.clipboardCM[i].markerKey2;
                                 vm.apiDomain.clusterHasMember[emptyRow].markerSymbol2 = vm.clipboardCM[i].markerSymbol2;
                                 vm.apiDomain.clusterHasMember[emptyRow].markerAccID2 = vm.clipboardCM[i].markerAccID2;
@@ -894,8 +896,8 @@
 				}
                                 vm.apiDomain.regulatesExpression[emptyRow].processStatus = vm.clipboardRE[i].processStatus;
                                 vm.apiDomain.regulatesExpression[emptyRow].relationshipKey = vm.clipboardRE[i].relationshipKey;
-                                vm.apiDomain.regulatesExpression[emptyRow].markerKey1 = vm.clipboardRE[i].markerKey1;
-                                vm.apiDomain.regulatesExpression[emptyRow].markerSymbol1 = vm.clipboardRE[i].markerSymbol1;
+                                vm.apiDomain.regulatesExpression[emptyRow].markerKey1 = vm.apiDomain.markerKey;
+                                vm.apiDomain.regulatesExpression[emptyRow].markerSymbol1 = vm.apiDomain.markerSymbol;
                                 vm.apiDomain.regulatesExpression[emptyRow].markerKey2 = vm.clipboardRE[i].markerKey2;
                                 vm.apiDomain.regulatesExpression[emptyRow].markerSymbol2 = vm.clipboardRE[i].markerSymbol2;
                                 vm.apiDomain.regulatesExpression[emptyRow].markerAccID2 = vm.clipboardRE[i].markerAccID2;
