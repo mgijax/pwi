@@ -2,6 +2,12 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-26-3
+DATE: 09/25/2025
+STAFF: lec
+wts2-1726/sprt-68/Marker Module Regulates Expression paste function not working
+        modified:   pwi/static/app/edit/markerfear/MarkerFearController.js
+
 TAG: pwi-6-0-26-2
 DATE: 09/04/2025
 STAFF: lec
