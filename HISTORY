@@ -2,6 +2,13 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-26-4
+DATE: 10/16/2025
+STAFF: lec
+wts2-1743/sprt-94/Remove PRO lit triage workflow
+        modified:   pwi/static/app/edit/triage/help.html
+        modified:   pwi/static/app/edit/triage/lit_triage_content.html
+
 TAG: pwi-6-0-26-3
 DATE: 09/25/2025
 STAFF: lec
