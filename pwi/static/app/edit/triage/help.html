@@ -256,7 +256,7 @@ When not logged in the Modify button is greyed out.
 <h5>Updating workflow status</h5>
 <ol>
 <li>The littriage load assigns workflow status = New</li>
-<li>Group-specific secondary loads (AP,GXD,PRO,QTL,Tumor) change the workflow status of the group to Not Routed/Routed. No J# is assigned. </li>
+<li>Group-specific secondary loads (AP,GXD,QTL,Tumor) change the workflow status of the group to Not Routed/Routed. No J# is assigned. </li>
 <li>Pubmed2gene load (GO) change the GO status to Indexed. J# is assigned. </li>
 <li>Setting a group’s status to Chosen, Indexed, Full-coded assigns a J#.</li>
 <li>GO littriage load folder changes the GO status to Full-coded. </li>
@@ -410,7 +410,7 @@ The strain tool allows a strain or strain + allele(s) to be added based on repos
 	<li>Sanity and QC checks are performed by the Load. PDFs not loaded are included in reports that curators monitor.</li>
 	<li>If a PDF passes the checks then a Reference is created in the MGI database and the PDF is moved to the Master PDF directory.</li>
 	<li>The reference in the database is assigned an MGI ID and the PDF is renamed using that same ID.</li>
-	<li>The status is set to "New" for all the Workflow groups (AP, GO, GXD, GXDHT, PRO, QTL, Tumor). The relevance is Not Specified.</li>
+	<li>The status is set to "New" for all the Workflow groups (AP, GO, GXD, GXDHT, QTL, Tumor). The relevance is Not Specified.</li>
         <li>The Relevance Classifier sets relevance value to Keep or Discard. Status remains unchanged.</li>
         <li>Workflow group secondary triage loads and Pubmed 2 gene loads set group status to Not Routed/Routed (and Indexed for GO).</li>
 	<li>These loaded references are then available via the PWI Literature Triage module for review and modification by the Curators.</li>

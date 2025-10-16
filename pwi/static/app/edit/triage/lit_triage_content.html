@@ -299,45 +299,6 @@
 					</tr>
 
 					<tr>
-						<td> PRO </td> 
-						<td>  
-							<input type="checkbox" id="status_PRO_New"
-							ng-model="vm.selected.status_PRO_New"
-							ng-true-value="1" ng-false-value="">
-						</td>
-						<td>  
-							<input type="checkbox" id="status_PRO_Not_Routed"
-							ng-model="vm.selected.status_PRO_Not_Routed"
-							ng-true-value="1" ng-false-value="">
-						</td>
-						<td>  
-							<input type="checkbox" id="status_PRO_Routed"
-							ng-model="vm.selected.status_PRO_Routed"
-							ng-true-value="1" ng-false-value="">
-						</td>
-						<td>  
-							<input type="checkbox" id="status_PRO_Chosen"
-							ng-model="vm.selected.status_PRO_Chosen"
-							ng-true-value="1" ng-false-value="">
-						</td>
-						<td>  
-							<input type="checkbox" id="status_PRO_Indexed"
-							ng-model="vm.selected.status_PRO_Indexed"
-							ng-true-value="1" ng-false-value="">
-						</td>
-						<td>  
-							<input type="checkbox" id="status_PRO_Full_coded"
-							ng-model="vm.selected.status_PRO_Full_coded"
-							ng-true-value="1" ng-false-value="">
-						</td>
-						<td>  
-							<input type="checkbox" id="status_PRO_Rejected"
-							ng-model="vm.selected.status_PRO_Rejected"
-							ng-true-value="1" ng-false-value="">
-						</td>
-					</tr>
-
-					<tr>
 						<td> QTL </td> 
 						<td>  
 							<input type="checkbox" id="status_QTL_New"
@@ -538,7 +499,6 @@
 						<option value="GO">GO</option>
 						<option value="GXD">GXD</option>
 						<option value="GXDHT">GXD</option>
-						<option value="PRO">PRO</option>
 						<option value="QTL">QTL</option>
 						<option value="Tumor">Tumor</option>
 					</select>
@@ -678,7 +638,6 @@
            		<th style="width: 60px;">  GO </th>
            		<th style="width: 60px;">  GXD </th>
            		<th style="width: 60px;">  GXDHT </th>
-           		<th style="width: 60px;">  PRO </th>
            		<th style="width: 60px;">  QTL </th>
            		<th style="width: 60px;">  Tumor </th>
         		</tr>
@@ -700,7 +659,6 @@
 				<th style="width: 60px;">  GO </th>
 				<th style="width: 60px;">  GXD </th>
 				<th style="width: 60px;">  GXDHT </th>
-           		        <th style="width: 60px;">  PRO </th>
 				<th style="width: 60px;">  QTL </th>
 				<th style="width: 60px;">  Tumor </th>
 				</tr>
@@ -1044,15 +1002,6 @@
 					<td><input type="radio" ng-model="vm.refData.gxdht_status" ng-click="setRelevanceToKeep()" value="Indexed"></td>
 					<td><input type="radio" ng-model="vm.refData.gxdht_status" ng-click="setRelevanceToKeep()" value="Full-coded"></td>
 					<td><input type="radio" ng-model="vm.refData.gxdht_status" value="Rejected"></td>
-					</tr>
-					<td>PRO</td>
-					<td><input type="radio" ng-model="vm.refData.pro_status" value="New"></td>
-					<td><input type="radio" ng-model="vm.refData.pro_status" value="Not Routed"></td>
-					<td><input type="radio" ng-model="vm.refData.pro_status" ng-click="setRelevanceToKeep()" value="Routed"></td>
-					<td><input type="radio" ng-model="vm.refData.pro_status" ng-click="setRelevanceToKeep()" value="Chosen"></td>
-					<td><input type="radio" ng-model="vm.refData.pro_status" ng-click="setRelevanceToKeep()" value="Indexed"></td>
-					<td><input type="radio" ng-model="vm.refData.pro_status" ng-click="setRelevanceToKeep()" value="Full-coded"></td>
-					<td><input type="radio" ng-model="vm.refData.pro_status" value="Rejected"></td>
 					</tr>
 					<tr>
 					<tr class='oddTableRow'>
