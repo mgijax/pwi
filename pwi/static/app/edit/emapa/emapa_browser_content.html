@@ -163,8 +163,11 @@
 			</dl>
 			
 			<span class="resultsLink">
-			  	<a href="{{ url_for('pwi.resultsummary', {structure_id:vm.termDetail.primaryid}) }}" target="_blank">{{vm.termDetail.annotCount}}</a> 
-			  	direct annotations
+			  	<a href="{{ url_for('pwi.resultsummary', {structure_id:vm.termDetail.primaryid}) }}" target="_blank">{{vm.termDetail.annotCount}}</a> direct annotations
+			</span>
+			
+			<span class="resultsLink">
+			  	{{vm.termDetail.gxdhtSampleCount}} samples
 			</span>
 			
 			<nav id="stageList">
