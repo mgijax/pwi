@@ -2,10 +2,10 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
-TAG: pwi-6-0-26-?
+TAG: pwi-6-0-26-6
 DATE: 10/22/2025
 STAFF: lec
-wts2-1746/sprt-105/PWI EMAPA Browser: add count of HT samples?
+wts2-1746/sprt-105/PWI EMAPA Browser: add count of HT samples
         modified:   pwi/static/app/edit/emapa/emapa_browser_content.html
 
 TAG: pwi-6-0-26-5
