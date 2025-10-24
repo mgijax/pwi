@@ -55,7 +55,7 @@ form input:not(:first-of-type) {
 {
 	overflow: auto;
 	max-height: 300px;
-	width: 1350px;
+	width: 1290px;
 	border-style: solid;
 	border-top-width: 0px;
 	border-bottom-width: 1px;
