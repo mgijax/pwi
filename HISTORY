@@ -2,6 +2,11 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-26-10
+DATE: 10/30/2025
+STAFF: lec
+wts-1751/sprt-111/Lit Triage Module: line coloring off in Status Table
+
 TAG: pwi-6-0-26-9
 DATE: 10/24/2025
 STAFF: lec
