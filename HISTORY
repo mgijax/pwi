@@ -2,8 +2,16 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-26-12
+DATE: 11/21/2025
+STAFF: lec
+wts2-1759/sprt-133/tiny tweaks to probes (help text) and strain (tabbing)
+        modified:   pwi/static/app/edit/probe/help.html
+        modified:   pwi/static/app/edit/strain/strain_content.html
+
 TAG: pwi-6-0-26-11
 DATE: 11/10/2025
+STAFF: lec
 wts2-1750/Nutanix Migration
 change SERVER_PORT=5050
         modified:   Configuration.default
