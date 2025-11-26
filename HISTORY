@@ -2,6 +2,12 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 
+TAG: pwi-6-0-26-13
+DATE: 11/26/2025
+wts2-1761/sprt-137/reference summary not always providing links to existing J file
+STAFF: lec
+        modified:   pwi/static/app/edit/referencesummary/referencesummary_content.html
+
 TAG: pwi-6-0-26-12
 DATE: 11/21/2025
 STAFF: lec

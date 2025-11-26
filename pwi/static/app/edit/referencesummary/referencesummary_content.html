@@ -38,13 +38,13 @@
 	</tr>
 
         <tr ng-repeat="ref in vmd.references track by $index" class="{{ $index%2 ? 'row2' : 'row1' }}">
-	    <td>{{ref.jnumid}} <br/><br/>
-	      <a ng-if="ref.pubmedid"href="{{ url_for('pwi.pdfviewer',ref.jnumid) }}" target="_blank">Retrieve PDF</a>
+	    <td>{{ref.jnumid}}<br/><br/> 
+	    <a ng-if="ref.jnumid"href="{{ url_for('pwi.pdfviewer',ref.jnumid) }}" target="_blank">Retrieve PDF</a>
 	    </td>
-	    <td>
-		<a ng-if="ref.pubmedid" href="{{url_for('ext.Pubmed', ref.pubmedid) }}" target="_blank">{{ref.pubmedid}}</a>
-                <br><br>
-		<a ng-if="ref.doiid" href="{{url_for('ext.Doi', ref.doiid) }}" target="_blank">{{ref.doiid}}</a>
+	    <td> 
+	    <a ng-if="ref.pubmedid" href="{{url_for('ext.Pubmed', ref.pubmedid) }}" target="_blank">{{ref.pubmedid}}</a>
+	    <br><br> 
+	    <a ng-if="ref.doiid" href="{{url_for('ext.Doi', ref.doiid) }}" target="_blank">{{ref.doiid}}</a>
 	    </td>
 	    <td>{{ref.referencetype}}</td>
 	    <td>{{ref.title}}</td>
