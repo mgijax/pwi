@@ -1,11 +1,17 @@
 #
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
+#
+TAG: pwi-6-0-26-14
+DATE: 12/03/2025
+STAFF: lec
+wts2-1767/sprt-148/PWI/ArrayExpress URL has changed
+        modified:   pwi/static/app/edit/gxd/gxd_ht_results_content.html
 
 TAG: pwi-6-0-26-13
 DATE: 11/26/2025
-wts2-1761/sprt-137/reference summary not always providing links to existing J file
 STAFF: lec
+wts2-1761/sprt-137/reference summary not always providing links to existing J file
         modified:   pwi/static/app/edit/referencesummary/referencesummary_content.html
 
 TAG: pwi-6-0-26-12
