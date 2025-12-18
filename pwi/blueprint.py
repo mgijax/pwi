@@ -64,7 +64,6 @@ endpoints = {
     "antibody": {},
     "antibodydetail": {},
     "antibodysummary": {},
-    "antigen": {},
     "assay": {},
     "assaydetail": {},
     "assaysummary": {},

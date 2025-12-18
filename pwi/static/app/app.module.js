@@ -12,7 +12,6 @@
     'pwi.antibody',
     'pwi.antibodydetail',
     'pwi.antibodysummary',
-    'pwi.antigen',
     'pwi.assay',
     'pwi.assaydetail',
     'pwi.assaysummary',
@@ -79,7 +78,6 @@
   angular.module('pwi.antibody', ['ngResource']);
   angular.module('pwi.antibodydetail', ['ngResource','ngSanitize']);
   angular.module('pwi.antibodysummary', ['ngResource','ngSanitize']);
-  angular.module('pwi.antigen', ['ngResource']);
   angular.module('pwi.assay', ['ngResource']);
   angular.module('pwi.assaydetail', ['ngResource','ngSanitize']);
   angular.module('pwi.assaysummary', ['ngResource','ngSanitize']);
