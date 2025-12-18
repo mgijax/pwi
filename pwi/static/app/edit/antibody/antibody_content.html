@@ -241,7 +241,7 @@
                 <div class="row">
                         <div class="col-sm-8" style="">
                             <label class="label label-edit-search"">Region Covered</label><br>
-                            <input type="text" class="form-control"  tabindex="-1"
+                            <input type="text" class="form-control" tabindex="-1"
                                     ng-model="vm.apiDomain.regionCovered" id="regionCovered"
                             >
                         </div>
@@ -253,7 +253,7 @@
                 <div class="row">
                     <div class="col-sm-8" style="">
                     <label class="label label-edit-search"">Antigen Notes</label>
-                    <textarea class="form-control" rows=1  tabindex="-1"
+                    <textarea class="form-control" rows=1 tabindex="-1"
                         ng-model="vm.apiDomain.antigenNote" id="antigenNote" ></textarea>
                     </div>
                 </div>
@@ -278,7 +278,7 @@
                 <div class="row">
                         <div class="col-sm-8" style="">
                             <label class="label label-edit-search"">Strain</label><br>
-                            <input type="text" class="form-control" id="strain"  tabindex="-1"
+                            <input type="text" class="form-control" id="strain" tabindex="-1"
                                     ng-model="vm.apiDomain.probeSource.strain" 
                                     ng-blur="validateStrain()" >
                         </div>
@@ -289,7 +289,7 @@
                 <div class="row">
                         <div class="col-sm-8" style="">
                             <label class="label label-edit-search"">Tissue</label><br>
-                            <input type="text" class="form-control" id="tissue"  tabindex="-1"
+                            <input type="text" class="form-control" id="tissue" tabindex="-1"
                                     ng-model="vm.apiDomain.probeSource.tissue" 
                                     ng-blur="validateTissue()">
                         </div>
@@ -300,7 +300,7 @@
                 <div class="row">
                         <div class="col-sm-8" style="">
                             <label class="label label-edit-search"">Tissue Description</label><br>
-                            <input type="text" class="form-control" id="description"  tabindex="-1"
+                            <input type="text" class="form-control" id="description" tabindex="-1"
                                     ng-model="vm.apiDomain.probeSource.description" > 
                         </div>
                 </div>
@@ -310,7 +310,7 @@
                 <div class="row">
                         <div class="col-sm-8" style="">
                             <label class="label label-edit-search"">Cell Line</label><br>
-                            <input type="text" class="form-control" id="cellLine"  tabindex="-1"
+                            <input type="text" class="form-control" id="cellLine" tabindex="-1"
                                     ng-model="vm.apiDomain.probeSource.cellLine" 
                                     ng-blur="validateCellLine()" >
 
@@ -348,7 +348,7 @@
                 <div class="row">
                     <div class="col-sm-6" style="">
                     <label class="label label-edit-search"">Gender</label><br>
-                    <select type=dropdown size="1" id="gender"  tabindex="-1"
+                    <select type=dropdown size="1" id="gender" tabindex="-1"
                             ng-options="choice.termKey as choice.term for choice in vm.genderLookup"
                             ng-model="vm.apiDomain.probeSource.genderKey"
                             >
@@ -479,9 +479,9 @@
 		<div class="col-sm-12" style="">
 			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
 			<button type="button" id="firstButton" tabindex="-1" ng-click="firstSummaryObject()" >First</button>
-			<button type="button" id="nextButton"  tabindex="-1" ng-click="nextSummaryObject()" >Next</button>
-			<button type="button" id="prevButton"  tabindex="-1" ng-click="prevSummaryObject()" >Prev</button>
-			<button type="button" id="lastButton"  tabindex="-1" ng-click="lastSummaryObject()" >Last</button>
+			<button type="button" id="nextButton" tabindex="-1" ng-click="nextSummaryObject()" >Next</button>
+			<button type="button" id="prevButton" tabindex="-1" ng-click="prevSummaryObject()" >Prev</button>
+			<button type="button" id="lastButton" tabindex="-1" ng-click="lastSummaryObject()" >Last</button>
 			<div id="resultTableWrapper">
 			<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
     			<tbody>

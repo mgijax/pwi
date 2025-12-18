@@ -596,7 +596,7 @@
                                         //alert("Invalid Strain");
                                         //vm.apiDomain.probeSource.strainKey = "";
                                         //vm.apiDomain.probeSource.strain = "";
-                                        //document.getElementById("strain").focus();
+                                        document.getElementById("strain").focus();
                                 } else {
                                         if (data[0].isPrivate == "1") {
                                                 alert("This value is designated as 'private' and cannot be used: " + vm.apiDomain.probeSource.strain);
@@ -668,7 +668,7 @@
                                         //alert("Invalid Tissue");
                                         //vm.apiDomain.probeSource.tissueKey = "";
                                         //vm.apiDomain.probeSource.tissue = "";
-                                        //document.getElementById("tissue").focus();
+                                        document.getElementById("tissue").focus();
                                 } else {
                                         console.log("validation passed: " + data[0].tissue);
                                         vm.apiDomain.probeSource.tissueKey = data[0].tissueKey;
@@ -741,7 +741,7 @@
                                         //alert("Invalid Cell Line");
                                         //vm.apiDomain.probeSource.cellLineKey = "";
                                         //vm.apiDomain.probeSource.cellLine = "";
-                                        //document.getElementById("cellLine").focus();
+                                        document.getElementById("cellLine").focus();
                                 } 
                                 else {
                                         console.log('validation passed');
