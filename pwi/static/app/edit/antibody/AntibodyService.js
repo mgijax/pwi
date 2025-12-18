@@ -11,6 +11,7 @@
                 .factory('AntigenOrganismSearchAPI',    AntigenOrganismSearchAPIResource)
                 .factory('TissueSearchAPI',             TissueSearchAPIResource)
                 .factory('TissueListAPI',               TissueListAPIResource)
+		.factory('CreateStrainAPI',     	CreateStrainAPIResource)
 		.factory('CreateTissueAPI',             CreateTissueAPIResource)
                 .factory('ValidateAntibodyAccAPI',      ValidateAntibodyAccAPIResource)
 		;
@@ -88,9 +89,20 @@
                 return $resource(JAVA_API_URL + 'tissue/getTissueList', {}, {} );
         }
 
+
+        // create strain
+        function CreateStrainAPIResource($resource, JAVA_API_URL, USERNAME) {
+                return $resource(JAVA_API_URL + 'strain', {},
+                                {'create': { method: 'POST',
+                                 headers: { 'api_access_token': access_token, 'username': USERNAME }
+                                }
+                });
+        }
+
         // create tissue
         function CreateTissueAPIResource($resource, JAVA_API_URL, USERNAME) {
-                return $resource(JAVA_API_URL + 'tissue', {}, {'create': { method: 'POST',
+                return $resource(JAVA_API_URL + 'tissue', {}, 
+				{'create': { method: 'POST',
                                  headers: { 'api_access_token': access_token, 'username': USERNAME }
                                 }
                 });

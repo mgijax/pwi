@@ -27,6 +27,7 @@
                         //StrainListAPI,
                         TissueSearchAPI,
                         TissueListAPI,
+			CreateStrainAPI,
 			CreateTissueAPI,
 			// global APIs
                         ReferenceAssocTypeSearchAPI,
@@ -116,11 +117,13 @@
                         console.log("setAutoComplete()");
 
                         setTimeout(function() {
+
                                 $q.all([
                                         FindElement.byId("tissue"),
                                 ]).then(function(elements) {
-                                        pageScope.autocompleteBeginning(angular.element(elements[0]), vm.tissueLookup);
+                                        pageScope.autocompleteBeginning(angular.element(elements[0]), vm.tissues);
                                 });
+
                                 $q.all([
                                         FindElement.byId("antibodyCompany"),
                                 ]).then(function(elements) {
@@ -128,7 +131,7 @@
                                 });
 
                                 $q.all([
-                                	FindElement.byId("editTabCellLine"),
+                                	FindElement.byId("cellLine"),
                                 ]).then(function(elements) {
                                         pageScope.autocompleteBeginning(angular.element(elements[0]), vm.celllines);
                                 });
@@ -628,12 +631,12 @@
                                 newstrain.isPrivate = "0";
                                 newstrain.geneticBackground = "0";
 
-                                GenotypeCreateStrainAPI.create(newstrain, function(data) {
+                                CreateStrainAPI.create(newstrain, function(data) {
                                         if (data.error != null) {
                                                 alert("ERROR: " + data.error + " - " + data.message);
                                                 vm.apiDomain.probeSource.strainKey = "";
                                                 vm.apiDomain.probeSource.strain = "";
-                                                document.getElementById("editTabStrain").focus();
+                                                document.getElementById("strain").focus();
                                         } else {
                                                 console.log("ran GenotypeCreateStrainAPI.create");
                                                 vm.apiDomain.probeSource.strainKey = data.items[0].strainKey;
@@ -693,7 +696,7 @@
                                                 alert("ERROR: " + data.error + " - " + data.message);
                                                 vm.apiDomain.probeSource.tissueKey = "";
                                                 vm.apiDomain.probeSource.tissue = "";
-                                                document.getElementById("editTabTissue").focus();
+                                                document.getElementById("tissue").focus();
                                         } else {
                                                 console.log("ran CreateTissueAPI.create");
                                                 vm.apiDomain.probeSource.tissueKey = data.items[0].tissueKey;
@@ -774,7 +777,7 @@
                                                 alert("ERROR: " + data.error + " - " + data.message);
                                                 vm.apiDomain.probeSource.cellLineKey = "";
                                                 vm.apiDomain.probeSource.cellLine = "";
-                                                document.getElementById("editTabCellLine").focus();
+                                                document.getElementById("cellLine").focus();
                                         } else {
                                                 console.log("ran TermCreateAPI.update to create cellLine");
                                                 vm.apiDomain.probeSource.cellLineKey = data.items[0].termKey;
