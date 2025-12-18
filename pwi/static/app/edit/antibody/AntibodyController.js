@@ -23,17 +23,19 @@
 			AntibodyTotalCountAPI,
                         AntibodyOrganismSearchAPI,
                         AntigenOrganismSearchAPI, 
+                        AntibodySearchAPI,
+                        //StrainListAPI,
                         TissueSearchAPI,
                         TissueListAPI,
-                        AntibodySearchAPI,
+			CreateTissueAPI,
 			// global APIs
-			ValidateTermAPI,
-                        ValidateStrainAPI,
-                        VocTermSearchAPI,
-                        VocTermListAPI,
                         ReferenceAssocTypeSearchAPI,
+                        VocTermListAPI,
+                        VocTermSearchAPI,
+                        ValidateJnumAPI,
                         ValidateMarkerAPI,
-                        ValidateJnumAPI
+                        ValidateStrainAPI,
+			ValidateTermAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -42,6 +44,11 @@
 		// api/json input/output
 		vm.apiDomain = {};
                
+                // Data for auto completes
+                vm.strains = {};
+                vm.tissues = {};
+                vm.celllines = {};
+
                 // default booleans for page functionality
                 vm.hideApiDomain = true;       // JSON package
                 vm.hideVmData = true;          // JSON package + other vm objects
@@ -98,12 +105,10 @@
                     vm.yesnoLookup[0] = { "termKey": "1", "term": "Yes" }
                     vm.yesnoLookup[1] = { "termKey": "0", "term": "No" }
 
-                    TissueListAPI.get({}, function(data) {
-                            console.log("calling TissueListAPI.get for tissue");
-                            vm.tissueLookup = data.items;
-                            setAutoComplete();
-                    });;
-
+                    TissueListAPI.get({}, function(data) { vm.tissues = data.items});
+                    //StrainListAPI.get({}, function(data) { vm.strains = data.items});
+                    VocTermListAPI.search({"vocabKey":"18"}, function(data) { vm.celllines = data.items});;
+                    setAutoComplete();
                 }
 
                 // set the auto-complete attachments
@@ -121,6 +126,13 @@
                                 ]).then(function(elements) {
                                         pageScope.autocompleteBeginning(angular.element(elements[0]), vm.companyLookup);
                                 });
+
+                                $q.all([
+                                	FindElement.byId("editTabCellLine"),
+                                ]).then(function(elements) {
+                                        pageScope.autocompleteBeginning(angular.element(elements[0]), vm.celllines);
+                                });
+
                          }, (500));
                 }
 
@@ -577,10 +589,11 @@
                         console.log("Calling the API");
                         ValidateStrainAPI.search({strain: vm.apiDomain.probeSource.strain}, function(data) {
                                 if (data.length == 0) {
-                                        alert("Invalid Strain");
-                                        vm.apiDomain.probeSource.strainKey = "";
-                                        vm.apiDomain.probeSource.strain = "";
-                                        document.getElementById("strain").focus();
+                                        createStrain();
+                                        //alert("Invalid Strain");
+                                        //vm.apiDomain.probeSource.strainKey = "";
+                                        //vm.apiDomain.probeSource.strain = "";
+                                        //document.getElementById("strain").focus();
                                 } else {
                                         if (data[0].isPrivate == "1") {
                                                 alert("This value is designated as 'private' and cannot be used: " + vm.apiDomain.probeSource.strain);
@@ -601,6 +614,36 @@
                         });
                 }
 
+                function createStrain(newstrain) {
+                        console.log("createStrain");
+
+                        var newstrain = {};
+                        newstrain.strain = vm.apiDomain.probeSource.strain;
+
+                        // process new strain if user responds OK
+                        if ($window.confirm("The item: \n\n'" + newstrain.strain + "' \n\ndoes not exist.\n\nTo add new item, click 'OK'\n\nElse, click 'Cancel'")) {
+                                newstrain.speciesKey = "481207";
+                                newstrain.strainTypeKey = "3410535";
+                                newstrain.standard = "0";
+                                newstrain.isPrivate = "0";
+                                newstrain.geneticBackground = "0";
+
+                                GenotypeCreateStrainAPI.create(newstrain, function(data) {
+                                        if (data.error != null) {
+                                                alert("ERROR: " + data.error + " - " + data.message);
+                                                vm.apiDomain.probeSource.strainKey = "";
+                                                vm.apiDomain.probeSource.strain = "";
+                                                document.getElementById("editTabStrain").focus();
+                                        } else {
+                                                console.log("ran GenotypeCreateStrainAPI.create");
+                                                vm.apiDomain.probeSource.strainKey = data.items[0].strainKey;
+                                        }
+                                }, function(err) {
+                                        pageScope.handleError(vm, "API ERROR: GenotypeCreateStrainAPI.create");
+                                });
+                        }
+                }
+
                 // validate Tissue
                 function validateTissue() {
                         console.log("vm.apiDomain.probeSource.tissue: " + vm.apiDomain.probeSource.tissue);
@@ -618,10 +661,11 @@
                         console.log("Calling the API");
                         TissueSearchAPI.search({tissue: vm.apiDomain.probeSource.tissue}, function(data) {
                                 if (data.length == 0 || data == undefined) {
-                                        alert("Invalid Tissue");
-                                        vm.apiDomain.probeSource.tissueKey = "";
-                                        vm.apiDomain.probeSource.tissue = "";
-                                        document.getElementById("tissue").focus();
+					createTissue();
+                                        //alert("Invalid Tissue");
+                                        //vm.apiDomain.probeSource.tissueKey = "";
+                                        //vm.apiDomain.probeSource.tissue = "";
+                                        //document.getElementById("tissue").focus();
                                 } else {
                                         console.log("validation passed: " + data[0].tissue);
                                         vm.apiDomain.probeSource.tissueKey = data[0].tissueKey;
@@ -634,6 +678,32 @@
                         });
                 }
                 
+                function createTissue(newtissue) {
+                        console.log("createTissue");
+
+                        var newtissue = {};
+                        newtissue.tissue = vm.apiDomain.probeSource.tissue;
+
+                        // process new tissue if user responds OK
+                        if ($window.confirm("The item: \n\n'" + newtissue.tissue + "' \n\ndoes not exist.\n\nTo add new item, click 'OK'\n\nElse, click 'Cancel'")) {
+                                newtissue.standard = "0";
+
+                                CreateTissueAPI.create(newtissue, function(data) {
+                                        if (data.error != null) {
+                                                alert("ERROR: " + data.error + " - " + data.message);
+                                                vm.apiDomain.probeSource.tissueKey = "";
+                                                vm.apiDomain.probeSource.tissue = "";
+                                                document.getElementById("editTabTissue").focus();
+                                        } else {
+                                                console.log("ran CreateTissueAPI.create");
+                                                vm.apiDomain.probeSource.tissueKey = data.items[0].tissueKey;
+                                        }
+                                }, function(err) {
+                                        pageScope.handleError(vm, "API ERROR: CreateTissueAPI.create");
+                                });
+                        }
+                }
+
                 function validateCellLine() {
 
                         if (vm.apiDomain.probeSource.cellLine == "") {
@@ -664,11 +734,11 @@
                         
                         ValidateTermAPI.search(params, function(data) {
                                 if (data.length == 0 ) {
-                                        alert("Invalid Cell Line");
-                                        vm.apiDomain.probeSource.cellLineKey = "";
-                                        vm.apiDomain.probeSource.cellLine = "";
-                                        document.getElementById("cellLine").focus();
-
+					createCellLine();
+                                        //alert("Invalid Cell Line");
+                                        //vm.apiDomain.probeSource.cellLineKey = "";
+                                        //vm.apiDomain.probeSource.cellLine = "";
+                                        //document.getElementById("cellLine").focus();
                                 } 
                                 else {
                                         console.log('validation passed');
@@ -683,6 +753,38 @@
 
                         });
                 }
+
+                function createCellLine(newcellline) {
+                        console.log("createCellLine");
+
+                        //var newcellline = {};   // this is a vocabDomain
+                        var newterm = {};       // this is a termDomain
+
+                        // add term, and processStatus to domain
+                        newterm.term = vm.apiDomain.probeSource.cellLine;
+                        newterm.processStatus = "c";
+                        newterm.isObsolete = "0";
+                        newterm.vocabKey = "18";
+
+                        // process new cell line if user responds OK
+                        if ($window.confirm("The item: \n\n'" + newterm.term + "' \n\ndoes not exist.\n\nTo add new item, click 'OK'\n\nElse, click 'Cancel'")) {
+
+                                TermCreateAPI.create(newterm, function(data) {
+                                        if (data.error != null) {
+                                                alert("ERROR: " + data.error + " - " + data.message);
+                                                vm.apiDomain.probeSource.cellLineKey = "";
+                                                vm.apiDomain.probeSource.cellLine = "";
+                                                document.getElementById("editTabCellLine").focus();
+                                        } else {
+                                                console.log("ran TermCreateAPI.update to create cellLine");
+                                                vm.apiDomain.probeSource.cellLineKey = data.items[0].termKey;
+                                        }
+                                }, function(err) {
+                                        pageScope.handleError(vm, "API ERROR: TermCreateAPI.update for cell line");
+                                });
+                        }
+                }
+	
                 function validateMarker(row, index, id) {
                         console.log("validateMarker = " + id + index);
                         id = id + index

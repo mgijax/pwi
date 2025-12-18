@@ -11,6 +11,7 @@
                 .factory('AntigenOrganismSearchAPI',    AntigenOrganismSearchAPIResource)
                 .factory('TissueSearchAPI',             TissueSearchAPIResource)
                 .factory('TissueListAPI',               TissueListAPIResource)
+		.factory('CreateTissueAPI',             CreateTissueAPIResource)
                 .factory('ValidateAntibodyAccAPI',      ValidateAntibodyAccAPIResource)
 		;
 
@@ -82,15 +83,23 @@
                 });
         }
 
+        // get list of tissues, used for autocomplete
+         function TissueListAPIResource($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'tissue/getTissueList', {}, {} );
+        }
+
+        // create tissue
+        function CreateTissueAPIResource($resource, JAVA_API_URL, USERNAME) {
+                return $resource(JAVA_API_URL + 'tissue', {}, {'create': { method: 'POST',
+                                 headers: { 'api_access_token': access_token, 'username': USERNAME }
+                                }
+                });
+        }
+
         function ValidateAntibodyAccAPIResource($resource, JAVA_API_URL) {
          return $resource(JAVA_API_URL + 'antibody/searchAccession', {}, {
                 'search': { method: 'POST', isArray: true }
         });
-        }
-
-        // get list of tissues, used for autocomplete
-         function TissueListAPIResource($resource, JAVA_API_URL) {
-                return $resource(JAVA_API_URL + 'tissue/getTissueList', {}, {} );
         }
 
 })();
