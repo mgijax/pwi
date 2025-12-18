@@ -3,7 +3,7 @@
 	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
 </div>
 
-<form id="antigenForm" class="form-horizontal mousetrap">
+<form id="antibodyForm" class="form-horizontal mousetrap">
 
 <div class="container-fluid" style='min-width:700px'>
 <div class="row ">
@@ -11,12 +11,12 @@
 	<!-- main left panel -->
 	<div class="col-sm-6 section" style="min-height:850px;">
         
-                <form id="antigenTopForm" class="form-horizontal mousetrap">
+                <form id="antibodyTopForm" class="form-horizontal mousetrap">
                 
 		<div class="row topMargin">
                         <div class="col-sm-12" style="">
                         <label class="label label-edit-search">Name</label><br>
-                        <input type="text" class="form-control" tab-to="antigenAcc"
+                        <input type="text" class="form-control" tab-to="regionCovered"
                                 ng-model="vm.apiDomain.antibodyName" id="antibodyName" 
                         >
 		        </div>
@@ -46,7 +46,7 @@
                     </div>
                 
                     <div class="col-sm-3" style="">
-                    <label class="label label-edit-search">Antibody Organism</label><br>
+                    <label class="label label-edit-search">Organism</label><br>
                     <select type=dropdown size="1" id="antibodyOrganism" 
                             ng-options="choice.organismKey as choice.commonname for choice in vm.antibodyOrganismLookup"
                             ng-model="vm.apiDomain.organismKey"
@@ -234,48 +234,27 @@
         </div>
 	<!-- main class -->
 
-	<!-- antigen area class -->
+	<!-- source area class -->
 	<div class="col-sm-3 section" style="min-height:850px;">
-
-                <div class="row topMargin">
-                        <div class="col-sm-6" style="">
-                                <label class="label label-edit-search">Antigen Accession ID</label><br>
-                                <input class="form-control" tab-to="antibodyType"
-                                        ng-model="vm.apiDomain.antigen.accID" id="antigenAcc" 
-                                        ng-blur=validateAntigenAcc() >
-                        </div>
-                </div>
-                 <!-- end row -->
-
-		<div class="spacer"></div>
-                <div class="row">
-                        <div class="col-sm-8" style="">
-                            <label class="label label-search">Antigen Name</label><br>
-                            <input type="text" class="form-control"  tabindex="-1"
-                                    ng-model="vm.apiDomain.antigen.antigenName" id="antigenName"
-                            >
-                        </div>
-		</div>
-                <!-- end row -->
 
                 <div class="spacer"></div>
                 <div class="row">
                         <div class="col-sm-8" style="">
-                            <label class="label label-search">Region Covered</label><br>
+                            <label class="label label-edit-search"">Region Covered</label><br>
                             <input type="text" class="form-control"  tabindex="-1"
-                                    ng-model="vm.apiDomain.antigen.regionCovered" id="regionCovered"
+                                    ng-model="vm.apiDomain.regionCovered" id="regionCovered"
                             >
                         </div>
                 </div>
 
                 <!-- end row -->
 
-                 <div class="spacer"></div>
+                <div class="spacer"></div>
                 <div class="row">
                     <div class="col-sm-8" style="">
-                    <label class="label label-search">Antigen Notes</label>
+                    <label class="label label-edit-search"">Antigen Notes</label>
                     <textarea class="form-control" rows=1  tabindex="-1"
-                        ng-model="vm.apiDomain.antigen.antigenNote" id="antigenNote" ></textarea>
+                        ng-model="vm.apiDomain.antigenNote" id="antigenNote" ></textarea>
                     </div>
                 </div>
 
@@ -284,10 +263,10 @@
                 <div class="spacer"></div>
                 <div class="row">
                     <div class="col-sm-4" style="">
-                    <label class="label label-search">Organism</label><br>
-                    <select type=dropdown size="1" id="antigenOrganism"  tabindex="-1"
-                            ng-options="choice.organismKey as choice.commonname for choice in vm.organismLookup"
-                            ng-model="vm.apiDomain.antigen.probeSource.organismKey"
+                    <label class="label label-edit-search"">Organism</label><br>
+                    <select type=dropdown size="1" id="sourceOrganism" tabindex="-1"
+                            ng-options="choice.organismKey as choice.commonname for choice in vm.sourceOrganismLookup"
+                            ng-model="vm.apiDomain.probeSource.organismKey"
                             >
                             <option value="">Search All</option>
                     </select>
@@ -298,9 +277,9 @@
                 <div class="spacer"></div>
                 <div class="row">
                         <div class="col-sm-8" style="">
-                            <label class="label label-search">Strain</label><br>
+                            <label class="label label-edit-search"">Strain</label><br>
                             <input type="text" class="form-control" id="strain"  tabindex="-1"
-                                    ng-model="vm.apiDomain.antigen.probeSource.strain" 
+                                    ng-model="vm.apiDomain.probeSource.strain" 
                                     ng-blur="validateStrain()" >
                         </div>
                 </div>
@@ -309,9 +288,9 @@
                 <div class="spacer"></div>
                 <div class="row">
                         <div class="col-sm-8" style="">
-                            <label class="label label-search">Tissue</label><br>
+                            <label class="label label-edit-search"">Tissue</label><br>
                             <input type="text" class="form-control" id="tissue"  tabindex="-1"
-                                    ng-model="vm.apiDomain.antigen.probeSource.tissue" 
+                                    ng-model="vm.apiDomain.probeSource.tissue" 
                                     ng-blur="validateTissue()">
                         </div>
                 </div>
@@ -320,9 +299,9 @@
                 <div class="spacer"></div>
                 <div class="row">
                         <div class="col-sm-8" style="">
-                            <label class="label label-search">Tissue Description</label><br>
+                            <label class="label label-edit-search"">Tissue Description</label><br>
                             <input type="text" class="form-control" id="description"  tabindex="-1"
-                                    ng-model="vm.apiDomain.antigen.probeSource.description" > 
+                                    ng-model="vm.apiDomain.probeSource.description" > 
                         </div>
                 </div>
                 <!-- end row -->
@@ -330,9 +309,9 @@
                 <div class="spacer"></div>
                 <div class="row">
                         <div class="col-sm-8" style="">
-                            <label class="label label-search">Cell Line</label><br>
+                            <label class="label label-edit-search"">Cell Line</label><br>
                             <input type="text" class="form-control" id="cellLine"  tabindex="-1"
-                                    ng-model="vm.apiDomain.antigen.probeSource.cellLine" 
+                                    ng-model="vm.apiDomain.probeSource.cellLine" 
                                     ng-blur="validateCellLine()" >
 
                         </div>
@@ -343,10 +322,10 @@
                <div class="spacer"></div>
                 <div class="row">
                     <div class="col-sm-4" style="">
-                    <label class="label label-search">Age Prefix</label><br>
+                    <label class="label label-edit-search"">Age Prefix</label><br>
                     <select type=dropdown size="1" id="age" tabindex="-1"
                             ng-options="choice.term as choice.term for choice in vm.ageLookup"
-                            ng-model="vm.apiDomain.antigen.probeSource.agePrefix"
+                            ng-model="vm.apiDomain.probeSource.agePrefix"
                             >
                             <option value="">Search All</option>
                     </select>
@@ -357,9 +336,9 @@
                <div class="spacer"></div>
                 <div class="row">
 		    <div class="col-sm-4" style="">
-                        <label class="label label-search">Age Stage</label><br>
+                        <label class="label label-edit-search"">Age Stage</label><br>
                         <input type="text" class="form-control" tabindex="-1" 
-                                ng-model="vm.apiDomain.antigen.probeSource.ageStage" id="ageStage"
+                                ng-model="vm.apiDomain.probeSource.ageStage" id="ageStage"
                         >
 		    </div>
                 </div>
@@ -368,10 +347,10 @@
                <div class="spacer"></div>
                 <div class="row">
                     <div class="col-sm-6" style="">
-                    <label class="label label-search">Gender</label><br>
+                    <label class="label label-edit-search"">Gender</label><br>
                     <select type=dropdown size="1" id="gender"  tabindex="-1"
                             ng-options="choice.termKey as choice.term for choice in vm.genderLookup"
-                            ng-model="vm.apiDomain.antigen.probeSource.genderKey"
+                            ng-model="vm.apiDomain.probeSource.genderKey"
                             >
                             <option value="">Search All</option>
                     </select>
@@ -490,7 +469,7 @@
 
 		<div class="row topMargin">
 			<div class="col-sm-4" style="">
-				<label class="label label-search">Antibody MGI ID</label><br>
+				<label class="label label-search">MGI ID</label><br>
 				<input class="form-control" ng-model="vm.apiDomain.accID" id="accID" tab-to="antibodyName"/>
 			</div>
 		</div>

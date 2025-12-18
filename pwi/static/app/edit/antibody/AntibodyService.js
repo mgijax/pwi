@@ -7,12 +7,11 @@
 		.factory('AntibodyUpdateAPI',		AntibodyUpdateAPIResource)
                 .factory('AntibodyDeleteAPI',           AntibodyDeleteAPIResource)
 		.factory('AntibodyTotalCountAPI',	AntibodyTotalCountAPIResource)
-                .factory('AntigenOrganismSearchAPI',    AntigenOrganismSearchAPIResource)
                 .factory('AntibodyOrganismSearchAPI',   AntibodyOrganismSearchAPIResource)
+                .factory('AntigenOrganismSearchAPI',    AntigenOrganismSearchAPIResource)
                 .factory('TissueSearchAPI',             TissueSearchAPIResource)
                 .factory('TissueListAPI',               TissueListAPIResource)
                 .factory('ValidateAntibodyAccAPI',      ValidateAntibodyAccAPIResource)
-                .factory('ValidateAntigenAccAPI',       ValidateAntigenAccAPIResource)
 		;
 
 	// object summary search
@@ -62,16 +61,16 @@
 		});
 	}
 
-        // all antigen organisms
-        function AntigenOrganismSearchAPIResource($resource, JAVA_API_URL) {
-                 return $resource(JAVA_API_URL + 'organism/searchAntigen', {}, {
+        // all antibody organisms
+        function AntibodyOrganismSearchAPIResource($resource, JAVA_API_URL) {
+                 return $resource(JAVA_API_URL + 'organism/searchAntibody', {}, {
                         'search': { method: 'POST', isArray: true }
                 });
         }
 
-        // all antibody organisms
-        function AntibodyOrganismSearchAPIResource($resource, JAVA_API_URL) {
-                 return $resource(JAVA_API_URL + 'organism/searchAntibody', {}, {
+        // all antigen organisms
+        function AntigenOrganismSearchAPIResource($resource, JAVA_API_URL) {
+                 return $resource(JAVA_API_URL + 'organism/searchAntigen', {}, {
                         'search': { method: 'POST', isArray: true }
                 });
         }
@@ -86,12 +85,6 @@
         function ValidateAntibodyAccAPIResource($resource, JAVA_API_URL) {
          return $resource(JAVA_API_URL + 'antibody/searchAccession', {}, {
                 'search': { method: 'POST', isArray: true }
-        });
-        }
-
-        function ValidateAntigenAccAPIResource($resource, JAVA_API_URL) {
-         return $resource(JAVA_API_URL + 'antigen/validateAntigenAcc', {}, {
-                'validate': { method: 'POST' }
         });
         }
 
