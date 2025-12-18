@@ -59,45 +59,32 @@
     <a href="{{ url_for('pwi.assaysummary', {antibody_id:vmd.accID} ) }}">Expression Assays</a>
   </dd>
 
-</dl>
-
-<h2>Antigen</h2>
-
-<dl class="detailPageListData">
-  <dt>Name</dt>
-  <dd>
-    {{vmd.antigen.antigenName}}
-  </dd>
-
-  <dt>MGI ID</dt>
-  <dd>{{vmd.antigen.accID}}</dd>
-
   <dt>Region Covered</dt>
-  <dd>{{vmd.antigen.regionCovered}}</dd>
+  <dd>{{vmd.regionCovered}}</dd>
 
   <dt>Antigen Note</dt>
-  <dd>{{vmd.antigen.antigenNote}}</dd>
+  <dd>{{vmd.antigenNote}}</dd>
 
   <dt>Organism</dt>
-  <dd>{{vmd.antigen.probeSource.organism}}</dd>
+  <dd>{{vmd.probeSource.organism}}</dd>
 
   <dt>Strain</dt>
-  <dd>{{vmd.antigen.probeSource.strain}}</dd>
+  <dd>{{vmd.probeSource.strain}}</dd>
 
   <dt>Tissue</dt>
-  <dd>{{vmd.antigen.probeSource.tissue}}</dd>
+  <dd>{{vmd.probeSource.tissue}}</dd>
 
   <dt>Tissue Description</dt>
-  <dd>{{vmd.antigen.probeSource.description || "None" }}</dd>
+  <dd>{{vmd.probeSource.description || "None" }}</dd>
 
   <dt>Cell Line</dt>
-  <dd>{{vmd.antigen.probeSource.cellLine}}</dd>
+  <dd>{{vmd.probeSource.cellLine}}</dd>
 
   <dt>Age</dt>
-  <dd>{{vmd.antigen.probeSource.age}}</dd>
+  <dd>{{vmd.probeSource.age}}</dd>
 
   <dt>Sex</dt>
-  <dd>{{vmd.antigen.probeSource.gender}}</dd>
+  <dd>{{vmd.probeSource.gender}}</dd>
 
 </dl>
 
