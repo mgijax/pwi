@@ -9,7 +9,7 @@
 <div class="row ">
 
 	<!-- main left panel -->
-	<div class="col-sm-6 section" style="min-height:850px;">
+	<div class="col-sm-5 section" style="min-height:850px;">
         
                 <form id="antibodyTopForm" class="form-horizontal mousetrap">
                 
@@ -235,11 +235,11 @@
 	<!-- main class -->
 
 	<!-- source area class -->
-	<div class="col-sm-3 section" style="min-height:850px;">
+	<div class="col-sm-4 section" style="min-height:850px;">
 
                 <div class="spacer"></div>
                 <div class="row">
-                        <div class="col-sm-8" style="">
+                        <div class="col-sm-12" style="">
                             <label class="label label-edit-search"">Region Covered</label><br>
                             <input type="text" class="form-control" tabindex="-1"
                                     ng-model="vm.apiDomain.regionCovered" id="regionCovered"
@@ -251,9 +251,9 @@
 
                 <div class="spacer"></div>
                 <div class="row">
-                    <div class="col-sm-8" style="">
+                    <div class="col-sm-12" style="">
                     <label class="label label-edit-search"">Antigen Notes</label>
-                    <textarea class="form-control" rows=1 tabindex="-1"
+                    <textarea class="form-control" rows=3 tabindex="-1"
                         ng-model="vm.apiDomain.antigenNote" id="antigenNote" ></textarea>
                     </div>
                 </div>
@@ -263,7 +263,7 @@
                 <div class="spacer"></div>
                 <div class="row">
                     <div class="col-sm-4" style="">
-                    <label class="label label-edit-search"">Organism</label><br>
+                    <label class="label label-edit-search"">Antigen Organism</label><br>
                     <select type=dropdown size="1" id="sourceOrganism" tabindex="-1"
                             ng-options="choice.organismKey as choice.commonname for choice in vm.sourceOrganismLookup"
                             ng-model="vm.apiDomain.probeSource.organismKey"
@@ -276,7 +276,7 @@
 
                 <div class="spacer"></div>
                 <div class="row">
-                        <div class="col-sm-8" style="">
+                        <div class="col-sm-12" style="">
                             <label class="label label-edit-search"">Strain</label><br>
                             <input type="text" class="form-control" id="strain" tabindex="-1"
                                     ng-model="vm.apiDomain.probeSource.strain" 
@@ -287,7 +287,7 @@
 
                 <div class="spacer"></div>
                 <div class="row">
-                        <div class="col-sm-8" style="">
+                        <div class="col-sm-12" style="">
                             <label class="label label-edit-search"">Tissue</label><br>
                             <input type="text" class="form-control" id="tissue" tabindex="-1"
                                     ng-model="vm.apiDomain.probeSource.tissue" 
@@ -298,7 +298,7 @@
 
                 <div class="spacer"></div>
                 <div class="row">
-                        <div class="col-sm-8" style="">
+                        <div class="col-sm-12" style="">
                             <label class="label label-edit-search"">Tissue Description</label><br>
                             <input type="text" class="form-control" id="description" tabindex="-1"
                                     ng-model="vm.apiDomain.probeSource.description" > 
@@ -308,7 +308,7 @@
 
                 <div class="spacer"></div>
                 <div class="row">
-                        <div class="col-sm-8" style="">
+                        <div class="col-sm-12" style="">
                             <label class="label label-edit-search"">Cell Line</label><br>
                             <input type="text" class="form-control" id="cellLine" tabindex="-1"
                                     ng-model="vm.apiDomain.probeSource.cellLine" 
@@ -335,8 +335,8 @@
 
                <div class="spacer"></div>
                 <div class="row">
-		    <div class="col-sm-4" style="">
-                        <label class="label label-edit-search"">Age Stage</label><br>
+		    <div class="col-sm-8" style="">
+                        <label class="label label-edit-search"">Age Range</label><br>
                         <input type="text" class="form-control" tabindex="-1" 
                                 ng-model="vm.apiDomain.probeSource.ageStage" id="ageStage"
                         >

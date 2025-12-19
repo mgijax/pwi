@@ -491,6 +491,11 @@
 			vm.apiDomain.antibodyKey = "";	
 			vm.apiDomain.refAssocs = [];
                         vm.apiDomain.aliases = [];
+
+			vm.apiDomain.probeSource.processStatus = "c";
+			vm.apiDomain.probeSource.sourceKey = "";
+			// addSource();
+
                         addRefRow();
                         addAliasRow();
                         addMarkerRow();
@@ -1019,6 +1024,7 @@
                 function addSource() {
 
                     vm.apiDomain.probeSource = {
+                        "processStatus": "c",
                         "sourceKey": "",
                         "name": "",
                         "description": "",
