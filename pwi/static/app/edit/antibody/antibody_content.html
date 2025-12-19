@@ -14,12 +14,23 @@
                 <form id="antibodyTopForm" class="form-horizontal mousetrap">
                 
 		<div class="row topMargin">
-                        <div class="col-sm-12" style="">
+                        <div class="col-sm-9" style="">
                         <label class="label label-edit-search">Name</label><br>
                         <input type="text" class="form-control" 
                                 ng-model="vm.apiDomain.antibodyName" id="antibodyName" 
                         >
 		        </div>
+
+                   	<div class="col-sm-3" style="">
+                    	<label class="label label-view-only">Has Expression?</label><br>
+                    	<select type=dropdown size="1" id="hasExpression" tabindex="-1"
+                            	ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
+                            	ng-model="vm.apiDomain.hasExpression"
+                            	>
+                            	<option value=""></option>
+                    	</select>
+                    	</div>
+
                 </div>
                 <!-- end row -->
 
@@ -68,16 +79,6 @@
                                     ng-model="vm.apiDomain.regionCovered" id="regionCovered"
                             >
                         </div>
-
-                    	<div class="col-sm-3" style="">
-                    	<label class="label label-view-only">Has Expression?</label><br>
-                    	<select type=dropdown size="1" id="hasExpression" tabindex="-1"
-                            	ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
-                            	ng-model="vm.apiDomain.hasExpression"
-                            	>
-                            	<option value=""></option>
-                    	</select>
-                    	</div>
                 </div>
                 <!-- end row -->
 
