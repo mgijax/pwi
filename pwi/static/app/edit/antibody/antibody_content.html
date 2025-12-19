@@ -93,17 +93,18 @@
                     ng-click="getAntibodyObtained()" >Antibody Obtained</button>
                 <!-- end row -->
 
+                <!-- marker table -->
 		<div class="spacer"></div>
 		<div class="spacer"></div>
                 <div class="row">
                 <div class="col-sm-12" style=""> 
-                <div class="row">
-                        <div class="col-sm-12" style="">
-                        <button type="button" style="float:left;" tabindex="-1" id="addMarkeRow"
-                                ng-class=""
-                                ng-click="addMarkerRow()" >Add Row</button>
-                        </div>
-                </div>
+                	<div class="row">
+                        	<div class="col-sm-12" style="">
+                        	<button type="button" style="float:left;" tabindex="-1" id="addMarkeRow"
+                                	ng-class=""
+                                	ng-click="addMarkerRow()" >Add Row</button>
+                        	</div>
+                	</div>
                 <div id="markerTableWrapper" overflow-y: scroll;" >
                 <table class="table table-bordered scrollable-menu" id="markerTable" style="">
                 <thead>
@@ -152,14 +153,13 @@
 
                 </tr>
                 </tbody>
-
                 </table>
-        </div>
-        </div>
-        </div>
-        <!-- end row -->
+        	</div>
+        	</div>
+        	</div>
+        <!-- end marker table -->
 
-        <!-- begin reference and alias table, tie them together side by side with divs table-responsive col-sm-6 -->
+        <!-- begin reference table -->
 	<div class="spacer"></div>
         <div class="row">
         <div class="col-sm-12" style=""> 
@@ -225,12 +225,77 @@
                 </tbody>
 
                 </table>
-                <!-- end reference table -->
+        	</div>
+        </div>
+        </div>
+        <!-- end reference table -->
+
+        <!-- begin alias table -->
+	<div class="spacer"></div>
+        <div class="row">
+        <div class="col-sm-12" style=""> 
+                <div class="row">
+                        <div class="col-sm-12" style="">
+                        <button type="button" style="float:left;" tabindex="-1" id="addaliasRow-{{$index}}"
+                                ng-class=""
+                                ng-click="addAliasRow()" >Add Row</button>
+                        </div>
+                </div>
+        	<div id="aliasTableWrapper" overflow-y: scroll;" >
+                <table class="table table-bordered scrollable-menu" id="aliasTable" style="">
+                <thead>
+                <tr>
+                <th style="width:10px;"></th>
+                <th style="width:50px;">Alias</th>
+                <th style="width:50px;">J#</th>
+                <th style="width:50px;">Citation</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr ng-repeat="row in vm.apiDomain.aliases"
+                         ng-click=""
+                         ng-class-odd="'oddRow'"
+                         ng-class="{deleteRow:vm.apiDomain.aliases[$index].processStatus == 'd'}"
+                         >
+                 <td style="width:10px;">
+                 <span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                 <img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+                 </span>
+                 </td>
+
+                 <td style="width:50px;">
+                 <input class="form-control" type="text" id="alias-{{$index}}"
+                         ng-model="row.alias"
+                         ng-change="changeAliasRow($index)"
+                 >
+                 </td>
+
+                 <td style="width:50px;">
+                 <input class="form-control" id="jnumid-{{$index}}"
+                         ng-model="row.jnumid"
+                         ng-change="changeAliasRow($index)"
+                         ng-blur="validateJnum(row, $index, 'jnumid-')"
+                 >
+                 </td>
+
+                  <td style="width:50px;">
+                 <input class="form-control" id="short_citation-{{$index}}" tabindex="-1"
+                         ng-model="row.short_citation"
+                 >
+                 </td>
+
+                 </tr>
+                 </tbody>
+
+                 </table>
         </div>
         </div>
         </div>
-                
+        <!-- end alias table -->
+
         </div>
+
 	<!-- main class -->
 
 	<!-- source area class -->
@@ -354,74 +419,6 @@
                             <option value="">Search All</option>
                     </select>
                     </div>
-                </div>
-
-	        <div class="spacer"></div>
-                <div class="row">
-                <div class="col-sm-12" style=""> 
-                <div id="aliasTableWrapper" overflow-y: scroll;" >
-                <table class="table table-bordered scrollable-menu" id="aliasTable" style="">
-                <thead>
-                <tr>
-                <th style="width:10px;"></th>
-                <th style="width:50px;">Alias</th>
-                <th style="width:50px;">J#</th>
-                <th style="width:50px;">Citation</th>
-                </tr>
-                </thead>
-
-                <tbody>
-                <tr ng-repeat="row in vm.apiDomain.aliases"
-                         ng-click=""
-                         ng-class-odd="'oddRow'"
-                         ng-class="{deleteRow:vm.apiDomain.aliases[$index].processStatus == 'd'}"
-                         >
-                 <td style="width:10px;">
-                 <span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
-                 <img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
-                 </span>
-                 </td>
-
-                 <td style="width:50px;">
-                 <input class="form-control" type="text" id="alias-{{$index}}"
-                         ng-model="row.alias"
-                         ng-change="changeAliasRow($index)"
-                 >
-                 </td>
-
-                 <td style="width:50px;">
-                 <input class="form-control" id="jnumid-{{$index}}"
-                         ng-model="row.jnumid"
-                         ng-change="changeAliasRow($index)"
-                         ng-blur="validateJnum(row, $index, 'jnumid-')"
-                 >
-                 </td>
-
-                  <td style="width:50px;">
-                 <input class="form-control" id="short_citation-{{$index}}" tabindex="-1"
-                         ng-model="row.short_citation"
-                 >
-                 </td>
-
-                 </tr>
-                 </tbody>
-
-                 <tfoot>
-                 <tr>
-                 <td></td>
-                 <td>
-                 <button type="button" style="float:left;" tabindex="-1" id="addAliasRow"
-                         ng-class=""
-                         ng-click="addAliasRow()" >Add Row</button>
-                 </td>
-                 </tr>
-                 </tfoot>
-  
-                 </table>
-                 <!-- end alias table -->
-
-                </div>
-                </div>
                 </div>
 
                 <!-- end row -->
