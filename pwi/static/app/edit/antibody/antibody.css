@@ -29,6 +29,9 @@ button:disabled {
 	border-style: ridge;
 	border-color:lightgray;
 }
+.sectionDivider {
+        border-top: 2px ridge lightgray;
+}
 form select, form input, form textarea {
 	margin-top: 1px;
 }

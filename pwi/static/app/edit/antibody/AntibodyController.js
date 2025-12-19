@@ -46,7 +46,7 @@
 		vm.apiDomain = {};
                
                 // Data for auto completes
-                vm.strains = {};
+                //vm.strains = {};
                 vm.tissues = {};
                 vm.celllines = {};
 
@@ -59,7 +59,6 @@
                 vm.total_count = 0;
                 vm.results = [];
                 vm.selectedIndex = -1;
-                vm.selectedAntibodyIndex = 0;
                 vm.selectedAntibodyIndex = 0;
 
                 function loadVocabs() {
