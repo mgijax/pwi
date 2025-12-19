@@ -9,7 +9,7 @@
 <div class="row ">
 
 	<!-- main left panel -->
-	<div class="col-sm-5 section" style="min-height:850px;">
+	<div class="col-sm-9 section" style="min-height:850px;">
         
                 <form id="antibodyTopForm" class="form-horizontal mousetrap">
                 
@@ -60,7 +60,111 @@
                 <!-- end row -->
 
                 <div class="spacer"></div>
+		<div class="row sectionDivider topPadding bottomPadding">
+                <div class="spacer"></div>
+                        <div class="col-sm-12" style="">
+                            <label class="label label-edit-search"">Region Covered</label><br>
+                            <input type="text" class="form-control"
+                                    ng-model="vm.apiDomain.regionCovered" id="regionCovered"
+                            >
+                        </div>
+                </div>
+                <!-- end row -->
+
+                <div class="spacer"></div>
                 <div class="row">
+                    <div class="col-sm-12" style="">
+                    <label class="label label-edit-search"">Antigen Notes</label>
+                    <textarea class="form-control" rows=3 
+                        ng-model="vm.apiDomain.antigenNote" id="antigenNote" ></textarea>
+                    </div>
+                </div>
+		<!-- end row -->
+
+                <div class="spacer"></div>
+                <div class="row">
+                    <div class="col-sm-4" style="">
+                    <label class="label label-edit-search"">Antigen Organism</label><br>
+                    <select type=dropdown size="1" id="sourceOrganism" 
+                            ng-options="choice.organismKey as choice.commonname for choice in vm.sourceOrganismLookup"
+                            ng-model="vm.apiDomain.probeSource.organismKey"
+                            >
+                            <option value="">Search All</option>
+                    </select>
+                    </div>
+                </div>
+                <!-- end row -->
+
+                <div class="spacer"></div>
+                <div class="row">
+                        <div class="col-sm-6" style="">
+                            <label class="label label-edit-search"">Strain</label><br>
+                            <input type="text" class="form-control" id="strain" 
+                                    ng-model="vm.apiDomain.probeSource.strain" 
+                                    ng-blur="validateStrain()" >
+                        </div>
+
+                        <div class="col-sm-6" style="">
+                            <label class="label label-edit-search"">Cell Line</label><br>
+                            <input type="text" class="form-control" id="cellLine" 
+                                    ng-model="vm.apiDomain.probeSource.cellLine" 
+                                    ng-blur="validateCellLine()" >
+
+                        </div>
+                </div>
+                <!-- end row -->
+
+                <div class="spacer"></div>
+                <div class="row">
+                        <div class="col-sm-6" style="">
+                            <label class="label label-edit-search"">Tissue</label><br>
+                            <input type="text" class="form-control" id="tissue" 
+                                    ng-model="vm.apiDomain.probeSource.tissue" 
+                                    ng-blur="validateTissue()">
+                        </div>
+
+                        <div class="col-sm-6" style="">
+                            <label class="label label-edit-search"">Tissue Description</label><br>
+                            <input type="text" class="form-control" id="description" 
+                                    ng-model="vm.apiDomain.probeSource.description" > 
+                        </div>
+                </div>
+                <!-- end row -->
+
+               <div class="spacer"></div>
+                <div class="row">
+                    <div class="col-sm-3" style="">
+                    <label class="label label-edit-search"">Age Prefix</label><br>
+                    <select type=dropdown size="1" id="age" 
+                            ng-options="choice.term as choice.term for choice in vm.ageLookup"
+                            ng-model="vm.apiDomain.probeSource.agePrefix"
+                            >
+                            <option value="">Search All</option>
+                    </select>
+                    </div>
+
+		    <div class="col-sm-2" style="">
+                        <label class="label label-edit-search"">Age Range</label><br>
+                        <input type="text" class="form-control" 
+                                ng-model="vm.apiDomain.probeSource.ageStage" id="ageStage"
+                        >
+		    </div>
+
+                    <div class="col-sm-3" style="">
+                    <label class="label label-edit-search"">Gender</label><br>
+                    <select type=dropdown size="1" id="gender" 
+                            ng-options="choice.termKey as choice.term for choice in vm.genderLookup"
+                            ng-model="vm.apiDomain.probeSource.genderKey"
+                            >
+                            <option value="">Search All</option>
+                    </select>
+                    </div>
+                </div>
+                <!-- end row -->
+
+                <div class="spacer"></div>
+		<div class="row sectionDivider topPadding bottomPadding">
+                <div class="spacer"></div>
                     <div class="col-sm-5" style="">
                     <label class="label label-view-only">Companies</label><br>
                     <input type="text" class="form-control" id="antibodyCompany"
@@ -97,7 +201,7 @@
 		<div class="spacer"></div>
 		<div class="spacer"></div>
                 <div class="row">
-                <div class="col-sm-12" style=""> 
+                <div class="col-sm-8" style=""> 
                 	<div class="row">
                         	<div class="col-sm-12" style="">
                         	<button type="button" style="float:left;" tabindex="-1" id="addMarkeRow"
@@ -162,7 +266,7 @@
         <!-- begin reference table -->
 	<div class="spacer"></div>
         <div class="row">
-        <div class="col-sm-12" style=""> 
+        <div class="col-sm-8" style=""> 
                 <div class="row">
                         <div class="col-sm-12" style="">
                         <button type="button" style="float:left;" tabindex="-1" id="addreferenceRow-{{$index}}"
@@ -208,7 +312,7 @@
                 </td>
 
                 <td style="width:50px;">
-                <input class="form-control" id="jnumid_ref-{{$index}}" tab-to="regionCovered"
+                <input class="form-control" id="jnumid_ref-{{$index}}"
                         ng-model="row.jnumid"
                         ng-change="changeRefRow($index)"
                         ng-blur="validateJnum(row, $index, 'jnumid_ref-')"
@@ -233,7 +337,7 @@
         <!-- begin alias table -->
 	<div class="spacer"></div>
         <div class="row">
-        <div class="col-sm-12" style=""> 
+        <div class="col-sm-8" style=""> 
                 <div class="row">
                         <div class="col-sm-12" style="">
                         <button type="button" style="float:left;" tabindex="-1" id="addaliasRow-{{$index}}"
@@ -297,132 +401,6 @@
         </div>
 
 	<!-- main class -->
-
-	<!-- source area class -->
-	<div class="col-sm-4 section" style="min-height:850px;">
-
-                <div class="spacer"></div>
-                <div class="row">
-                        <div class="col-sm-12" style="">
-                            <label class="label label-edit-search"">Region Covered</label><br>
-                            <input type="text" class="form-control"
-                                    ng-model="vm.apiDomain.regionCovered" id="regionCovered"
-                            >
-                        </div>
-                </div>
-
-                <!-- end row -->
-
-                <div class="spacer"></div>
-                <div class="row">
-                    <div class="col-sm-12" style="">
-                    <label class="label label-edit-search"">Antigen Notes</label>
-                    <textarea class="form-control" rows=3 
-                        ng-model="vm.apiDomain.antigenNote" id="antigenNote" ></textarea>
-                    </div>
-                </div>
-
-		<!-- end row -->
-
-                <div class="spacer"></div>
-                <div class="row">
-                    <div class="col-sm-4" style="">
-                    <label class="label label-edit-search"">Antigen Organism</label><br>
-                    <select type=dropdown size="1" id="sourceOrganism" 
-                            ng-options="choice.organismKey as choice.commonname for choice in vm.sourceOrganismLookup"
-                            ng-model="vm.apiDomain.probeSource.organismKey"
-                            >
-                            <option value="">Search All</option>
-                    </select>
-                    </div>
-                </div>
-                <!-- end row -->
-
-                <div class="spacer"></div>
-                <div class="row">
-                        <div class="col-sm-12" style="">
-                            <label class="label label-edit-search"">Strain</label><br>
-                            <input type="text" class="form-control" id="strain" 
-                                    ng-model="vm.apiDomain.probeSource.strain" 
-                                    ng-blur="validateStrain()" >
-                        </div>
-                </div>
-                <!-- end row -->
-
-                <div class="spacer"></div>
-                <div class="row">
-                        <div class="col-sm-12" style="">
-                            <label class="label label-edit-search"">Tissue</label><br>
-                            <input type="text" class="form-control" id="tissue" 
-                                    ng-model="vm.apiDomain.probeSource.tissue" 
-                                    ng-blur="validateTissue()">
-                        </div>
-                </div>
-                <!-- end row -->
-
-                <div class="spacer"></div>
-                <div class="row">
-                        <div class="col-sm-12" style="">
-                            <label class="label label-edit-search"">Tissue Description</label><br>
-                            <input type="text" class="form-control" id="description" 
-                                    ng-model="vm.apiDomain.probeSource.description" > 
-                        </div>
-                </div>
-                <!-- end row -->
-
-                <div class="spacer"></div>
-                <div class="row">
-                        <div class="col-sm-12" style="">
-                            <label class="label label-edit-search"">Cell Line</label><br>
-                            <input type="text" class="form-control" id="cellLine" 
-                                    ng-model="vm.apiDomain.probeSource.cellLine" 
-                                    ng-blur="validateCellLine()" >
-
-                        </div>
-                </div>
-                <!--removed from above ng-blur="validateCellLine()" > -->
-                <!-- end row -->
-
-               <div class="spacer"></div>
-                <div class="row">
-                    <div class="col-sm-4" style="">
-                    <label class="label label-edit-search"">Age Prefix</label><br>
-                    <select type=dropdown size="1" id="age" 
-                            ng-options="choice.term as choice.term for choice in vm.ageLookup"
-                            ng-model="vm.apiDomain.probeSource.agePrefix"
-                            >
-                            <option value="">Search All</option>
-                    </select>
-                    </div>
-                </div>
-                <!-- end row -->
-
-               <div class="spacer"></div>
-                <div class="row">
-		    <div class="col-sm-8" style="">
-                        <label class="label label-edit-search"">Age Range</label><br>
-                        <input type="text" class="form-control" 
-                                ng-model="vm.apiDomain.probeSource.ageStage" id="ageStage"
-                        >
-		    </div>
-                </div>
-                <!-- end row -->
-                
-               <div class="spacer"></div>
-                <div class="row">
-                    <div class="col-sm-6" style="">
-                    <label class="label label-edit-search"">Gender</label><br>
-                    <select type=dropdown size="1" id="gender" 
-                            ng-options="choice.termKey as choice.term for choice in vm.genderLookup"
-                            ng-model="vm.apiDomain.probeSource.genderKey"
-                            >
-                            <option value="">Search All</option>
-                    </select>
-                    </div>
-                </div>
-
-                <!-- end row -->
-        </div>
 
 	<!-- main right panel -->
 	<div class="col-sm-3 section" style="min-height:850px;">
