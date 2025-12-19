@@ -63,7 +63,7 @@
 		<div class="row sectionDivider topPadding bottomPadding">
                 <div class="spacer"></div>
                         <div class="col-sm-8" style="">
-                            <label class="label label-edit-search"">Region Covered</label><br>
+                            <label class="label label-edit-search"">Antigen Region Covered</label><br>
                             <input type="text" class="form-control"
                                     ng-model="vm.apiDomain.regionCovered" id="regionCovered"
                             >
@@ -85,6 +85,7 @@
                 <div class="row">
                     <div class="col-sm-12" style="">
                     <label class="label label-edit-search"">Antigen Notes</label>
+		    <img id="clearAntigenButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearAntigenNote(vm.apiDomain.antigenNote)">
                     <textarea class="form-control" rows=3 
                         ng-model="vm.apiDomain.antigenNote" id="antigenNote" ></textarea>
                     </div>
@@ -176,7 +177,7 @@
 		<div class="row sectionDivider topPadding bottomPadding">
                 <div class="spacer"></div>
                     <div class="col-sm-5" style="">
-                    <label class="label label-view-only">Companies</label><br>
+                    <label class="label label-view-only">Companies (for Notes)</label><br>
                     <input type="text" class="form-control" id="antibodyCompany"
                             ng-model="vm.antibodyCompanySave"
                             ng-blur="getAntibodyCompany()"
@@ -189,6 +190,7 @@
                 <div class="row">
                     <div class="col-sm-12" style="">
                     <label class="label label-edit-search">Antibody Notes</label>
+		    <img id="clearAntibodyButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearAntibodyNote(vm.apiDomain.antibodyNote)">
                     <textarea class="form-control" rows=3 
                         ng-model="vm.apiDomain.antibodyNote" id="antibodyNote" ></textarea>
                     </div>

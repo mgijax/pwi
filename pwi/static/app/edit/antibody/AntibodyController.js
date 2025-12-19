@@ -79,8 +79,8 @@
 
                     // source organism
                     console.log("calling AntigenOrganismSearchAPI.search");
-                    vm.sourceOrganismLookup = [];
-                    AntigenOrganismSearchAPI.search({}, function(data) { vm.sourceOrganismLookup = data});;
+                    vm.antigenOrganismLookup = [];
+                    AntigenOrganismSearchAPI.search({}, function(data) { vm.antigenOrganismLookup = data});;
 
                     // age
                     console.log("calling VocTermSearchAPI.search for age");
@@ -136,6 +136,18 @@
                                 });
 
                          }, (500));
+                }
+
+                // clear antibody note
+                function clearAntibodyNote() {
+                        console.log("clearAntibodyNote()");
+                        vm.apiDomain.antibodyNote = null;
+                }
+
+                // clear antigen note
+                function clearAntigenNote() {
+                        console.log("clearAntigenNote()");
+                        vm.apiDomain.antigenNote = null;
                 }
 
 		// Page Setup
@@ -1128,6 +1140,8 @@
                 $scope.changeMarkerRow = changeMarkerRow;
 		$scope.selectAntibody = selectAntibody;
                 $scope.setAutoComplete = setAutoComplete;
+                $scope.clearAntibodyNote = clearAntibodyNote;
+                $scope.clearAntigenNote = clearAntigenNote;
         
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
