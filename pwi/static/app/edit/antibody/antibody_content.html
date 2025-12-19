@@ -62,12 +62,22 @@
                 <div class="spacer"></div>
 		<div class="row sectionDivider topPadding bottomPadding">
                 <div class="spacer"></div>
-                        <div class="col-sm-12" style="">
+                        <div class="col-sm-8" style="">
                             <label class="label label-edit-search"">Region Covered</label><br>
                             <input type="text" class="form-control"
                                     ng-model="vm.apiDomain.regionCovered" id="regionCovered"
                             >
                         </div>
+
+                    	<div class="col-sm-3" style="">
+                    	<label class="label label-view-only">Has Expression?</label><br>
+                    	<select type=dropdown size="1" id="hasExpression" tabindex="-1"
+                            	ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
+                            	ng-model="vm.apiDomain.hasExpression"
+                            	>
+                            	<option value=""></option>
+                    	</select>
+                    	</div>
                 </div>
                 <!-- end row -->
 
@@ -171,16 +181,6 @@
                             ng-model="vm.antibodyCompanySave"
                             ng-blur="getAntibodyCompany()"
                             >
-                    </div>
-
-                    <div class="col-sm-3" style="">
-                    <label class="label label-view-only">Has Expression?</label><br>
-                    <select type=dropdown size="1" id="hasExpression" tabindex="-1"
-                            ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
-                            ng-model="vm.apiDomain.hasExpression"
-                            >
-                            <option value=""></option>
-                    </select>
                     </div>
                 </div>
                 <!-- end row -->
