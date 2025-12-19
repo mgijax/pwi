@@ -60,8 +60,10 @@
                 vm.results = [];
                 vm.selectedIndex = -1;
                 vm.selectedAntibodyIndex = 0;
+		vm.attachNote = "";
 
                 function loadVocabs() {
+
                     //verifications/drop down menues
                     // antibody
                     console.log("calling VocTermSearchAPI.search for antibody type");
@@ -71,6 +73,14 @@
                     console.log("calling VocTermSearchAPI.search for antibody class");
                     vm.classLookup = []
                     VocTermSearchAPI.search({"vocabKey":"151"}, function(data) { vm.classLookup = data.items[0].terms});;
+
+                    console.log("calling VocTermSearchAPI.search for region covered note");
+                    vm.regionCoveredLookup = []
+                    VocTermSearchAPI.search({"vocabKey":"190"}, function(data) { vm.regionCoveredLookup = data.items[0].terms});;
+
+                    console.log("calling VocTermSearchAPI.search for other antigen note");
+                    vm.otherAntibodyLookup = []
+                    VocTermSearchAPI.search({"vocabKey":"191"}, function(data) { vm.otherAntibodyLookup = data.items[0].terms});;
 
                     // antibody organism
                     console.log("calling AntibodyOrganismSearchAPI.search");
@@ -148,6 +158,50 @@
                 function clearAntigenNote() {
                         console.log("clearAntigenNote()");
                         vm.apiDomain.antigenNote = null;
+                }
+
+                // attach to note
+                function attachRegionCoveredNote(note) {
+                        console.log("attachRegionCoveredNote()");
+
+                        if (vm.apiDomain.regionCovered == null || vm.apiDomain.regionCovered == "") {
+                                if (note == null) {
+                                        vm.apiDomain.regionCovered = vm.attachNote;
+                                }
+                                else {
+                                        vm.apiDomain.regionCovered = note;
+                                }
+                        }
+                        else {
+                                if (note == null) {
+                                        vm.apiDomain.regionCovered = vm.apiDomain.regionCovered + " " + vm.attachNote;
+                                }
+                                else {
+                                        vm.apiDomain.regionCovered = vm.apiDomain.regionCovered + " " + note;
+                                }
+                        }
+                }
+
+                // attach to note
+                function attachOtherAntibodyNote(note) {
+                        console.log("attachOtherAntibodyNote()");
+
+                        if (vm.apiDomain.antibodyNote == null || vm.apiDomain.antibodyNote == "") {
+                                if (note == null) {
+                                        vm.apiDomain.antibodyNote = vm.attachNote;
+                                }
+                                else {
+                                        vm.apiDomain.antibodyNote = note;
+                                }
+                        }
+                        else {
+                                if (note == null) {
+                                        vm.apiDomain.antibodyNote = vm.apiDomain.antibodyNote + " " + vm.attachNote;
+                                }
+                                else {
+                                        vm.apiDomain.antibodyNote = vm.apiDomain.antibodyNote + " " + note;
+                                }
+                        }
                 }
 
 		// Page Setup
@@ -468,7 +522,8 @@
 			vm.results = [];
 			vm.selectedIndex = -1;
 			vm.total_count = 0;
-                        vm.antibodyCompanySave = ""
+                        vm.antibodyCompanySave = "";
+			vm.attachNote = "";
 
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
@@ -540,6 +595,7 @@
                                 }
 				selectAntibody(0);
                                 vm.antibodyCompanySave = "";
+				vm.attachNote = "";
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AntibodyGetAPI.get");
 			});
@@ -1142,6 +1198,8 @@
                 $scope.setAutoComplete = setAutoComplete;
                 $scope.clearAntibodyNote = clearAntibodyNote;
                 $scope.clearAntigenNote = clearAntigenNote;
+                $scope.attachRegionCoveredNote = attachRegionCoveredNote;
+                $scope.attachOtherAntibodyNote = attachOtherAntibodyNote;
         
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

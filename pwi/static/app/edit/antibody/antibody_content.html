@@ -79,6 +79,16 @@
                                     ng-model="vm.apiDomain.regionCovered" id="regionCovered"
                             >
                         </div>
+                    	<div class="col-sm-3" style="">
+                    	<label class="label label-edit-search">Antigen Region Covered Note</label><br>
+                    	<select type=dropdown size="1" id="regionCoveredNote"
+                            	ng-options="choice.term as choice.term for choice in vm.regionCoveredLookup"
+                            	ng-model="vm.attachNote"
+				ng-change="attachRegionCoveredNote()"
+                            	>
+                    	</select>
+                    </div>
+                
                 </div>
                 <!-- end row -->
 
@@ -196,8 +206,19 @@
                         ng-model="vm.apiDomain.antibodyNote" id="antibodyNote" ></textarea>
                     </div>
                 </div>
-                <button type="button" id="obtainedButton" class="copyOver" tabindex="-1"
-                    ng-click="getAntibodyObtained()" >Antibody Obtained</button>
+                <div class="row">
+                    <div class="col-sm-12" style="">
+                	<button type="button" id="obtainedButton" class="copyOver" tabindex="-1"
+                    		ng-click="getAntibodyObtained()" >Antibody Obtained</button>
+                	<label class="label label-edit-search">Other Antibody Note</label>
+                	<select type=dropdown size="1" id="otherAntibodyNote"
+                    		ng-options="choice.term as choice.term for choice in vm.otherAntibodyLookup"
+                    		ng-model="vm.attachNote"
+					ng-change="attachOtherAntibodyNote()"
+                	>
+                	</select>
+                    </div>
+                </div>
                 <!-- end row -->
 
                 <!-- marker table -->
