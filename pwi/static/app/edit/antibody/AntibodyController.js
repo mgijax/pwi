@@ -573,8 +573,8 @@
 
                         addSource();
                         addRefRow();
-                        addAliasRow();
                         addMarkerRow();
+                        addAliasRow();
 			setRefCount();
                 }
 
@@ -588,8 +588,8 @@
 			vm.apiDomain.probeSource.sourceKey = "";
 
                         addRefRow();
-                        addAliasRow();
                         addMarkerRow();
+                        addAliasRow();
 			for(var i=0;i<vm.apiDomain.markers.length; i++) {
                                 if (vm.apiDomain.markers[i].processStatus == "x") {
                                         vm.apiDomain.markers[i].processStatus = "c";
@@ -625,6 +625,12 @@
                                 vm.antibodyCompanySave1 = "";
                                 vm.antibodyCompanySave2 = "";
 				vm.attachNote = "";
+                        	if (vm.apiDomain.aliases == undefined) {
+                        		addAliasRow();
+				}
+                        	if (vm.apiDomain.markers == undefined) {
+                        		addMarkerRow();
+				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AntibodyGetAPI.get");
 			});
