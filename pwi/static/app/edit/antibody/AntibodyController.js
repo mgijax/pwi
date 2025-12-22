@@ -584,10 +584,8 @@
 			vm.apiDomain.antibodyKey = "";	
 			vm.apiDomain.refAssocs = [];
                         vm.apiDomain.aliases = [];
-
 			vm.apiDomain.probeSource.processStatus = "c";
 			vm.apiDomain.probeSource.sourceKey = "";
-			// addSource();
 
                         addRefRow();
                         addAliasRow();
@@ -599,6 +597,8 @@
                                         vm.apiDomain.markers[i].antibodyKey = "";
                                 }
                         }
+
+			setRefCount();
 		}
 
 		// load a selected object from results
