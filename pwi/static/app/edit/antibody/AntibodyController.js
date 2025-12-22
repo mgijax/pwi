@@ -61,6 +61,7 @@
                 vm.selectedIndex = -1;
                 vm.selectedAntibodyIndex = 0;
 		vm.attachNote = "";
+		vm.refCount = "";
 
                 function loadVocabs() {
 
@@ -574,7 +575,7 @@
                         addRefRow();
                         addAliasRow();
                         addMarkerRow();
-
+			setRefCount();
                 }
 
 		// resets page data deselect
@@ -620,6 +621,7 @@
                                         selectRefRow(0);
                                 }
 				selectAntibody(0);
+				setRefCount();
                                 vm.antibodyCompanySave1 = "";
                                 vm.antibodyCompanySave2 = "";
 				vm.attachNote = "";
@@ -1073,6 +1075,17 @@
                         if (vm.apiDomain.refAssocs[index].processStatus == "x") {
                                 vm.apiDomain.refAssocs[index].processStatus = "u";
                         };
+                }
+
+                function setRefCount() {
+                        console.log("setRefCount()");
+
+                        vm.refCount = 0;
+                        for(var i=0;i<vm.apiDomain.refAssocs.length; i++) {
+                                if (vm.apiDomain.refAssocs[i].processStatus == "x") {
+                                        vm.refCount += 1;
+                                }
+                        }
                 }
 
                 // if current marker row has changed

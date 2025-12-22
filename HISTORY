@@ -2,6 +2,14 @@
 # if Install hangs, then remove folder:  /home/mgiadmin/.cache/pip and try again
 #
 #
+
+TAG: pwi
+DATE: 12/22/2025
+STAFF: lec
+wts2-1780/Backend:PWI & QC reports
+        modified:   pwi/static/app/edit/antibody/AntibodyController.js
+        modified:   pwi/static/app/edit/antibody/antibody_content.html
+
 TAG: pwi-6-0-26-14
 DATE: 12/03/2025
 STAFF: lec
