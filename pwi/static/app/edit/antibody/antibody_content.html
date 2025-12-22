@@ -106,8 +106,8 @@
                 <div class="row">
                     <div class="col-sm-4" style="">
                     <label class="label label-edit-search"">Antigen Organism</label><br>
-                    <select type=dropdown size="1" id="sourceOrganism" 
-                            ng-options="choice.organismKey as choice.commonname for choice in vm.sourceOrganismLookup"
+                    <select type=dropdown size="1" id="antigenOrganism" 
+                            ng-options="choice.organismKey as choice.commonname for choice in vm.antigenOrganismLookup"
                             ng-model="vm.apiDomain.probeSource.organismKey"
                             >
                             <option value="">Search All</option>
