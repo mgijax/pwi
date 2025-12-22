@@ -73,12 +73,6 @@
                 <div class="spacer"></div>
 		<div class="row sectionDivider topPadding bottomPadding">
                 <div class="spacer"></div>
-                        <div class="col-sm-8" style="">
-                            <label class="label label-edit-search"">Antigen Region Covered</label><br>
-                            <input type="text" class="form-control"
-                                    ng-model="vm.apiDomain.regionCovered" id="regionCovered"
-                            >
-                        </div>
                     	<div class="col-sm-3" style="">
                     	<label class="label label-edit-search">Antigen Region Covered Note</label><br>
                     	<select type=dropdown size="1" id="regionCoveredNote"
@@ -87,8 +81,13 @@
 				ng-change="attachRegionCoveredNote()"
                             	>
                     	</select>
-                    </div>
-                
+                	</div>
+                        <div class="col-sm-8" style="">
+                            <label class="label label-edit-search"">Antigen Region Covered</label><br>
+                            <input type="text" class="form-control"
+                                    ng-model="vm.apiDomain.regionCovered" id="regionCovered"
+                            >
+                        </div>
                 </div>
                 <!-- end row -->
 
@@ -189,16 +188,23 @@
                 <div class="spacer"></div>
                     <div class="col-sm-5" style="">
                     <label class="label label-view-only">Companies (for Notes)</label><br>
-                    <input type="text" class="form-control" id="antibodyCompany"
-                            ng-model="vm.antibodyCompanySave"
-                            ng-blur="getAntibodyCompany()"
+                    <input type="text" class="form-control" id="antibodyCompanyNote"
+                            ng-model="vm.antibodyCompanySave1"
+                            ng-blur="getAntibodyCompanyNote()"
+                            >
+                    </div>
+                    <div class="col-sm-5" style="">
+                    <label class="label label-view-only">Companies (for Searching)</label><br>
+                    <input type="text" class="form-control" id="antibodyCompanySearch"
+                            ng-model="vm.antibodyCompanySave2"
+                            ng-blur="getAntibodyCompanySearch()"
                             >
                     </div>
                 </div>
                 <!-- end row -->
 
 		<div class="spacer"></div>
-                <div class="row">
+		<div class="row">
                     <div class="col-sm-12" style="">
                     <label class="label label-edit-search">Antibody Notes</label>
 		    <img id="clearAntibodyButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearAntibodyNote(vm.apiDomain.antibodyNote)">
@@ -223,8 +229,7 @@
 
                 <!-- marker table -->
 		<div class="spacer"></div>
-		<div class="spacer"></div>
-                <div class="row">
+		<div class="row sectionDivider topPadding bottomPadding">
                 <div class="col-sm-8" style=""> 
                 	<div class="row">
                         	<div class="col-sm-12" style="">

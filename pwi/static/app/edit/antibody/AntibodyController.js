@@ -107,7 +107,8 @@
 
                     // gxd antibody company
                     console.log("calling VocTermListAPI.search for company");
-                    vm.antibodyCompanySave = ""
+                    vm.antibodyCompanySave1 = ""
+                    vm.antibodyCompanySave2 = ""
                     VocTermListAPI.search({"vocabKey":"179"}, function(data) { vm.companyLookup = data.items});;
 
                     // yesnoLookup
@@ -134,7 +135,13 @@
                                 });
 
                                 $q.all([
-                                        FindElement.byId("antibodyCompany"),
+                                        FindElement.byId("antibodyCompanyNote"),
+                                ]).then(function(elements) {
+                                        pageScope.autocompleteBeginning(angular.element(elements[0]), vm.companyLookup);
+                                });
+
+                                $q.all([
+                                        FindElement.byId("antibodyCompanySearch"),
                                 ]).then(function(elements) {
                                         pageScope.autocompleteBeginning(angular.element(elements[0]), vm.companyLookup);
                                 });
@@ -404,20 +411,38 @@
 			}
 		}		
 	
-		function getAntibodyCompany() {
-                    console.log("getAntibodyCompany()");
+		function getAntibodyCompanyNote() {
+                    console.log("getAntibodyCompanyNote()");
 
-                    if (vm.antibodyCompanySave == null || vm.antibodyCompanySave == "") {
+                    if (vm.antibodyCompanySave1 == null || vm.antibodyCompanySave1 == "") {
                         return;
                     }
 
-                    console.log("vm.antibodyCompanySave:" + vm.antibodyCompanySave);
+                    console.log("vm.antibodyCompanySave1:" + vm.antibodyCompanySave1);
 
                     if (vm.apiDomain.antibodyNote != null) {
-                        vm.apiDomain.antibodyNote += "Antibody obtained from " + vm.antibodyCompanySave + ". ";
+                        vm.apiDomain.antibodyNote += "Antibody obtained from " + vm.antibodyCompanySave1 + ". ";
                     }
                     else {
-                        vm.apiDomain.antibodyNote = "Antibody obtained from " + vm.antibodyCompanySave + ". ";
+                        vm.apiDomain.antibodyNote = "Antibody obtained from " + vm.antibodyCompanySave1 + ". ";
+                    }
+                        
+		}
+
+		function getAntibodyCompanySearch() {
+                    console.log("getAntibodyCompanySearch()");
+
+                    if (vm.antibodyCompanySave2 == null || vm.antibodyCompanySave2 == "") {
+                        return;
+                    }
+
+                    console.log("vm.antibodyCompanySave2:" + vm.antibodyCompanySave2);
+
+                    if (vm.apiDomain.antibodyNote != null) {
+                        vm.apiDomain.antibodyNote += "%" + vm.antibodyCompanySave2 + "%";
+                    }
+                    else {
+                        vm.apiDomain.antibodyNote = "%" + vm.antibodyCompanySave2 + "%";
                     }
                         
 		}
@@ -522,7 +547,8 @@
 			vm.results = [];
 			vm.selectedIndex = -1;
 			vm.total_count = 0;
-                        vm.antibodyCompanySave = "";
+                        vm.antibodyCompanySave1 = "";
+                        vm.antibodyCompanySave2 = "";
 			vm.attachNote = "";
 
 			// rebuild empty apiDomain submission object, else bindings fail
@@ -594,7 +620,8 @@
                                         selectRefRow(0);
                                 }
 				selectAntibody(0);
-                                vm.antibodyCompanySave = "";
+                                vm.antibodyCompanySave1 = "";
+                                vm.antibodyCompanySave2 = "";
 				vm.attachNote = "";
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AntibodyGetAPI.get");
@@ -1214,7 +1241,8 @@
                 $scope.validateCellLine = validateCellLine;
                 $scope.validateMarker = validateMarker;
                 $scope.validateJnum = validateJnum;
-                $scope.getAntibodyCompany = getAntibodyCompany;		
+                $scope.getAntibodyCompanyNote = getAntibodyCompanyNote;		
+                $scope.getAntibodyCompanySearch = getAntibodyCompanySearch;		
                 $scope.getAntibodyObtained = getAntibodyObtained;		
                 $scope.mrkAntibodyLink = mrkAntibodyLink;
 		// global shortcuts
