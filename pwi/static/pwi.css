@@ -228,7 +228,7 @@ dd {
 } 
 .detailPageListData dt{
 	float:left;
-	width:135px;
+	width:170px;
 	clear:left;
 	text-align:right;
 	overflow:hidden;
@@ -239,7 +239,7 @@ dd {
 	content: ":"
 } 
 .detailPageListData dd{
-	margin-left:140px
+	margin-left:175px
 } 
 .detailPageListData dd::after{
 	/* add &nbsp; after each dd to maintain layout */

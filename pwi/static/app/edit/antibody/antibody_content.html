@@ -336,7 +336,7 @@
                 </td>
 
                 <td style="width:50px;">
-                <select type=dropdown size="1" id="refAssocType" tabindex="-1"
+                <select type=dropdown size="1" id="refAssocType" 
                         ng-options="choice.refAssocTypeKey as choice.assocType for choice in vm.refAssocTypeLookup"
                         ng-model="row.refAssocTypeKey"
                         ng-change="changeRefRow($index)"
