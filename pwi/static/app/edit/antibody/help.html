@@ -37,7 +37,7 @@ The Antibody module is a display and edit page all in one. A user must be logged
                 <li>Valid date formats for searching are:</li>
                 <ul>
                         <li>mm/dd/yyyy or mm-dd-yyyy</li>
-                        <li>mm/dd/yy 0r mm-dd-yy<li>
+                        <li>mm/dd/yy or mm-dd-yy</li>
                         <li>yyyy/mm/dd or yyyy-mm-dd</li>
                 </ul>
                 <li>Searching for a range of dates:
@@ -55,7 +55,6 @@ The Antibody module is a display and edit page all in one. A user must be logged
 <ul>
         <li>All fields may be used for searching.</li>
         <li>They may be searched individually or in combination. In some, but not all, cases when more than one field is used in a search, it is treated as an AND search.</li>
-        <li>Antigen fields can only be used for searching, creating/modifying an antigen must be done in the antigen module.</li>
         <li>A search of the Name field will simultaneously search Names and Aliases. A search of the Alias field will only search Aliases.</li>
         <li>A search with no parameters returns all antibodies.</li>
 </ul>
@@ -69,12 +68,31 @@ The Antibody module is a display and edit page all in one. A user must be logged
 <h4>Creating New Antibodies</h4>
 <ul>
         <li>The fields required to create an antibody are: Name, Antigen ID, and Primary Reference. All other fields are optional.</li>
-        <li>One antigen can be associated with >1 antibody.</li>
         <li>Each antibody must have one primary reference; all other references should be type = related.</li>
         <li>Aliases are not required to have a J#; they may be entered without.</li>
-        <li>There are antibodies used in assays that do not have associated genes. These antibodies recognize non-mouse genes, e.g. B-galactosidase and GFP, and are used in knock-in and transgenic in situ reporter assays, as well as in recombinase reporter assays.</li>
-                <li>The 'companies' field is used to create a note. Start typing a company name, e.g. Santa. The field autofills from a Simple Vocabulary called 'GXD Antibody Companies'. 'Santa Cruz Biotechnology' will appear, pick it. Tab out of the Companies field and 'Antibody obtained from Santa Cruz Biotechnology.' appears in the notes field.</li>
+        <li>Not all antibodies have an associated gene. These antibodies recognize non-mouse genes, e.g. B-galactosidase and GFP, and are used for in situ reporter assays (knock-in and transgenic) and recombinase reporter assays.  </li>
+        <li>The ‘Companies (for Notes)’ field is used to create a note for a commercially available antibody. Start typing a company name, e.g. Santa. The field autofills from a Simple Vocabulary (called 'GXD Antibody Companies'), pick the company, and tab out of the field. A note, 'Antibody obtained from Santa Cruz Biotechnology,' will appear in the notes field.  </li>
+	<li>The ‘Companies (for Searching)’ field is used to minimize typing when searching for existing antibodies. Start typing a company name, pick the company from the autofill, and tab out of the field. The company name surrounded by wildcards (%) will appear in the notes field.  </li>
         <li>New antibodies can be created by “copying” existing antibodies.  To do so, pull up the antibody whose values you want to use; deselect it from the search return; add a primary J#; hit Add.</li>
+</ul>
+
+<h4>Antigen Information</h4>
+<ul>
+        <li>The Strain, Tissue and Cell Line are validated fields that have an autofill dropdown to help with entry. New items can be added to this list by clicking <b>yes</b> in the dialogue box when asked.</li>
+        <li>The Antigen Source defaults are the same as are used in the probes module.</li>
+        <ul>
+        	<li>If the organism is not <b>mouse, laboratory</b> or <b>Not Specified</b>, then the strain field default should be <b>Not Applicable</b>.</li>
+        	<li>If a Tissue is entered, then the Cell Line field default should be <b>Not Applicable</b>. (Curators can override it, but the default is <b>Not Applicable</b>.)</li>
+        	<li>If a Cell Line is entered, then the Age default should be <b>Not Applicable</b>. (If there is some cell line related age information curators wish to record, they should put it in the Tissue Description notes field.)</li>
+        </ul>
+     	<li>If you choose Organism = <b>Other (see notes)</b>, you must enter explanatory text into the Notes field.</li>
+        <li>The Strain, Tissue, and Cell Line field use controlled vocabularies.</li>
+        <li>If you try to enter a term that does not currently exist, you will be given a dialogue box asking if you want to proceed. </li>
+        <ul>
+            <li>Strain: existing strains can be viewed in the Strain module.</li>
+            <li>Tissue: a dropdown of tissues currently in the source table aids entry into this field; be sure to tab out to ensure the PWI “remembers” your choice.  The entire list of existing tissues can be viewed in the Tissue module.</li>
+            <li>Cell Line: the list of existing cell lines can be found here; not all are used: <a href="http://prodwww.informatics.jax.org/data/reports/qcreports_db/output/PRB_CellLine.sql.rpt">Existing Cell Lines Report</a></li>
+        </ul>
 </ul>
 
 <h4>Related References</h4>
@@ -85,8 +103,7 @@ top of the list (under Primary).
 
 <h4>Modifying/Updating Antibodies</h4>
 <ul>
-        <li>All fields with green labels (antibody attributes) can be updated (e.g. name, antigen id, genes, references, aliases).</li>
-        <li>Antigen attributes (purple labels) can only be updated in the antigen module.</li>
+        <li>All fields with green labels (antibody attributes) can be updated (e.g. name, genes, references, aliases).</li>
 </ul>
 
 <h4>Deleting Antibodies</h4>
