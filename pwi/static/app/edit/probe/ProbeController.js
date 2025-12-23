@@ -31,7 +31,7 @@
 			ChromosomeSearchAPI,
                         OrganismSearchProbeAPI,
                         LibrarySearchAPI,
-                        StrainListProbeAntigenAPI,
+                        StrainListProbeAntibodyAPI,
                         TissueListAPI,
 			ValidateJnumAPI,
 			ValidateMarkerAPI,
@@ -686,7 +686,7 @@
                         });
 
                         vm.strainLookup = {};
-                        StrainListProbeAntigenAPI.get({}, function(data) { vm.strainLookup = data.items;
+                        StrainListProbeAntibodyAPI.get({}, function(data) { vm.strainLookup = data.items;
                                 $q.all([
                                 FindElement.byId("strain"),
                                 ]).then(function(elements) {

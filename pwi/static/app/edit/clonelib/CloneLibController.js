@@ -28,7 +28,7 @@
                         LogicalDBSearchAPI,
 			// global APIs
                         OrganismSearchProbeAPI,
-                        StrainListProbeAntigenAPI,
+                        StrainListProbeAntibodyAPI,
                         TissueListAPI,
 			ValidateJnumAPI,
                         ValidateStrainAPI,
@@ -431,7 +431,7 @@
                         });
 
                         vm.strainLookup = {};
-                        StrainListProbeAntigenAPI.get({}, function(data) { vm.strainLookup = data.items;
+                        StrainListProbeAntibodyAPI.get({}, function(data) { vm.strainLookup = data.items;
                                 $q.all([
                                 FindElement.byId("strain"),
                                 ]).then(function(elements) {
