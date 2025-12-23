@@ -15,7 +15,11 @@
                 
 		<div class="row topMargin">
                         <div class="col-sm-6" style="">
-                        <label class="label label-edit-search">Name</label><br>
+                        <label class="label label-edit-search">Name</label>
+                        Antibody Detail<img style="position:absolute;" id="antibodyDetailButton" class="externalLink" 
+                                src="/pwi/static/images/link_out.png" width=20 height=20 
+                                ng-click="antibodyDetailLink()"
+                        ></img><br> 
                         <input type="text" class="form-control" 
                                 ng-model="vm.apiDomain.antibodyName" id="antibodyName" 
                         >

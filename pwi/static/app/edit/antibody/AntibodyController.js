@@ -1212,6 +1212,15 @@
                         }
                 }
 
+		// link outs
+		/////////////////////////////////////////////////////////////////////		
+                
+		// linkout to antibody detail
+                function antibodyDetailLink() {
+                        var antibodyUrl = pageScope.url_for('pwi.antibodydetail', '?id=' + vm.apiDomain.accID);
+                        window.open(antibodyUrl, '_blank');
+                }
+
                 // link to antibody by marker summary page
                 function mrkAntibodyLink(id) {
                     console.log("mrkAntibodyLink" );
@@ -1263,7 +1272,9 @@
                 $scope.getAntibodyCompanyNote = getAntibodyCompanyNote;		
                 $scope.getAntibodyCompanySearch = getAntibodyCompanySearch;		
                 $scope.getAntibodyObtained = getAntibodyObtained;		
+                $scope.antibodyDetailLink = antibodyDetailLink;
                 $scope.mrkAntibodyLink = mrkAntibodyLink;
+
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
 		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
