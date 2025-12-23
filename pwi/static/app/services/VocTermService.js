@@ -17,7 +17,7 @@
 		.factory('VocTermSearchAPI', VocTermSearchAPI)
 		.factory('VocTermListAPI', VocTermListAPI)
 		.factory('StrainListAPI', StrainListAPI)
-		.factory('StrainListProbeAntigenAPI', StrainListProbeAntigenAPI)
+		.factory('StrainListProbeAntibodyAPI', StrainListProbeAntibodyAPI)
 		.factory('TissueListAPI', TissueListAPI)
 		.factory('LibrarySearchAPI', LibrarySearchAPI)
 		;
@@ -116,8 +116,8 @@
        return $resource(JAVA_API_URL + 'strain/getStrainList', {}, {} );
    }
 
-   function StrainListProbeAntigenAPI($resource, JAVA_API_URL) {
-       return $resource(JAVA_API_URL + 'strain/getStrainListProbeAntigen', {}, {} );
+   function StrainListProbeAntibodyAPI($resource, JAVA_API_URL) {
+       return $resource(JAVA_API_URL + 'strain/getStrainListProbeAntibody', {}, {} );
    }
 
    function TissueListAPI($resource, JAVA_API_URL) {
