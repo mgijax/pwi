@@ -67,7 +67,7 @@ The Antibody module is a display and edit page all in one. A user must be logged
  
 <h4>Creating New Antibodies</h4>
 <ul>
-        <li>The fields required to create an antibody are: Name, Antigen ID, and Primary Reference. All other fields are optional.</li>
+        <li>The fields required to create an antibody are: Name and Primary Reference. All other fields are optional.</li>
         <li>Each antibody must have one primary reference; all other references should be type = related.</li>
         <li>Aliases are not required to have a J#; they may be entered without.</li>
         <li>Not all antibodies have an associated gene. These antibodies recognize non-mouse genes, e.g. B-galactosidase and GFP, and are used for in situ reporter assays (knock-in and transgenic) and recombinase reporter assays.  </li>
@@ -100,11 +100,6 @@ The Antibody module is a display and edit page all in one. A user must be logged
 gets them from the database. Thus, the most recently added one will be at the 
 top of the list (under Primary).
 </p>
-
-<h4>Modifying/Updating Antibodies</h4>
-<ul>
-        <li>All fields with green labels (antibody attributes) can be updated (e.g. name, genes, references, aliases).</li>
-</ul>
 
 <h4>Deleting Antibodies</h4>
 <p>An antibody that is being used by an assay cannot be deleted. You must delete the assay or modify it so that it uses another antibody first.</p>
