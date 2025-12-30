@@ -219,7 +219,7 @@
                 <div class="row topMargin">
                 <div class="col-sm-3" style="">
                         <label class="label label-edit-search">Age Prefix</label><br>
-                        <select type=dropdown size="1" id="agePrefix" tabindex="-1"
+                        <select type=dropdown size="1" id="agePrefix" tabindex="-1" tab-to="ageStage"
                             ng-options="choice.term as choice.term for choice in vm.ageLookup"
                             ng-model="vm.apiDomain.probeSource.agePrefix"
                             ng-change="changeSource()"
