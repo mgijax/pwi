@@ -156,6 +156,12 @@
                          }, (500));
                 }
 
+                // clear region covered
+                function clearRegionCovered() {
+                        console.log("clearRegionCovered()");
+                        vm.apiDomain.regionCovered = null;
+                }
+
                 // clear antibody note
                 function clearAntibodyNote() {
                         console.log("clearAntibodyNote()");
@@ -1251,6 +1257,7 @@
                 $scope.changeMarkerRow = changeMarkerRow;
 		$scope.selectAntibody = selectAntibody;
                 $scope.setAutoComplete = setAutoComplete;
+                $scope.clearRegionCovered = clearRegionCovered;
                 $scope.clearAntibodyNote = clearAntibodyNote;
                 $scope.clearAntigenNote = clearAntigenNote;
                 $scope.attachRegionCoveredNote = attachRegionCoveredNote;

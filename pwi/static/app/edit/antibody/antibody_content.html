@@ -78,8 +78,20 @@
                 <div class="spacer"></div>
 		<div class="row sectionDivider topPadding bottomPadding">
                 <div class="spacer"></div>
+                	<div class="col-sm-10" style="">
+                        <label class="label label-edit-search"">Antigen Region Covered</label>
+		    	<img id="clearRegionCoveredButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearRegionCovered(vm.apiDomain.regionCovered)">
+                        <textarea type="text" class="form-control" rows=2
+                                    ng-model="vm.apiDomain.regionCovered" id="regionCovered"
+                        ></textarea>
+                        </div>
+                </div>
+                <!-- end row -->
+
+                <div class="spacer"></div>
+                <div class="row">
                     	<div class="col-sm-4" style="">
-                    	<label class="label label-edit-search">Antigen Region Covered Note</label><br>
+                    	<label class="label label-edit-search">Pick List</label><br>
                     	<select type=dropdown size="1" id="regionCoveredNote"
                             	ng-options="choice.term as choice.term for choice in vm.regionCoveredLookup"
                             	ng-model="vm.attachNote"
@@ -87,12 +99,6 @@
                             	>
                     	</select>
                 	</div>
-                        <div class="col-sm-6" style="">
-                            <label class="label label-edit-search"">Antigen Region Covered</label><br>
-                            <textarea type="text" class="form-control" rows=2
-                                    ng-model="vm.apiDomain.regionCovered" id="regionCovered"
-                            ></textarea>
-                        </div>
                 </div>
                 <!-- end row -->
 
