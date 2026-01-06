@@ -60,6 +60,9 @@
                 vm.results = [];
                 vm.selectedIndex = -1;
                 vm.selectedAntibodyIndex = 0;
+                vm.selectedMarkerIndex = 0;
+                vm.selectedRefIndex = 0;
+                vm.selectedAliasIndex = 0;
 		vm.attachNote = "";
 		vm.refCount = "";
 
@@ -553,6 +556,9 @@
 
 			vm.results = [];
 			vm.selectedIndex = -1;
+                	vm.selectedMarkerIndex = 0;
+                	vm.selectedRefIndex = 0;
+                	vm.selectedAliasIndex = 0;
 			vm.total_count = 0;
                         vm.antibodyCompanySave1 = "";
                         vm.antibodyCompanySave2 = "";
@@ -578,9 +584,9 @@
 			vm.apiDomain.accID = "";
 
                         addSource();
-                        addRefRow();
-                        addMarkerRow();
                         addAliasRow();
+                        addMarkerRow();
+                        addRefRow();
 			setRefCount();
                 }
 
@@ -593,9 +599,10 @@
 			vm.apiDomain.probeSource.processStatus = "c";
 			vm.apiDomain.probeSource.sourceKey = "";
 
-                        addRefRow();
-                        addMarkerRow();
                         addAliasRow();
+                        addMarkerRow();
+                        addRefRow();
+
 			for(var i=0;i<vm.apiDomain.markers.length; i++) {
                                 if (vm.apiDomain.markers[i].processStatus == "x") {
                                         vm.apiDomain.markers[i].processStatus = "c";
@@ -622,11 +629,13 @@
 			// api get object by primary key
 			console.log("vm.results[vm.selectedIndex].antibodyKey: " + vm.results[vm.selectedIndex].antibodyKey + " antibodyName: " + vm.results[vm.selectedIndex].antibodyName);
 			AntibodyGetAPI.get({ key: vm.results[vm.selectedIndex].antibodyKey }, function(data) {
+                		vm.selectedMarkerIndex = 0;
+                		vm.selectedRefIndex = 0;
+                		vm.selectedAliasIndex = 0;
 				vm.apiDomain = data;
                                 if (vm.apiDomain.refAssocs != undefined) {
                                         selectRefRow(0);
                                 }
-				selectAntibody(0);
 				setRefCount();
                                 vm.antibodyCompanySave1 = "";
                                 vm.antibodyCompanySave2 = "";
@@ -1009,27 +1018,175 @@
 		// Antibodys
 		/////////////////////////////////////////////////////////////////////		
 		
-		// set current antibody row
-		function selectAntibody(index) {
-			console.log("selectAntibody: " + index);
-			vm.selectedAntibodyIndex = index;
-		}
+               function selectAliasRow(index) {
+                    console.log("selectAliasRow: " + index);
+                    vm.selectedAliasIndex = index;
+
+                    if (vm.apiDomain.aliases.length == 0) {
+                           addAliasRow();
+                    }
+
+                }
+
+               function selectMarkerRow(index) {
+                    console.log("selectMarkerRow: " + index);
+                    vm.selectedMarkerIndex = index;
+
+                    if (vm.apiDomain.markers.length == 0) {
+                           addMarkerRow();
+                    }
+
+                }
+
+               function selectRefRow(index) {
+                    console.log("selectRefRow: " + index);
+                    vm.selectedRefIndex = index;
+
+                    if (vm.apiDomain.refAssocs.length == 0) {
+                           addRefRow();
+                    }
+
+                }
 
 		//
 		// change of row/field detected
 		//
 		
-		// if current antibody row has changed
-		function changeAntibodyRow(index) {
-			console.log("changeAntibodyRow: " + index);
+                // if current alias row has changed
+                function changeAliasRow(index) {
+                        console.log("changeAliasRow: " + index + " procesStatus: " + vm.apiDomain.aliases[index].processStatus);
 
-			vm.selectedAntibodyIndex = index;
+                        vm.selectedAliasIndex = index;
 
-			if (vm.apiDomain.antibodys[index] == null) {
-				vm.selectedAntibodyIndex = 0;
-				return;
-			}
-		}
+                        if (vm.apiDomain.aliases[index] == null) {
+                                vm.selectedAliasIndex = 0;
+                                return;
+                        }
+                        if (vm.apiDomain.aliases[index].processStatus == "x") {
+                                vm.apiDomain.aliases[index].processStatus = "u";
+                        };
+                }
+
+                // if current marker row has changed
+                function changeMarkerRow(index) {
+                        console.log("changeMarkerRow: " + index + " procesStatus: " + vm.apiDomain.markers[index].processStatus);
+
+                        vm.selectedMarkerIndex = index;
+
+                        if (vm.apiDomain.markers[index] == null) {
+                                vm.selectedMarkerIndex = 0;
+                                return;
+                        }
+                        if (vm.apiDomain.markers[index].processStatus == "x") {
+                                vm.apiDomain.markers[index].processStatus = "u";
+                        };
+                }
+
+                // if current reference row has changed
+                function changeRefRow(index) {
+                        console.log("changeRefRow: " + index);
+
+                        vm.selectedRefIndex = index;
+
+                        if (vm.apiDomain.refAssocs[index] == null) {
+                                vm.selectedRefIndex = 0;
+                                return;
+                        }
+
+                        if (vm.apiDomain.refAssocs[index].processStatus == "x") {
+                                vm.apiDomain.refAssocs[index].processStatus = "u";
+                        };
+                }
+
+                function setRefCount() {
+                        console.log("setRefCount()");
+
+                        vm.refCount = 0;
+                        for(var i=0;i<vm.apiDomain.refAssocs.length; i++) {
+                                if (vm.apiDomain.refAssocs[i].processStatus == "x") {
+                                        vm.refCount += 1;
+                                }
+                        }
+                }
+
+                function addSource() {
+
+                    vm.apiDomain.probeSource = {
+                        "processStatus": "c",
+                        "sourceKey": "",
+                        "name": "",
+                        "description": "",
+                        "age": "",
+                        "agePrefix": "",
+                        "ageStage": "",
+                        "segmentTypeKey": "",
+                        "segmentType": "",
+                        "vectorKey": "",
+                        "vector": "",
+                        "organismKey": "",
+                        "organism": "",
+                        "strainKey": "",
+                        "strain": "",
+                        "tissueKey": "",
+                        "tissue": "",
+                        "genderKey": "",
+                        "gender": "",
+                        "cellLineKey": "",
+                        "cellLine": "",                
+                        "refsKey": "",
+                        "jnumid": "",
+                        "jnum": "",
+                        "short_citation": ""
+                    }
+                }
+
+                // add new alias row
+                function addAliasRow() {
+
+                        if (vm.apiDomain.aliases == undefined) {
+                                vm.apiDomain.aliases = [];
+                        }
+
+                        var i = vm.apiDomain.aliases.length
+                        var newAliasRow = {
+                                "processStatus": "c",
+                                "alias": "",
+                                "jnumid": "",
+                                "short_citation": ""
+                        }
+                        vm.apiDomain.aliases.unshift(newAliasRow);
+
+                        // if new row is being added, then set focus to new row
+                        if (i > 0) {
+                                setTimeout(function() {
+                                        document.getElementById("alias-0").focus();
+                                }, (200));
+                        }
+                }
+
+                // add new marker row
+                function addMarkerRow() {
+
+                        if (vm.apiDomain.markers == undefined) {
+                                vm.apiDomain.markers = [];
+                        }
+
+                        var i = vm.apiDomain.markers.length
+			var newMarkerRow = {
+                                "processStatus": "c",
+                                "markerKey": "",
+                                "markerSymbol": "",
+                                "chromosome": ""
+                        }
+                        vm.apiDomain.markers.unshift(newMarkerRow);
+
+                        // if new row is being added, then set focus to new row
+                        if (i > 0) {
+                                setTimeout(function() {
+                                        document.getElementById("markerSymbol-0").focus();
+                                }, (200));
+                        }
+                }
 
 		// add new reference assoc row
 		function addRefRow() {
@@ -1073,151 +1230,6 @@
                         }
 		}		
 
-                // if current reference row has changed
-                function changeRefRow(index) {
-                        console.log("changeRefRow: " + index);
-
-                        vm.selectedRefIndex = index;
-
-                        if (vm.apiDomain.refAssocs[index] == null) {
-                                vm.selectedRefIndex = 0;
-                                return;
-                        }
-
-                        if (vm.apiDomain.refAssocs[index].processStatus == "x") {
-                                vm.apiDomain.refAssocs[index].processStatus = "u";
-                        };
-                }
-
-                function setRefCount() {
-                        console.log("setRefCount()");
-
-                        vm.refCount = 0;
-                        for(var i=0;i<vm.apiDomain.refAssocs.length; i++) {
-                                if (vm.apiDomain.refAssocs[i].processStatus == "x") {
-                                        vm.refCount += 1;
-                                }
-                        }
-                }
-
-                // if current marker row has changed
-                function changeMarkerRow(index) {
-                        console.log("changeMarkerRow: " + index + " procesStatus: " + vm.apiDomain.markers[index].processStatus);
-
-                        vm.selectedMarkerIndex = index;
-
-                        if (vm.apiDomain.markers[index] == null) {
-                                vm.selectedMarkerIndex = 0;
-                                return;
-                        }
-                        if (vm.apiDomain.markers[index].processStatus == "x") {
-                                vm.apiDomain.markers[index].processStatus = "u";
-                        };
-                }
-
-                // if current alias row has changed
-                function changeAliasRow(index) {
-                        console.log("changeAliasRow: " + index + " procesStatus: " + vm.apiDomain.aliases[index].processStatus);
-
-                        vm.selectedAliasIndex = index;
-
-                        if (vm.apiDomain.aliases[index] == null) {
-                                vm.selectedAliasIndex = 0;
-                                return;
-                        }
-                        if (vm.apiDomain.aliases[index].processStatus == "x") {
-                                vm.apiDomain.aliases[index].processStatus = "u";
-                        };
-                }
-
-               function selectRefRow(index) {
-                    console.log("selectRefRow: " + index);
-                    vm.selectedRefIndex = index;
-
-                    if (vm.apiDomain.refAssocs.length == 0) {
-                           addRefRow();
-                    }
-
-                }
-
-                function addSource() {
-
-                    vm.apiDomain.probeSource = {
-                        "processStatus": "c",
-                        "sourceKey": "",
-                        "name": "",
-                        "description": "",
-                        "age": "",
-                        "agePrefix": "",
-                        "ageStage": "",
-                        "segmentTypeKey": "",
-                        "segmentType": "",
-                        "vectorKey": "",
-                        "vector": "",
-                        "organismKey": "",
-                        "organism": "",
-                        "strainKey": "",
-                        "strain": "",
-                        "tissueKey": "",
-                        "tissue": "",
-                        "genderKey": "",
-                        "gender": "",
-                        "cellLineKey": "",
-                        "cellLine": "",                
-                        "refsKey": "",
-                        "jnumid": "",
-                        "jnum": "",
-                        "short_citation": ""
-                    }
-                }
-
-                // add new alias row
-                function addAliasRow() {
-
-                        if (vm.apiDomain.aliases == undefined) {
-                                vm.apiDomain.aliases = [];
-                        }
-
-                        var i = vm.apiDomain.aliases.length
-                        vm.apiDomain.aliases[i] = {
-                                "processStatus": "c",
-                                "alias": "",
-                                "jnumid": "",
-                                "short_citation": ""
-                        }
-                }
-
-                function addRefAssocRow() {
-
-                        if (vm.apiDomain.refAssocs == undefined) {
-                                vm.apiDomain.refAssocs = [];
-                        }
-
-                        var i = vm.apiDomain.refAssocs.length
-                        vm.apiDomain.refAssocs[i] = {
-                                "refAssocType": "",
-                                "jnumid": "",
-                                "short_citation": ""
-                        }
-                }
-
-
-                // add new marker row
-                function addMarkerRow() {
-
-                        if (vm.apiDomain.markers == undefined) {
-                                vm.apiDomain.markers = [];
-                        }
-
-                        var i = vm.apiDomain.markers.length
-                        vm.apiDomain.markers[i] = {
-                                "processStatus": "c",
-                                "markerKey": "",
-                                "markerSymbol": "",
-                                "chromosome": ""
-                        }
-                }
-
 		// link outs
 		/////////////////////////////////////////////////////////////////////		
                 
@@ -1247,15 +1259,15 @@
                 $scope.create = create;
 		$scope.update = update;
                 $scope.deleteAntibody = deleteAntibody;
-		$scope.changeAntibodyRow = changeAntibodyRow;
-		$scope.addRefRow = addRefRow;
+                $scope.selectAliasRow = selectAliasRow;
+                $scope.selectMarkerRow = selectMarkerRow;
                 $scope.selectRefRow = selectRefRow;
-                $scope.changeRefRow = changeRefRow;
                 $scope.addAliasRow = addAliasRow;
                 $scope.changeAliasRow = changeAliasRow;
                 $scope.addMarkerRow = addMarkerRow;
                 $scope.changeMarkerRow = changeMarkerRow;
-		$scope.selectAntibody = selectAntibody;
+		$scope.addRefRow = addRefRow;
+                $scope.changeRefRow = changeRefRow;
                 $scope.setAutoComplete = setAutoComplete;
                 $scope.clearRegionCovered = clearRegionCovered;
                 $scope.clearAntibodyNote = clearAntibodyNote;

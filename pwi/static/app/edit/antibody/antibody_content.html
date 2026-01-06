@@ -76,10 +76,10 @@
                 <!-- end row -->
 
                 <div class="spacer"></div>
-		<div class="row sectionDivider topPadding bottomPadding">
+		<div class="row divider topPadding bottomPadding">
                 <div class="spacer"></div>
                     	<div class="col-sm-4" style="">
-                    	<label class="label label-edit-search">Pick List</label><br>
+                    	<label class="label label-edit-search">Antibody Pick List</label><br>
                     	<select type=dropdown size="1" id="regionCoveredNote"
                             	ng-options="choice.term as choice.term for choice in vm.regionCoveredLookup"
                             	ng-model="vm.attachNote"
@@ -195,7 +195,7 @@
                 <!-- end row -->
 
                 <div class="spacer"></div>
-		<div class="row sectionDivider topPadding bottomPadding">
+		<div class="row divider topPadding bottomPadding">
                 <div class="spacer"></div>
                     <div class="col-sm-4" style="">
                     <label class="label label-view-only">Companies (for Notes)</label><br>
@@ -241,7 +241,7 @@
                 <!-- marker table -->
 		<div class="spacer"></div>
 		<div class="spacer"></div>
-		<div class="row sectionDivider topPadding bottomPadding">
+		<div class="row divider topPadding bottomPadding">
                 <div class="col-sm-8" style=""> 
                 	<div class="row">
                         	<div class="col-sm-8" style="">
@@ -261,10 +261,10 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="row in vm.apiDomain.markers"
-                        ng-click=""
+                <tr ng-repeat="row in vm.apiDomain.markers track by $index"
+                        ng-click="selectMarkerRow($index)"
+                        ng-class="{selectedRow:$index==vm.selectedMarkerIndex, deleteRow:row.processStatus == 'd'}"
                         ng-class-odd="'oddRow'"
-                        ng-class="{deleteRow:vm.apiDomain.markers[$index].processStatus == 'd'}"
                         >
                 <td style="width:5px;">
                 <span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
@@ -334,10 +334,10 @@
                 <!-- if adding new row, turn it lime -->
 
                <tbody>
-                <tr ng-repeat="row in vm.apiDomain.refAssocs"
-                        ng-click=""
+                <tr ng-repeat="row in vm.apiDomain.refAssocs track by $index"
+                        ng-click="selectRefRow($index)"
+                        ng-class="{selectedRow:$index==vm.selectedRefIndex, deleteRow:row.processStatus == 'd'}"
                         ng-class-odd="'oddRow'"
-                        ng-class="{deleteRow:vm.apiDomain.refAssocs[$index].processStatus == 'd'}"
                 >
                 <td style="width:10px;">
                 <span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
@@ -401,10 +401,10 @@
                 </thead>
 
                 <tbody>
-                <tr ng-repeat="row in vm.apiDomain.aliases"
-                         ng-click=""
+                <tr ng-repeat="row in vm.apiDomain.aliases track by $index"
+                         ng-click="selectAliasRow($index)"
+                         ng-class="{selectedRow:$index==vm.selectedAliasIndex, deleteRow:row.processStatus == 'd'}"
                          ng-class-odd="'oddRow'"
-                         ng-class="{deleteRow:vm.apiDomain.aliases[$index].processStatus == 'd'}"
                          >
                  <td style="width:10px;">
                  <span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
