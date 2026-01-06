@@ -336,7 +336,7 @@
                <tbody>
                 <tr ng-repeat="row in vm.apiDomain.refAssocs track by $index"
                         ng-click="selectRefRow($index)"
-                        ng-class="{selectedRow:$index==vm.selectedRefIndex, deleteRow:row.processStatus == 'd'}"
+                        ng-class="{deleteRow:row.processStatus == 'd'}"
                         ng-class-odd="'oddRow'"
                 >
                 <td style="width:10px;">
@@ -403,7 +403,7 @@
                 <tbody>
                 <tr ng-repeat="row in vm.apiDomain.aliases track by $index"
                          ng-click="selectAliasRow($index)"
-                         ng-class="{selectedRow:$index==vm.selectedAliasIndex, deleteRow:row.processStatus == 'd'}"
+                         ng-class="{deleteRow:row.processStatus == 'd'}"
                          ng-class-odd="'oddRow'"
                          >
                  <td style="width:10px;">
