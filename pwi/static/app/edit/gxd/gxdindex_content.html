@@ -97,7 +97,7 @@
 			        >Age Assigned</button>
                         <label class="label label-edit-search">Pick List</label>
                 	<select type=dropdown size="1" id="notePickList" tab-to="note"
-			    ng-options="choice.note as choice.term for choice in vm.noteLookup"
+			    ng-options="choice.abbreviation as choice.term for choice in vm.noteLookup"
                             ng-model="vm.attachNote"
                             ng-change="attachNote()"
 			    >
