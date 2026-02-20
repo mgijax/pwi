@@ -1119,7 +1119,7 @@
 		VocTermSearchAPI.search({name:"GXD HT Age"}, function(data) { vocabs.ages = data.items[0].terms; });
 		VocTermSearchAPI.search({name:"GXD HT Experiment Type"}, function(data) { vocabs.experiment_types = data.items[0].terms; });
 		VocTermSearchAPI.search({name:"GXD HT Experiment Variables"}, function(data) { vocabs.expvars = data.items[0].terms; });
-		VocTermSearchAPI.search({name:"Sex"}, function(data) { vocabs.genders = data.items[0].terms; });
+		VocTermSearchAPI.search({name:"Gender"}, function(data) { vocabs.genders = data.items[0].terms; });
 		VocTermSearchAPI.search({name:"Cell Ontology"}, function(data) {
                     vocabs.celltypes = data.items[0].terms;
                     // index the terms by CL id
