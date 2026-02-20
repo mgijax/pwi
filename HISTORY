@@ -3,6 +3,15 @@
 #
 #
 
+TAG: pwi-6-0-27-2
+DATE: 02/20/2026
+STAFF: lec
+wts2-1810/rename field in antibody and probe piwi modules
+        modified:   pwi/static/app/edit/antibody/antibody_content.html
+        modified:   pwi/static/app/edit/clonelib/clonelib_content.html
+        modified:   pwi/static/app/edit/gxd/EvaluationController.js
+        modified:   pwi/static/app/edit/probe/probe_content.html
+
 TAG: pwi-6-0-27-1
 DATE: 01/15/2026
 STAFF: lec
