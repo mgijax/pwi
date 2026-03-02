@@ -77,8 +77,10 @@ function ImageSummaryController () {}
                     const prepareImage = function (img) {
                         const pixAcc = img.editAccessionIds.filter(acc => acc.prefixPart === "PIX:")[0]
                         if (pixAcc) img.pixid = pixAcc.numericPart
-                        img.caption = $scope.ntc.convert(img.captionNote.noteChunk)
-                        img.copyright = $scope.ntc.convert(img.copyrightNote.noteChunk)
+			img.caption = ""
+			img.copyright = ""
+			if (img.captionNote != null) img.caption = $scope.ntc.convert(img.captionNote.noteChunk)
+                        if (img.copyrightNote != null) img.copyright = $scope.ntc.convert(img.copyrightNote.noteChunk)
                         img.xdim = parseInt(img.xdim)
                         img.ydim = parseInt(img.ydim)
                         const xScale = Math.min(1, maxImageDim/img.xdim)
