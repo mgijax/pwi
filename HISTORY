@@ -8,6 +8,7 @@ DATE: 03/02/2026
 STAFF: lec
 wts2-1817/All images entered do not show up on the Image Summary Results page 
         modified:   pwi/static/app/edit/imagesummary/ImageSummaryController.js
+	modified:   pwi/static/app/edit/imagesummary_content.html
 
 TAG: pwi-6-0-27-5
 TAG: pwi-6-0-27-4
