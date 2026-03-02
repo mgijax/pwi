@@ -71,6 +71,7 @@ Allele Symbol: <span ng-bind-html="ntc.superscript(vm.apiDomain.alleleSymbol)"><
 <h2 ng-if="vm.apiDomain.molecImages.length > 0">Molecular Images</h2><hr>
 <div ng-repeat = "img in vm.apiDomain.molecImages">
   <div style="min-height: 140px; width:100%; ">
+    <br><br><br><br>
     <span style="float:left;">
         <img src="{{url_for('pwi.pixeldb', img.thumbnailImage.pixid)}}"
           style="border-style: solid; border-width: 1px; border-color: #222;">
@@ -88,8 +89,9 @@ Allele Symbol: <span ng-bind-html="ntc.superscript(vm.apiDomain.alleleSymbol)"><
     <dd><span ng-bind-html="img.thumbnailImage.caption"></span></dd>
     </dl>
   </div>
-<br>
 
+  <div>
+  <br><br>
   <span style='float:left; border-style: solid; border-width: 1px; border-color: #222; margin:5px'>
     <a href="{{ url_for('pwi.imagedetail', {id:img.accID}) }}">
       <img width="{{img.scaled.xdim}}px" height="{{img.scaled.ydim}}px" src="{{url_for('pwi.pixeldb', img.pixid)}}"
@@ -151,6 +153,7 @@ Allele Symbol: <span ng-bind-html="ntc.superscript(vm.apiDomain.alleleSymbol)"><
     </dd>
 
   </dl>
+  </div>
 </div> <!-- end molec images -->
 
 <hr style="clear: both;" ng-if="vm.apiDomain.molecImages.length > 0" />
@@ -159,11 +162,11 @@ Allele Symbol: <span ng-bind-html="ntc.superscript(vm.apiDomain.alleleSymbol)"><
 
 <div ng-repeat = "img in vm.apiDomain.phenoImages">
   <div style="min-height: 140px; width:100%; ">
+    <br><br><br><br>
     <span style="float:left;">
         <img src="{{url_for('pwi.pixeldb', img.thumbnailImage.pixid)}}"
-          style="border-style: solid; border-width: 1px; border-color: #222;">
+          style="border-style: solid; border-width: 1px; border-color: #222;"/>
     </span>
-
     <dl class="imageSummaryListData" style="">
     <dt>Fig Label</dt>
     <dd>{{img.thumbnailImage.figureLabel}}&nbsp;</dd>
@@ -177,12 +180,13 @@ Allele Symbol: <span ng-bind-html="ntc.superscript(vm.apiDomain.alleleSymbol)"><
     <dd><span ng-bind-html="img.thumbnailImage.caption"></span></dd>
     </dl>
   </div>
-<br>
 
+  <div>
+  <br><br>
   <span style='float:left; border-style: solid; border-width: 1px; border-color: #222; margin:5px'>
     <a href="{{ url_for('pwi.imagedetail', {id:img.accID}) }}">
       <img width="{{img.scaled.xdim}}px" height="{{img.scaled.ydim}}px" src="{{url_for('pwi.pixeldb', img.pixid)}}"
-           style="border-style: solid; border-width: 1px; border-color: #222;">
+           style="border-style: solid; border-width: 1px; border-color: #222;"/>
     </a>
   </span>
   
@@ -240,6 +244,7 @@ Allele Symbol: <span ng-bind-html="ntc.superscript(vm.apiDomain.alleleSymbol)"><
     </dd>
 
   </dl>
+  </div>
 </div> <!-- end pheno images -->
 <hr style="clear: both;" ng-if="vm.apiDomain.phenoImages.length > 0" />
 
