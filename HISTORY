@@ -3,12 +3,6 @@
 #
 #
 
-TAG: pwi-6-0-27-?
-DATE: 03/03/2026
-STAFF: lec
-wts2-1816/Images added in the MGD Image Module get default association in the Allele Module as primary=yes
-        modified:   pwi/static/app/edit/allele/AlleleController.js
-
 TAG: pwi-6-0-27-7
 DATE: 03/03/2026
 STAFF: lec
