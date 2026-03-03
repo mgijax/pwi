@@ -35,6 +35,7 @@
       <th>Name</th>
       <th>Synonyms</th>
       <th>Transmission</th>
+      <th>Strain of Origin</th>
       <th>AlleleStatus</th>
       <th>Generation Type</th>
       <th>Attributes</th>
@@ -53,6 +54,7 @@
     <td ng-bind-html="ntc.superscript(allele.name)"></td>
     <td ng-bind-html="ntc.superscript(allele.synonyms)"></td>
     <td>{{ allele.transmission }}</td>
+    <td>{{ allele.strain }}</td>
     <td>{{ allele.alleleStatus }}</td>
     <td>{{ allele.alleleType }}</td>
     <td>{{ allele.attrs }}</td>
