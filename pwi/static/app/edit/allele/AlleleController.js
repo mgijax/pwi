@@ -475,6 +475,9 @@
 				if (vm.apiDomain.imagePaneAssocs[i].processStatus == "d") {
 					continue;
 				}
+				if (vm.apiDomain.imagePaneAssocs[i].isPrimary == "") {
+					continue;
+				}
 				if (vm.apiDomain.imagePaneAssocs[i].isPrimary == "0") {
 					continue;
 				}
