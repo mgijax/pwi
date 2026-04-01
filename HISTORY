@@ -3,6 +3,12 @@
 #
 #
 
+TAG: pwi-6-0-27-?
+DATE: 04/01/2026
+STAFF: lec
+wts2-1827/Install Python 3.14/Backend/PWI
+        modified:   requirements.txt
+
 TAG: pwi-6-0-27-7
 DATE: 03/03/2026
 STAFF: lec
