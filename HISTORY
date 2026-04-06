@@ -3,6 +3,13 @@
 #
 #
 
+TAG: pwi-6-0-28-?
+DATE: 04/06/2026
+STAFF: lec
+wts2-1837/tweaks to antibody module
+        modified:   pwi/static/app/edit/antibody/AntibodyController.js
+        modified:   pwi/static/app/edit/antibody/antibody_content.html
+
 TAG: pwi-6-0-28-1
 DATE: 04/02/2026
 STAFF: lec

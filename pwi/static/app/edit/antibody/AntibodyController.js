@@ -145,12 +145,6 @@
                                 });
 
                                 $q.all([
-                                        FindElement.byId("antibodyCompanySearch"),
-                                ]).then(function(elements) {
-                                        pageScope.autocompleteBeginning(angular.element(elements[0]), vm.companyLookup);
-                                });
-
-                                $q.all([
                                 	FindElement.byId("cellLine"),
                                 ]).then(function(elements) {
                                         pageScope.autocompleteBeginning(angular.element(elements[0]), vm.celllines);
@@ -456,15 +450,6 @@
                     }
                         
 		}
-
-                function getAntibodyObtained() {
-                    if (vm.apiDomain.antibodyNote != null) {
-                        vm.apiDomain.antibodyNote += "No details were provided; multiple antibodies are available from this vendor.";
-                    }
-                    else {
-                        vm.apiDomain.antibodyNote = "No details were provided; multiple antibodies are available from this vendor.";
-                    }
-                }
 
                 function deleteAntibody() {
                     console.log("deleteAntibody() -> AntibodyDeleteAPI()");
@@ -1290,7 +1275,6 @@
                 $scope.validateJnum = validateJnum;
                 $scope.getAntibodyCompanyNote = getAntibodyCompanyNote;		
                 $scope.getAntibodyCompanySearch = getAntibodyCompanySearch;		
-                $scope.getAntibodyObtained = getAntibodyObtained;		
                 $scope.antibodyDetailLink = antibodyDetailLink;
                 $scope.mrkAntibodyLink = mrkAntibodyLink;
 
