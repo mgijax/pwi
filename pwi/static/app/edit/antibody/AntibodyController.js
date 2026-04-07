@@ -433,22 +433,18 @@
                         
 		}
 
-		function getAntibodyCompanySearch() {
-                    console.log("getAntibodyCompanySearch()");
+		function setAntibodyNoteSearch() {
+                    console.log("setAntibodyNoteSearch()");
 
-                    if (vm.antibodyCompanySave2 == null || vm.antibodyCompanySave2 == "") {
-                        return;
+                    if (vm.apiDomain.antibodyNote == null) {
+		    	return
                     }
 
-                    console.log("vm.antibodyCompanySave2:" + vm.antibodyCompanySave2);
+		    if (vm.apiDomain.antibodyNote.includes("%")) {
+		    	return
+		    }
 
-                    if (vm.apiDomain.antibodyNote != null) {
-                        vm.apiDomain.antibodyNote += "%" + vm.antibodyCompanySave2 + "%";
-                    }
-                    else {
-                        vm.apiDomain.antibodyNote = "%" + vm.antibodyCompanySave2 + "%";
-                    }
-                        
+                    vm.apiDomain.antibodyNote = "%" + vm.apiDomain.antibodyNote + "%";
 		}
 
                 function deleteAntibody() {
@@ -1274,7 +1270,7 @@
                 $scope.validateMarker = validateMarker;
                 $scope.validateJnum = validateJnum;
                 $scope.getAntibodyCompanyNote = getAntibodyCompanyNote;		
-                $scope.getAntibodyCompanySearch = getAntibodyCompanySearch;		
+                $scope.setAntibodyNoteSearch = setAntibodyNoteSearch;		
                 $scope.antibodyDetailLink = antibodyDetailLink;
                 $scope.mrkAntibodyLink = mrkAntibodyLink;
 

@@ -204,13 +204,6 @@
                             ng-blur="getAntibodyCompanyNote()"
                             >
                     </div>
-                    <div class="col-sm-4" style="">
-                    <label class="label label-view-only">For Searching</label><br>
-                    <input type="text" class="form-control" id="antibodyCompanySearch" tabindex="-1"
-                            ng-model="vm.antibodyCompanySave2"
-                            ng-blur="getAntibodyCompanySearch()"
-                            >
-                    </div>
                 </div>
                 <!-- end row -->
 
@@ -220,7 +213,9 @@
                     <label class="label label-edit-search">Antibody Notes</label>
 		    <img id="clearAntibodyButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearAntibodyNote(vm.apiDomain.antibodyNote)">
                     <textarea class="form-control" rows=2 
-                        ng-model="vm.apiDomain.antibodyNote" id="antibodyNote" ></textarea>
+                        ng-model="vm.apiDomain.antibodyNote" id="antibodyNote" 
+                        ng-blur="setAntibodyNoteSearch()"
+			></textarea>
                     </div>
                 </div>
                 <div class="row">
