@@ -49,6 +49,7 @@
                 //vm.strains = {};
                 vm.tissues = {};
                 vm.celllines = {};
+                vm.companyLookup = {};
 
                 // default booleans for page functionality
                 vm.hideApiDomain = true;       // JSON package
@@ -133,15 +134,15 @@
                         setTimeout(function() {
 
                                 $q.all([
-                                        FindElement.byId("tissue"),
-                                ]).then(function(elements) {
-                                        pageScope.autocompleteBeginning(angular.element(elements[0]), vm.tissues);
-                                });
-
-                                $q.all([
                                         FindElement.byId("antibodyCompanyNote"),
                                 ]).then(function(elements) {
                                         pageScope.autocompleteBeginning(angular.element(elements[0]), vm.companyLookup);
+                                });
+
+                                $q.all([
+                                        FindElement.byId("tissue"),
+                                ]).then(function(elements) {
+                                        pageScope.autocompleteBeginning(angular.element(elements[0]), vm.tissues);
                                 });
 
                                 $q.all([
@@ -150,7 +151,7 @@
                                         pageScope.autocompleteBeginning(angular.element(elements[0]), vm.celllines);
                                 });
 
-                         }, (500));
+                         }, (700));
                 }
 
                 // clear region covered
