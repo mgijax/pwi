@@ -112,6 +112,7 @@
                     // gxd antibody company
                     console.log("calling VocTermListAPI.search for company");
                     vm.antibodyCompanySave = ""
+		    vm.usedCompany = 0;
                     VocTermListAPI.search({"vocabKey":"179"}, function(data) { vm.companyLookup = data.items});;
 
                     // yesnoLookup
@@ -423,6 +424,8 @@
 
                     console.log("vm.antibodyCompanySave:" + vm.antibodyCompanySave);
 
+		    vm.usedCompany = 1;
+
                     if (vm.apiDomain.antibodyNote != null) {
                         vm.apiDomain.antibodyNote += "Antibody obtained from " + vm.antibodyCompanySave + ". ";
                     }
@@ -435,10 +438,19 @@
 		function setAntibodyNoteSearch() {
                     console.log("setAntibodyNoteSearch()");
 
+		    // add "%" to antibodyNote for searching
+		    
+		    // if getAntibodyCompanyNote() was used, then skip
+		    if (vm.usedCompany == 1) {
+		    	return;
+		    }
+
+		    // if antibodyNote is empty, then skip
                     if (vm.apiDomain.antibodyNote == null) {
 		    	return
                     }
 
+		    // if antibodyNote already contains "%", then skip
 		    if (vm.apiDomain.antibodyNote.includes("%")) {
 		    	return
 		    }
@@ -541,6 +553,7 @@
                 	vm.selectedAliasIndex = 0;
 			vm.total_count = 0;
                         vm.antibodyCompanySave = "";
+		        vm.usedCompany = 0;
 			vm.attachNote = "";
 
 			// rebuild empty apiDomain submission object, else bindings fail
@@ -617,6 +630,7 @@
                                 }
 				setRefCount();
                                 vm.antibodyCompanySave = "";
+		                vm.usedCompany = 0;
 				vm.attachNote = "";
                         	if (vm.apiDomain.aliases == undefined) {
                         		addAliasRow();
