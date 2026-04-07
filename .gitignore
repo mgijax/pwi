@@ -1,0 +1,6 @@
+Configuration
+bin/
+lib/
+lib64
+pwi/__pycache__/
+pyvenv.cfg
