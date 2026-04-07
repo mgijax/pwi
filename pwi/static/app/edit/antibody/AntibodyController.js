@@ -151,7 +151,7 @@
                                         pageScope.autocompleteBeginning(angular.element(elements[0]), vm.celllines);
                                 });
 
-                         }, (700));
+                         }, (800));
                 }
 
                 // clear region covered
