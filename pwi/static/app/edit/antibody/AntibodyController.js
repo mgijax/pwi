@@ -112,8 +112,8 @@
 
                     // gxd antibody company
                     console.log("calling VocTermListAPI.search for company");
-                    vm.antibodyCompanySave = ""
-		    vm.usedCompany = 0;
+                    vm.antibodyCompanySave1 = ""
+                    vm.antibodyCompanySave2 = ""
                     VocTermListAPI.search({"vocabKey":"179"}, function(data) { vm.companyLookup = data.items});;
 
                     // yesnoLookup
@@ -419,44 +419,37 @@
 		function getAntibodyCompanyNote() {
                     console.log("getAntibodyCompanyNote()");
 
-                    if (vm.antibodyCompanySave == null || vm.antibodyCompanySave == "") {
+                    if (vm.antibodyCompanySave1 == null || vm.antibodyCompanySave1 == "") {
                         return;
                     }
 
-                    console.log("vm.antibodyCompanySave:" + vm.antibodyCompanySave);
-
-		    vm.usedCompany = 1;
+                    console.log("vm.antibodyCompanySave1:" + vm.antibodyCompanySave1);
 
                     if (vm.apiDomain.antibodyNote != null) {
-                        vm.apiDomain.antibodyNote += "Antibody obtained from " + vm.antibodyCompanySave + ". ";
+                        vm.apiDomain.antibodyNote += "Antibody obtained from " + vm.antibodyCompanySave1 + ". ";
                     }
                     else {
-                        vm.apiDomain.antibodyNote = "Antibody obtained from " + vm.antibodyCompanySave + ". ";
+                        vm.apiDomain.antibodyNote = "Antibody obtained from " + vm.antibodyCompanySave1 + ". ";
                     }
                         
 		}
 
-		function setAntibodyNoteSearch() {
-                    console.log("setAntibodyNoteSearch()");
+		function getAntibodyCompanySearch() {
+                    console.log("getAntibodyCompanySearch()");
 
-		    // add "%" to antibodyNote for searching
-		    
-		    // if getAntibodyCompanyNote() was used, then skip
-		    if (vm.usedCompany == 1) {
-		    	return;
-		    }
-
-		    // if antibodyNote is empty, then skip
-                    if (vm.apiDomain.antibodyNote == null) {
-		    	return
+                    if (vm.antibodyCompanySave2 == null || vm.antibodyCompanySave2 == "") {
+                        return;
                     }
 
-		    // if antibodyNote already contains "%", then skip
-		    if (vm.apiDomain.antibodyNote.includes("%")) {
-		    	return
-		    }
+                    console.log("vm.antibodyCompanySave2:" + vm.antibodyCompanySave2);
 
-                    vm.apiDomain.antibodyNote = "%" + vm.apiDomain.antibodyNote + "%";
+                    if (vm.apiDomain.antibodyNote != null) {
+                        vm.apiDomain.antibodyNote += "%" + vm.antibodyCompanySave2 + "%";
+                    }
+                    else {
+                        vm.apiDomain.antibodyNote = "%" + vm.antibodyCompanySave2 + "%";
+                    }
+                        
 		}
 
                 function deleteAntibody() {
@@ -553,8 +546,8 @@
                 	vm.selectedRefIndex = 0;
                 	vm.selectedAliasIndex = 0;
 			vm.total_count = 0;
-                        vm.antibodyCompanySave = "";
-		        vm.usedCompany = 0;
+                        vm.antibodyCompanySave1 = "";
+                        vm.antibodyCompanySave2 = "";
 			vm.attachNote = "";
 
 			// rebuild empty apiDomain submission object, else bindings fail
@@ -630,8 +623,8 @@
                                         selectRefRow(0);
                                 }
 				setRefCount();
-                                vm.antibodyCompanySave = "";
-		                vm.usedCompany = 0;
+                                vm.antibodyCompanySave1 = "";
+                                vm.antibodyCompanySave2 = "";
 				vm.attachNote = "";
                         	if (vm.apiDomain.aliases == undefined) {
                         		addAliasRow();
@@ -1282,7 +1275,7 @@
                 $scope.validateMarker = validateMarker;
                 $scope.validateJnum = validateJnum;
                 $scope.getAntibodyCompanyNote = getAntibodyCompanyNote;		
-                $scope.setAntibodyNoteSearch = setAntibodyNoteSearch;		
+                $scope.getAntibodyCompanySearch = getAntibodyCompanySearch;		
                 $scope.antibodyDetailLink = antibodyDetailLink;
                 $scope.mrkAntibodyLink = mrkAntibodyLink;
 
