@@ -111,8 +111,7 @@
 
                     // gxd antibody company
                     console.log("calling VocTermListAPI.search for company");
-                    vm.antibodyCompanySave1 = ""
-                    vm.antibodyCompanySave2 = ""
+                    vm.antibodyCompanySave = ""
                     VocTermListAPI.search({"vocabKey":"179"}, function(data) { vm.companyLookup = data.items});;
 
                     // yesnoLookup
@@ -418,17 +417,17 @@
 		function getAntibodyCompanyNote() {
                     console.log("getAntibodyCompanyNote()");
 
-                    if (vm.antibodyCompanySave1 == null || vm.antibodyCompanySave1 == "") {
+                    if (vm.antibodyCompanySave == null || vm.antibodyCompanySave == "") {
                         return;
                     }
 
-                    console.log("vm.antibodyCompanySave1:" + vm.antibodyCompanySave1);
+                    console.log("vm.antibodyCompanySave:" + vm.antibodyCompanySave);
 
                     if (vm.apiDomain.antibodyNote != null) {
-                        vm.apiDomain.antibodyNote += "Antibody obtained from " + vm.antibodyCompanySave1 + ". ";
+                        vm.apiDomain.antibodyNote += "Antibody obtained from " + vm.antibodyCompanySave + ". ";
                     }
                     else {
-                        vm.apiDomain.antibodyNote = "Antibody obtained from " + vm.antibodyCompanySave1 + ". ";
+                        vm.apiDomain.antibodyNote = "Antibody obtained from " + vm.antibodyCompanySave + ". ";
                     }
                         
 		}
@@ -541,8 +540,7 @@
                 	vm.selectedRefIndex = 0;
                 	vm.selectedAliasIndex = 0;
 			vm.total_count = 0;
-                        vm.antibodyCompanySave1 = "";
-                        vm.antibodyCompanySave2 = "";
+                        vm.antibodyCompanySave = "";
 			vm.attachNote = "";
 
 			// rebuild empty apiDomain submission object, else bindings fail
@@ -618,8 +616,7 @@
                                         selectRefRow(0);
                                 }
 				setRefCount();
-                                vm.antibodyCompanySave1 = "";
-                                vm.antibodyCompanySave2 = "";
+                                vm.antibodyCompanySave = "";
 				vm.attachNote = "";
                         	if (vm.apiDomain.aliases == undefined) {
                         		addAliasRow();
