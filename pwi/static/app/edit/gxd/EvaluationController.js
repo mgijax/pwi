@@ -911,7 +911,7 @@
                                                 delete selectedClone.samples[i].emaps_object;
                                 }
                                 // ditto for cell types
-                                if ( !selectedClone.samples[i]._celltype_term_key ) {
+                                if (selectedClone.samples[i]._celltype_term_key == "" || selectedClone.samples[i]._celltype_term_key == null) {
                                         delete selectedClone.samples[i].cl_object
                                         selectedClone.samples[i]._celltype_term_key = null
                                 } else {

@@ -7,8 +7,10 @@ TAG: pwi-6-0-28-4
 DATE: 05/04/2026
 STAFF: lec
 wts2-1853/HT index module module: add text eraser to Experiment Note field
+wts2-1849/HT index module: make de-selecting cell type annotations easier
         modified:   pwi/static/app/edit/gxd/EvaluationController.js
         modified:   pwi/static/app/edit/gxd/gxd_ht_results_content.html
+	modified:   pwi/static/app/edit/gxd/EvaluationController.js
 
 TAG: pwi-6-0-28-3
 TAG: pwi-6-0-28-2
