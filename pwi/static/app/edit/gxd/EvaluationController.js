@@ -167,9 +167,8 @@
                                                     // 
                                                     // cl_object has these fields: _term_key, term, abbreviation
                                                     // 
-                                                    const ct = vm.key2celltype[samples[i]._celltype_term_key]
-                                                    samples[i].celltype_id = ct.primaryid
-                                                    samples[i].cl_object.primaryid = ct.primaryid
+                                                    samples[i].celltype_id = vm.key2celltype[samples[i]._celltype_term_key].primaryid
+                                                    samples[i].cl_object.primaryid = vm.key2celltype[samples[i]._celltype_term_key].primaryid
                                                     vm.selected.clCount += 1
                                                 } else {
                                                     samples[i].celltype_id = ''
@@ -393,26 +392,23 @@
 
                 /* called on every keystroke in the  celltype field */
                 $scope.celltypeChanged = function(index) {
-                    const domain = vm.selected.samples[index].sample_domain
-                    const ct = vm.id2celltype[domain.celltype_id]
-                    if (ct) {
-                        domain.cl_object = ct
-                        domain._celltype_term_key = ct.termKey
+                    if (vm.id2celltype[vm.selected.samples[index].sample_domain.celltype_id]) {
+                        vm.selected.samples[index].sample_domain.cl_object = vm.id2celltype[vm.selected.samples[index].sample_domain.celltype_id]
+                        vm.selected.samples[index].sample_domain._celltype_term_key = vm.id2celltype[vm.selected.samples[index].sample_domain.celltype_id].termKey
                     } else {
-                        domain.cl_object = null
-                        domain._celltype_term_key = null
+                        vm.selected.samples[index].sample_domain.cl_object = null
+                        vm.selected.samples[index].sample_domain._celltype_term_key = null
                     }
                     $scope.setSampleStatus(index)
                 }
 
                 /* called when user selects a CL term from the dropdown list */
 		$scope.updateCL2 = function($item, $model, $label, row_num) {
-                        const domain = vm.selected.samples[row_num - 1].sample_domain
-			domain.cl_object = $item
-			domain._celltype_term_key = $item.objectKey
-                        domain.celltype_id = $item.primaryid
-			if (domain.processStatus != "c") {
-				domain.processStatus = "u";
+			vm.selected.samples[row_num - 1].sample_domain.cl_object = $item
+			vm.selected.samples[row_num - 1].sample_domain._celltype_term_key = $item.objectKey
+                        vm.selected.samples[row_num - 1].sample_domain.celltype_id = $item.primaryid
+			if (vm.selected.samples[row_num - 1].sample_domain.processStatus != "c") {
+				vm.selected.samples[row_num - 1].sample_domain.processStatus = "u";
 			}
                 }
 
@@ -436,7 +432,7 @@
 			}
 
                         // if tabbing out of an empty cell, copy down value from above
-			if(!working_domain._celltype_term_key) {
+			if(working_domain._celltype_term_key == "" || working_domain._celltype_term_key == null) {
                                 working_domain.cl_object = null
                                 working_domain.celltype_id = ''
 				for(var i = display_index; i >= 0; i--) {
@@ -448,11 +444,10 @@
 
                         }
 
-			if (working_domain._celltype_term_key) {
-                                const ctterm = vm.key2celltype[working_domain._celltype_term_key]
-                                if (ctterm) {
-                                    working_domain.cl_object = ctterm
-                                    working_domain.celltype_id = ctterm.primaryid
+			if(working_domain._celltype_term_key == "" || working_domain._celltype_term_key == null) {
+                                if (vm.key2celltype[working_domain._celltype_term_key]) {
+                                    working_domain.cl_object = vm.key2celltype[working_domain._celltype_term_key]
+                                    working_domain.celltype_id = vm.key2celltype[working_domain._celltype_term_key].primaryid
                                 } else {
                                     working_domain._celltype_term_key = null
                                     working_domain.cl_object = null
@@ -910,16 +905,15 @@
                                         && selectedClone.samples[i].emaps_object != null) {
                                                 delete selectedClone.samples[i].emaps_object;
                                 }
-                                // ditto for cell types
+                                // if the cell type key is empty, remove the cell type object
                                 if (selectedClone.samples[i]._celltype_term_key == "" || selectedClone.samples[i]._celltype_term_key == null) {
                                         delete selectedClone.samples[i].cl_object
                                         selectedClone.samples[i]._celltype_term_key = null
                                 } else {
-                                        const cl = selectedClone.samples[i].cl_object
                                         selectedClone.samples[i].cl_object = {
-                                            term: cl.term,
-                                            _term_key: cl._term_key,
-                                            abbreviation: cl.abbreviation
+                                            term: selectedClone.samples[i].cl_object.term,
+                                            _term_key: selectedClone.samples[i].cl_object._term_key,
+                                            abbreviation: selectedClone.samples[i].cl_object.abbreviation
                                         }
                                 }
                                 delete selectedClone.samples[i].celltype_id
