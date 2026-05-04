@@ -754,6 +754,10 @@
 			vm.editing_pubmed = !vm.editing_pubmed;
 		}
 
+                $scope.clearExperimentNote = function() {
+                        console.log("clearExperimentNote()");
+			vm.selected.notetext = "";
+                }
 
 		$scope.search = function() {
 			pageScope.loadingStart();
