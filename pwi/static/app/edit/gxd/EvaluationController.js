@@ -391,22 +391,10 @@
 			}
 		}
 
-                /* called on every keystroke in the  celltype field */
-                $scope.celltypeChanged = function(index) {
-                    const domain = vm.selected.samples[index].sample_domain
-                    const ct = vm.id2celltype[domain.celltype_id]
-                    if (ct) {
-                        domain.cl_object = ct
-                        domain._celltype_term_key = ct.termKey
-                    } else {
-                        domain.cl_object = null
-                        domain._celltype_term_key = null
-                    }
-                    $scope.setSampleStatus(index)
-                }
-
-                /* called when user selects a CL term from the dropdown list */
+                // called when user selects a CL term from the dropdown list */
 		$scope.updateCL2 = function($item, $model, $label, row_num) {
+			console.log("updateCL2");
+
                         const domain = vm.selected.samples[row_num - 1].sample_domain
 			domain.cl_object = $item
 			domain._celltype_term_key = $item.objectKey
@@ -416,9 +404,8 @@
 			}
                 }
 
-                /* called when user selects an EMAPS term from the dropdown list */
+                // called when user selects an EMAPS term from the dropdown list */
 		$scope.updateEMAPS2 = function($item, $model, $label, row_num) {
-			vm.emaps_changed = true;
 			vm.selected.samples[row_num - 1].sample_domain._emapa_key = $item.emaps_term.primaryid;
 			vm.selected.samples[row_num - 1].sample_domain.emaps_object = $item.emaps_term;
 			vm.emaps_cache[$item.emaps_term.primaryid] = $item.emaps_term;
@@ -427,16 +414,23 @@
 			}
 		}
 
-                /* called when user tabs out of the CL field */
+                // called when user tabs out of the CL field */
 		$scope.updateCL = function(row_num, display_index, displayed_array) {
+			console.log("updateCL");
+
 			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
+
+			console.log("updateCL:_celltype_term_key:" + working_domain._celltype_term_key);
+			console.log("updateCL:celltype_id:" + working_domain.celltype_id);
 
 			if (working_domain.processStatus != "c") {
 				working_domain.processStatus = "u";
 			}
 
-                        // if tabbing out of an empty cell, copy down value from above
-			if(!working_domain._celltype_term_key) {
+                        // if new row, cell type id is empty cell, set null values & copy down value from above
+			if(working_domain.processStatus == "c" && !working_domain.celltype_id) {
+				console.log("updateCL:1");
+                                working_domain._celltype_term_key = null
                                 working_domain.cl_object = null
                                 working_domain.celltype_id = ''
 				for(var i = display_index; i >= 0; i--) {
@@ -445,24 +439,37 @@
 						break;
 					}
 				}
-
                         }
 
+                        // if existing row, cell type id is empty cell, set null values
+			if(working_domain.processStatus == "u" && !working_domain.celltype_id) {
+				console.log("updateCL:2");
+                                working_domain._celltype_term_key = null
+                                working_domain.cl_object = null
+                                working_domain.celltype_id = ''
+				return;
+			}
+
+			// no change to this logic; leaving as is
+                        // if cell type key exists, set null values
 			if (working_domain._celltype_term_key) {
                                 const ctterm = vm.key2celltype[working_domain._celltype_term_key]
                                 if (ctterm) {
+				    console.log("updateCL:3");
                                     working_domain.cl_object = ctterm
                                     working_domain.celltype_id = ctterm.primaryid
                                 } else {
+				    console.log("updateCL:4");
                                     working_domain._celltype_term_key = null
                                     working_domain.cl_object = null
                                     working_domain.celltype_id = ''
                                 }
+			// not sure this would ever happen
 			} else {
+				console.log("updateCL:5");
 				working_domain.cl_object = null
                                 working_domain.celltype_id = ''
 			}
-
                 }
 
                 /* called when user tabs out of the EMAPS field */
@@ -473,7 +480,7 @@
 				working_domain.processStatus = "u";
 			}
 
-			if(!working_domain._emapa_key) {
+			if(working_domain.processStatus == "c" && !working_domain._emapa_key) {
 				for(var i = display_index; i >= 0; i--) {
 					if(displayed_array[i].sample_domain._emapa_key) {
 						working_domain._emapa_key = displayed_array[i].sample_domain._emapa_key;
@@ -483,7 +490,6 @@
 			}
 
 			if (working_domain._emapa_key) {
-				vm.emaps_changed = false;
 				if(vm.emaps_cache[working_domain._emapa_key]) {
 					working_domain._emapa_key = vm.emaps_cache[working_domain._emapa_key].primaryid;
 					working_domain.emaps_object = vm.emaps_cache[working_domain._emapa_key];
