@@ -213,7 +213,7 @@
 									<td ng-show="vm.checked_columns['celltype']">
 										<input size=16 type=text
 											ng-model="row.sample_domain.celltype_id"
-											ng-change="celltypeChanged($index)"
+											ng-change="setSampleStatus(row.row_num-1)"
 
                                                                                         ng-tabevent="updateCL(row.row_num, $index, displayedCollection)"
 											typeahead-on-select="updateCL2($item, $model, $label, row.row_num)"
