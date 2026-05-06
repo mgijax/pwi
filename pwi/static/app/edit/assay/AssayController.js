@@ -3649,7 +3649,9 @@
 							continue;
 						}
 						if (vm.dlProcess[i].otherGene[j].colorTerm == vm.dlProcess[i].otherGene[k].colorTerm) {
-							vm.dlProcess[i].otherGene[j].attachGene += " (assay \\Acc(" + vm.dlProcess[i].otherGene[j].assayID + "||))";
+							if (vm.dlProcess[i].otherGene[j].attachGene == "") {
+								vm.dlProcess[i].otherGene[j].attachGene += " (assay \\Acc(" + vm.dlProcess[i].otherGene[j].assayID + "||))";
+							}
 							vm.dlProcess[i].otherGene[j].attachGene += " and " + vm.dlProcess[i].otherGene[k].gene;
 							if (vm.dlProcess[i].otherGene[k].attachExtraWords == true) {
 								vm.dlProcess[i].otherGene[j].attachGene += vm.dlProcess[i].otherGene[k].assayExtraWords;
