@@ -687,11 +687,11 @@
 			vm.hideDetailClip = true;
 			vm.hideGeneralNote = true;
 			vm.hideMolecularNote = true;
+			vm.hideMolecularIMPCNote = true;
 			vm.hideNomenNote = true;
 			vm.hideInducibleNote = true;
 			vm.hideIkmcNote = true;
 			vm.hideCreNote = true;
-			vm.hideProidNote = true;
 			vm.hideProjectidNote = true;
 		}
 
@@ -1925,6 +1925,9 @@
 		function hideShowMolecularNote() {
 			vm.hideMolecularNote = !vm.hideMolecularNote;
 		}
+		function hideShowMolecularIMPCNote() {
+			vm.hideMolecularIMPCNote = !vm.hideMolecularIMPCNote;
+		}
 		function hideShowNomenNote() {
 			vm.hideNomenNote = !vm.hideNomenNote;
 		}
@@ -1936,9 +1939,6 @@
 		}
 		function hideShowCreNote() {
 			vm.hideCreNote = !vm.hideCreNote;
-		}
-		function hideShowProidNote() {
-			vm.hideProidNote = !vm.hideProidNote;
 		}
 		function hideShowProjectidNote() {
 			vm.hideProjectidNote = !vm.hideProjectidNote;
@@ -1958,6 +1958,9 @@
 			if (noteType == "Molecular") {
 				noteTypeKey = "1021";
 			}
+			if (noteType == "Molecular IMPC") {
+				noteTypeKey = "1053";
+			}
 			if (noteType == "Nomenclature") {
 				noteTypeKey = "1022";
 			}
@@ -1969,9 +1972,6 @@
 			}
 			if (noteType == "Cre") {
 				noteTypeKey = "1040";
-			}
-			if (noteType == "Proid") {
-				noteTypeKey = "1036";
 			}
 			if (noteType == "Projectid") {
 				noteTypeKey = "1052";
@@ -1992,6 +1992,9 @@
 			if (noteType == "Molecular") {
 				vm.apiDomain.molecularNote = note;
 			}
+			if (noteType == "Molecular IMPC") {
+				vm.apiDomain.molecularIMPCNote = note;
+			}
 			if (noteType == "Nomenclature") {
 				vm.apiDomain.nomenNote = note;
 			}
@@ -2004,9 +2007,6 @@
 			if (noteType == "Cre") {
 				vm.apiDomain.creNote = note;
 			}
-			if (noteType == "Proid") {
-				vm.apiDomain.proidNote = note;
-			}
 			if (noteType == "Projectid") {
 				vm.apiDomain.projectidNote = note;
 			}
@@ -2017,11 +2017,11 @@
 
 			addNote(vm.apiDomain.generalNote, "General");
 			addNote(vm.apiDomain.molecularNote, "Molecular");
+			addNote(vm.apiDomain.molecularIMPCNote, "Molecular IMPC");
 			addNote(vm.apiDomain.nomenNote, "Nomenclature");
 			addNote(vm.apiDomain.inducibleNote, "Inducible");
 			addNote(vm.apiDomain.ikmcNote, "Ikmc");
 			addNote(vm.apiDomain.creNote, "Cre");
-			addNote(vm.apiDomain.proidNote, "Proid");
 			addNote(vm.apiDomain.projectidNote, "Projectid");
 		}
 
@@ -2158,11 +2158,11 @@
 		$scope.hideShowDetailClip = hideShowDetailClip;
 		$scope.hideShowGeneralNote = hideShowGeneralNote;
 		$scope.hideShowMolecularNote = hideShowMolecularNote;
+		$scope.hideShowMolecularIMPCNote = hideShowMolecularIMPCNote;
 		$scope.hideShowNomenNote = hideShowNomenNote;
 		$scope.hideShowInducibleNote = hideShowInducibleNote;
 		$scope.hideShowCreNote = hideShowCreNote;
 		$scope.hideShowIkmcNote = hideShowIkmcNote;
-		$scope.hideShowProidNote = hideShowProidNote;
 		$scope.hideShowProjectidNote = hideShowProjectidNote;
 
 		// other functions: buttons, onBlurs and onChanges
