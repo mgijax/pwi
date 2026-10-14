@@ -660,7 +660,6 @@
 			vm.relationshipLookup[1] = {"term": "E" };
 			vm.relationshipLookup[2] = {"term": "H" };
 			vm.relationshipLookup[3] = {"term": "P" };
-			vm.relationshipLookup[4] = {"term": "(none)" };
 
                         // yesnoLookup
                         vm.yesnoLookup = [];
@@ -1367,12 +1366,13 @@
 			}
 
                         vm.apiDomain.segmentTypeKey = "63473";
+                        vm.apiDomain.markers[0].relationship = "A";
 
 			if (vm.apiDomain.name == "") {
 				vm.apiDomain.name = vm.apiDomain.markers[0].markerSymbol + "-pF, " + vm.apiDomain.markers[0].markerSymbol + "-pR";
 			}
 
-			if (vm.apiDomain.markers[0].relationship == "A" && vm.apiDomain.markers[0].jnumid != "") {
+			if (vm.apiDomain.markers[0].jnumid != "") {
 				vm.apiDomain.references[0].refsKey = vm.apiDomain.markers[0].refsKey;
 				vm.apiDomain.references[0].jnumid = vm.apiDomain.markers[0].jnumid;
 				vm.apiDomain.references[0].jnum = vm.apiDomain.markers[0].jnum;
