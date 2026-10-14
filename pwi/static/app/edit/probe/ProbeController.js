@@ -241,7 +241,7 @@
                         }
 
                         // always primer relatiionship = "A"
-			if (vm.apiDomain.segmentTypeKey = "63473") {
+			if (vm.apiDomain.segmentTypeKey == "63473") {
 				for(var i=0;i<vm.apiDomain.markers.length; i++) {
                                        	vm.apiDomain.markers[i].relationship = "A";
                         	}
@@ -297,7 +297,7 @@
 			}
 
                         // always set primer relatiionship = "A"
-			if (vm.apiDomain.segmentTypeKey = "63473") {
+			if (vm.apiDomain.segmentTypeKey == "63473") {
 				for(var i=0;i<vm.apiDomain.markers.length; i++) {
                                        	vm.apiDomain.markers[i].relationship = "A";
                         	}
