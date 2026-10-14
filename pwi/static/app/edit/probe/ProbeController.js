@@ -240,6 +240,13 @@
                                 }
                         }
 
+                        // always primer relatiionship = "A"
+			if (vm.apiDomain.segmentTypeKey = "63473") {
+				for(var i=0;i<vm.apiDomain.markers.length; i++) {
+                                       	vm.apiDomain.markers[i].relationship = "A";
+                        	}
+                        }
+
 			ProbeCreateAPI.create(vm.apiDomain, function(data) {
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
@@ -288,6 +295,13 @@
 				alert("Required Field : Name");
                                 return;
 			}
+
+                        // always set primer relatiionship = "A"
+			if (vm.apiDomain.segmentTypeKey = "63473") {
+				for(var i=0;i<vm.apiDomain.markers.length; i++) {
+                                       	vm.apiDomain.markers[i].relationship = "A";
+                        	}
+                        }
 
 			pageScope.loadingStart();
 			ProbeUpdateAPI.update(vm.apiDomain, function(data) {
