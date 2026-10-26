@@ -3,6 +3,15 @@
 #
 #
 
+TAG: pwi-6-0-29-1
+DATE: 10/26/2026
+STAFF: lec
+wts2-1907/Image module J# search problem with copyright display
+        modified:   pwi/static/app/edit/image/ImageController.js
+
+TAG: pwi-6-0-28-9
+DATE: 06/02/2026
+STAFF: lec
 TAG: pwi-6-0-29-2
 TAG: pwi-6-0-29-1
 DATE: 06/02/2026
