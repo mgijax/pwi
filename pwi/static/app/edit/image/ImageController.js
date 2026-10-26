@@ -406,7 +406,7 @@
                         }
 
 			console.log("selectJournalLicense()/call jNumOnBlur(): " + vm.selectedJournalLicense);
-                        vm.apiDomain.copyrightNote.noteChunk = "";
+                        //vm.apiDomain.copyrightNote.noteChunk = "";
                         jnumOnBlur();
 		}
 
@@ -910,17 +910,17 @@
 						console.log("jnum validated");
 						vm.apiDomain.refsKey = data[0].refsKey;
 						vm.apiDomain.jnumid = data[0].jnumid;
+						vm.needsDXDOIid = data[0].needsDXDOIid;
 						if (data[0].short_citation != null) {
 							vm.apiDomain.short_citation = data[0].short_citation;
 						}
-						if (data[0].copyright != null) {
+						if (vm.apiDomain.copyrightNote.noteChunk == "" && data[0].copyright != null) {
 							if (vm.apiDomain.copyrightNote == null) {
 								vm.apiDomain.copyrightNote = {};
 							}
 							vm.apiDomain.copyrightNote.noteChunk = data[0].copyright;
 						}
-						vm.needsDXDOIid = data[0].needsDXDOIid;
-                                                if (data[0].journalLicenses != null) {
+                                                if (vm.apiDomain.copyrightNote.noteChunk == "" && data[0].journalLicenses != null) {
                                                         if (data[0].journalLicenses.length > 1) {
                                                                 vm.journalLicenses = data[0].journalLicenses;
                                                         }
